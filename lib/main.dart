@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         'registration_screen': (context) => RegistrationScreen(),
         'login_screen': (context) => LoginScreen(),
         'home_screen': (context) => HomeScreen()
+
       },
     );
   }
