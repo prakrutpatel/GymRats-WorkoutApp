@@ -1,16 +1,35 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'login_page.dart';
+import 'homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class Dashboard extends StatelessWidget {
   @override
+  int _num = 0;
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    StreamSubscription<User?> authManager = FirebaseAuth.instance.userChanges().listen((User? user) {
+      if (user == null && _num == 0) {
+        _num = 1;
+        Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => HomePage(),
+          ),
+        );
+      } else {
+        print('User is currently signed in');
+      }
+    });
     final avatar = Padding(
       padding: EdgeInsets.all(20),
       child: Hero(
           tag: 'logo',
           child: SizedBox(
             height: 160,
-            child: Image.asset('assets/ac-arno-dorian.png'),
+            child: Image.asset('assets/images/light-1.png'),
           )
       ),
     );
@@ -19,15 +38,15 @@ class Dashboard extends StatelessWidget {
       child: RichText(
         textAlign: TextAlign.justify,
         text: TextSpan(
-            text: 'Anim ad ex officia nulla anim ipsum ut elit minim id non ad enim aute. Amet enim adipisicing excepteur ea fugiat excepteur enim veniam veniam do quis magna. Cupidatat quis exercitation ut ipsum dolor ipsum. Qui commodo nostrud magna consectetur. Nostrud culpa laboris Lorem aliqua non ut veniam culpa deserunt laborum occaecat officia.',
+            text: auth.currentUser!.uid,
             style: TextStyle(color: Colors.black, fontSize: 20)
         ),
       ),
     );
-    final buttonLogout = FlatButton(
+    final buttonLogout = TextButton(
         child: Text('Logout', style: TextStyle(color: Colors.black87, fontSize: 16),),
-        onPressed: () {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
         }
     );
     return SafeArea(
@@ -45,5 +64,8 @@ class Dashboard extends StatelessWidget {
           ),
         )
     );
+  }
+  Future<void> _signout() async {
+
   }
 }
