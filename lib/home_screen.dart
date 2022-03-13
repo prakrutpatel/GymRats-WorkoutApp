@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-User loggedinUser;
+User? loggedinUser;
 
 class HomeScreen extends StatefulWidget {
   @override
