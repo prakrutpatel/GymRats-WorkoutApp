@@ -371,6 +371,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  wc_form_validators:
+    dependency: "direct main"
+    description:
+      name: wc_form_validators
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
 sdks:
   dart: ">=2.16.0 <3.0.0"
   flutter: ">=2.5.0"

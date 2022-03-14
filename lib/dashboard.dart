@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +28,13 @@ class Dashboard extends StatelessWidget {
           tag: 'logo',
           child: SizedBox(
             height: 160,
-            child: Image.asset('assets/images/light-1.png'),
+            child: RichText(
+              text: TextSpan(
+                  text: auth.currentUser!.email,
+                  style: TextStyle(color: Colors.black, fontSize: 20)
+              ),
+
+            ),
           )
       ),
     );
@@ -64,8 +69,5 @@ class Dashboard extends StatelessWidget {
           ),
         )
     );
-  }
-  Future<void> _signout() async {
-
   }
 }
