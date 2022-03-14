@@ -1,62 +1,33 @@
 {
   "project_info": {
-    "project_number": "1004115188751",
-    "project_id": "biz-e-32536",
-    "storage_bucket": "biz-e-32536.appspot.com"
+    "project_number": "302602094649",
+    "project_id": "ec-fitness-95c80",
+    "storage_bucket": "ec-fitness-95c80.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1004115188751:android:6ec9231ed68e0ee72b577a",
+        "mobilesdk_app_id": "1:302602094649:android:1257f480d33592fa39e5e8",
         "android_client_info": {
           "package_name": "com.example.flutter_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1004115188751-nlcg9gtblfccgp5h32rpobpnm8tmr7rn.apps.googleusercontent.com",
+          "client_id": "302602094649-668ei02loph577orm526mps70hvv2t79.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCTmwpZlNvyivUwf2cWQoY1PV60fsPM7wc"
+          "current_key": "AIzaSyABTFBQUq6o5x6JRkmx81ZKGx6rYiM9Nis"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1004115188751-nlcg9gtblfccgp5h32rpobpnm8tmr7rn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1004115188751:android:ede93800d29655392b577a",
-        "android_client_info": {
-          "package_name": "com.package.bize"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1004115188751-nlcg9gtblfccgp5h32rpobpnm8tmr7rn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCTmwpZlNvyivUwf2cWQoY1PV60fsPM7wc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1004115188751-nlcg9gtblfccgp5h32rpobpnm8tmr7rn.apps.googleusercontent.com",
+              "client_id": "302602094649-668ei02loph577orm526mps70hvv2t79.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

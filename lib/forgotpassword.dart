@@ -3,29 +3,52 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Animation/FadeAnimation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app/forgotpassword.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
-import 'signup.dart';
 
-import 'dashboard.dart';
-class HomePage extends StatelessWidget {
+import 'homepage.dart';
+
+
+class ForgotPassword extends StatelessWidget {
   @override
   final _email = TextEditingController();
-  final _password = TextEditingController();
+  String _errorname = "";
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.currentUser?.reload();
-    StreamSubscription<User?> auth_manager = FirebaseAuth.instance.userChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        Navigator.pushReplacement<void, void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => Dashboard(),
-          ),
-        );
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('Email not found'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+    Future _passwordReset() async {
+      try {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          _showMyDialog();
+        }
       }
-    });
+    }
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -83,7 +106,7 @@ class HomePage extends StatelessWidget {
                         child: FadeAnimation(1.6, Container(
                           margin: EdgeInsets.only(top: 50),
                           child: Center(
-                            child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+                            child: Text("Forgot Password", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
                           ),
                         )),
                       )
@@ -111,9 +134,6 @@ class HomePage extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.grey.shade100))
-                              ),
                               child: TextFormField(
                                 controller: _email,
                                 keyboardType: TextInputType.emailAddress,
@@ -125,28 +145,11 @@ class HomePage extends StatelessWidget {
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: "Email",
-                                    hintStyle: TextStyle(color: Colors.grey[400])
+                                    hintStyle: TextStyle(color: Colors.grey[400]),
+                                    errorText: _errorname
                                 ),
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: _password,
-                                keyboardType: TextInputType.emailAddress,
-                                obscureText: true,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
-                                validator: Validators.compose([
-                                  Validators.required('Password is required'),
-                                  Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$', 'Invalid Password')
-                                ]),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Password",
-                                    hintStyle: TextStyle(color: Colors.grey[400])
-                                ),
-                              ),
-                            )
                           ],
                         ),
                       )
@@ -155,7 +158,16 @@ class HomePage extends StatelessWidget {
                       FadeAnimation(2,
                           GestureDetector(
                             onTap: () async {
-                              _signin();
+                              await _passwordReset();
+                              Timer(Duration(seconds: 5), () {
+                                Navigator.pushReplacement<void, void>(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (BuildContext context) => HomePage(),
+                                  ),
+                                );
+                              });
+
                             },
                             child: Container(
                               height: 50,
@@ -169,39 +181,12 @@ class HomePage extends StatelessWidget {
                                   )
                               ),
                               child: Center(
-                                child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                child: Text("Send Email", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                               ),
                             ) ,
                           )
-                          ),
-                      SizedBox(height: 60,),
-                      FadeAnimation(1.5,
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement<void, void>(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) => ForgotPassword(),
-                                ),
-                              );
-                            },
-                            child: Text("Forgot Password?", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
-                          )
-                          ),
-                      SizedBox(height: 25,),
-                      FadeAnimation(1.5,
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement<void, void>(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) => SignUp(),
-                                ),
-                              );
-                            },
-                            child: Text("Not a user", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
-                          )
-                          ),
+                      ),
+
                     ],
                   ),
                 )
@@ -210,19 +195,5 @@ class HomePage extends StatelessWidget {
           ),
         )
     );
-  }
-  Future<void> _signin() async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _email.text,
-          password: _password.text
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
   }
 }

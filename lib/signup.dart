@@ -1,17 +1,17 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Animation/FadeAnimation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app/forgotpassword.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
-import 'signup.dart';
 
 import 'dashboard.dart';
-class HomePage extends StatelessWidget {
+import 'homepage.dart';
+class SignUp extends StatelessWidget {
   @override
-  final _email = TextEditingController();
-  final _password = TextEditingController();
+  var _email = TextEditingController();
+  var _password = TextEditingController();
+  var _confirm_password = TextEditingController();
+
   Widget build(BuildContext context) {
     FirebaseAuth.instance.currentUser?.reload();
     StreamSubscription<User?> auth_manager = FirebaseAuth.instance.userChanges().listen((User? user) {
@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                         child: FadeAnimation(1.6, Container(
                           margin: EdgeInsets.only(top: 50),
                           child: Center(
-                            child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+                            child: Text("Sign Up", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
                           ),
                         )),
                       )
@@ -125,16 +125,20 @@ class HomePage extends StatelessWidget {
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: "Email",
-                                    hintStyle: TextStyle(color: Colors.grey[400])
+                                    hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
                             ),
                             Container(
                               padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Colors.grey.shade100))
+                              ),
                               child: TextFormField(
                                 controller: _password,
                                 keyboardType: TextInputType.emailAddress,
                                 obscureText: true,
+                                autocorrect: false,
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: Validators.compose([
                                   Validators.required('Password is required'),
@@ -143,7 +147,26 @@ class HomePage extends StatelessWidget {
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: "Password",
-                                    hintStyle: TextStyle(color: Colors.grey[400])
+                                    hintStyle: TextStyle(color: Colors.grey[400]),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _confirm_password,
+                                keyboardType: TextInputType.emailAddress,
+                                obscureText: true,
+                                autocorrect: false,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                validator: Validators.compose([
+                                  Validators.required('Password is required'),
+                                  Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$', 'Invalid Password')
+                                ]),
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Confirm Password",
+                                    hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
                             )
@@ -155,7 +178,7 @@ class HomePage extends StatelessWidget {
                       FadeAnimation(2,
                           GestureDetector(
                             onTap: () async {
-                              _signin();
+                              _signup();
                             },
                             child: Container(
                               height: 50,
@@ -169,39 +192,25 @@ class HomePage extends StatelessWidget {
                                   )
                               ),
                               child: Center(
-                                child: Text("Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                child: Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                               ),
-                            ) ,
-                          )
-                          ),
-                      SizedBox(height: 60,),
-                      FadeAnimation(1.5,
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement<void, void>(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) => ForgotPassword(),
-                                ),
-                              );
-                            },
-                            child: Text("Forgot Password?", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
+                            ),
                           )
                           ),
                       SizedBox(height: 25,),
                       FadeAnimation(1.5,
                           GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement<void, void>(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) => SignUp(),
-                                ),
-                              );
-                            },
-                            child: Text("Not a user", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
+                              onTap: () {
+                                Navigator.pushReplacement<void, void>(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (BuildContext context) => HomePage(),
+                                  ),
+                                );
+                              },
+                              child: Text("Log in?", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
                           )
-                          ),
+                      ),
                     ],
                   ),
                 )
@@ -211,18 +220,21 @@ class HomePage extends StatelessWidget {
         )
     );
   }
-  Future<void> _signin() async {
+  Future<void> _signup() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _email.text,
-          password: _password.text
-      );
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+            email: _email.text,
+            password: _password.text
+        );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
       }
+    } catch (e) {
+      print(e);
     }
   }
 }
