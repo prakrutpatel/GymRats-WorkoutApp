@@ -11,10 +11,16 @@ class SignUp extends StatelessWidget {
   var _email = TextEditingController();
   var _password = TextEditingController();
   var _confirm_password = TextEditingController();
+  RegExp regExp = new RegExp(
+    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
+    caseSensitive: false,
+    multiLine: false,
+  );
 
   Widget build(BuildContext context) {
     FirebaseAuth.instance.currentUser?.reload();
-    StreamSubscription<User?> auth_manager = FirebaseAuth.instance.userChanges().listen((User? user) {
+    StreamSubscription<User?> auth_manager = FirebaseAuth.instance.userChanges()
+        .listen((User? user) {
       if (user == null) {
         print('User is currently signed out!');
       } else {
@@ -83,7 +89,10 @@ class SignUp extends StatelessWidget {
                         child: FadeAnimation(1.6, Container(
                           margin: EdgeInsets.only(top: 50),
                           child: Center(
-                            child: Text("Sign Up", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+                            child: Text("Sign Up", style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),),
                           ),
                         )),
                       )
@@ -112,42 +121,48 @@ class SignUp extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.grey.shade100))
+                                  border: Border(bottom: BorderSide(
+                                      color: Colors.grey.shade100))
                               ),
                               child: TextFormField(
                                 controller: _email,
                                 keyboardType: TextInputType.emailAddress,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                autovalidateMode: AutovalidateMode
+                                    .onUserInteraction,
                                 validator: Validators.compose([
                                   Validators.required('Email is required'),
                                   Validators.email('Invalid email address'),
                                 ]),
                                 decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Email",
-                                    hintStyle: TextStyle(color: Colors.grey[400]),
+                                  border: InputBorder.none,
+                                  hintText: "Email",
+                                  hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
                             ),
                             Container(
                               padding: EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.grey.shade100))
+                                  border: Border(bottom: BorderSide(
+                                      color: Colors.grey.shade100))
                               ),
                               child: TextFormField(
                                 controller: _password,
                                 keyboardType: TextInputType.emailAddress,
                                 obscureText: true,
                                 autocorrect: false,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                autovalidateMode: AutovalidateMode
+                                    .onUserInteraction,
                                 validator: Validators.compose([
                                   Validators.required('Password is required'),
-                                  Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$', 'Invalid Password')
+                                  Validators.patternString(
+                                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
+                                      'Invalid Password')
                                 ]),
                                 decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Password",
-                                    hintStyle: TextStyle(color: Colors.grey[400]),
+                                  border: InputBorder.none,
+                                  hintText: "Password",
+                                  hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
                             ),
@@ -158,15 +173,18 @@ class SignUp extends StatelessWidget {
                                 keyboardType: TextInputType.emailAddress,
                                 obscureText: true,
                                 autocorrect: false,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                autovalidateMode: AutovalidateMode
+                                    .onUserInteraction,
                                 validator: Validators.compose([
                                   Validators.required('Password is required'),
-                                  Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$', 'Invalid Password')
+                                  Validators.patternString(
+                                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
+                                      'Invalid Password')
                                 ]),
                                 decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Confirm Password",
-                                    hintStyle: TextStyle(color: Colors.grey[400]),
+                                  border: InputBorder.none,
+                                  hintText: "Confirm Password",
+                                  hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
                             )
@@ -192,11 +210,13 @@ class SignUp extends StatelessWidget {
                                   )
                               ),
                               child: Center(
-                                child: Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                child: Text("Sign Up", style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),),
                               ),
                             ),
                           )
-                          ),
+                      ),
                       SizedBox(height: 25,),
                       FadeAnimation(1.5,
                           GestureDetector(
@@ -204,11 +224,14 @@ class SignUp extends StatelessWidget {
                                 Navigator.pushReplacement<void, void>(
                                   context,
                                   MaterialPageRoute<void>(
-                                    builder: (BuildContext context) => HomePage(),
+                                    builder: (BuildContext context) =>
+                                        HomePage(),
                                   ),
                                 );
                               },
-                              child: Text("Log in?", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
+                              child: Text(
+                                "Log in?", style: TextStyle(color: Color
+                                  .fromRGBO(143, 148, 251, 1)),)
                           )
                       ),
                     ],
@@ -220,21 +243,28 @@ class SignUp extends StatelessWidget {
         )
     );
   }
+
   Future<void> _signup() async {
-    try {
+    if ((_password.text == _confirm_password.text) &&
+        (regExp.hasMatch(_password.text))) {
+      try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
             email: _email.text,
             password: _password.text
         );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
       }
-    } catch (e) {
-      print(e);
+    }
+    else {
+      print("invalid password");
     }
   }
 }
