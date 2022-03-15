@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Animation/FadeAnimation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
-
 import 'homepage.dart';
 
 
@@ -158,8 +157,8 @@ class ForgotPassword extends StatelessWidget {
                       FadeAnimation(2,
                           GestureDetector(
                             onTap: () async {
-                              await _passwordReset();
-                              Timer(Duration(seconds: 5), () {
+                              var wait = await _passwordReset();
+                              Timer(Duration(seconds: 3), () {
                                 Navigator.pushReplacement<void, void>(
                                   context,
                                   MaterialPageRoute<void>(

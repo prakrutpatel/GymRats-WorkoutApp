@@ -135,11 +135,8 @@ class HomePage extends StatelessWidget {
                                 controller: _password,
                                 keyboardType: TextInputType.emailAddress,
                                 obscureText: true,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
-                                validator: Validators.compose([
-                                  Validators.required('Password is required'),
-                                  Validators.patternString(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$', 'Invalid Password')
-                                ]),
+                                autocorrect: false,
+                                enableSuggestions: false,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: "Password",
