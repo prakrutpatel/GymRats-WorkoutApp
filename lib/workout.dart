@@ -54,18 +54,18 @@ class _ExerciseListState extends State<ExerciseList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add exercise'),
-        leading: IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            createAlertDialog(context).then((onValue) {
-              Exercise t = Exercise(onValue, "[empty]", 0, 0, 0);
-              setState(() {
-                bottom.add(t);
-              });
+        title: const Text('Exercise list'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          createAlertDialog(context).then((onValue) {
+            Exercise t = Exercise(onValue, "[empty]", 0, 0, 0);
+            setState(() {
+              bottom.add(t);
             });
-          },
-        ),
+          });
+        },
       ),
       body: ReorderableListView.builder(
           itemCount: bottom.length,
