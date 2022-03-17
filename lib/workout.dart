@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const Workout());
 
-class Workout extends StatelessWidget {
-  const Workout({Key? key}) : super(key: key);
-
-  static const String _title = 'Flutter Code Sample';
+class Workout_Menu extends StatefulWidget {
+  const Workout_Menu({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: _title,
-      home: MyStatefulWidget(),
-    );
-  }
+  State<Workout_Menu> createState() => _Workout_Menu();
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
-
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _Workout_Menu extends State<Workout_Menu> {
   List<int> top = <int>[];
   List<int> bottom = <int>[0];
 
