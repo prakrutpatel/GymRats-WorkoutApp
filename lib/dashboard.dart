@@ -124,7 +124,7 @@ class Dashboard extends StatelessWidget {
                 label: "Workout Menu",
                 onTap: () {
                   {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Workout_Menu()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExerciseList()));
                   }
                 }
             ),

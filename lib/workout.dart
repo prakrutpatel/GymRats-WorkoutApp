@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const WorkoutTest());
-
-class WorkoutTest extends StatelessWidget {
-  const WorkoutTest({Key? key}) : super(key: key);
-
-  static const String _title = 'Workout List';
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: _title,
-      home: ExerciseList(),
-    );
-  }
-}
-
 class ExerciseList extends StatefulWidget {
   const ExerciseList({Key? key}) : super(key: key);
 
