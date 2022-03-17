@@ -25,7 +25,7 @@ class ExerciseList extends StatefulWidget {
 
 class _ExerciseListState extends State<ExerciseList> {
   List<Exercise> bottom = <Exercise>[];
-
+  int _counter = 0;
   Future createAlertDialog(BuildContext context) {
     TextEditingController exNameCont = TextEditingController();
     TextEditingController exTypeCont = TextEditingController();
@@ -53,7 +53,7 @@ class _ExerciseListState extends State<ExerciseList> {
                 child: const Text("Submit"),
                 onPressed: () {
                   Navigator.of(context).pop(Exercise(exNameCont.text.toString(),
-                      exTypeCont.text.toString(), 0, 0, 0));
+                      exTypeCont.text.toString(), 0, 0, 0, _counter));
                 },
               )
             ],
@@ -74,6 +74,7 @@ class _ExerciseListState extends State<ExerciseList> {
             Exercise t = onValue;
             setState(() {
               bottom.add(t);
+              _counter += 1;
             });
           });
         },
@@ -83,12 +84,13 @@ class _ExerciseListState extends State<ExerciseList> {
           itemBuilder: (context, index) {
             final item = bottom[index];
             return Dismissible(
-              //currently does not dismiss
-              key: UniqueKey(),
+              key: ValueKey<int>(bottom[index]
+                  .uid), //this line causes errors when deleting items that have been moved
+              //(i.e. create 2 items, move the second item to the first spot, delete the item that was moved)
               onDismissed: (direction) {
                 // Remove the item from the data source.
                 setState(() {
-                  bottom.removeAt(index);
+                  bottom.removeAt(bottom.indexOf(item));
                 });
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(item.name + ' dismissed')));
@@ -120,6 +122,8 @@ class Exercise {
   int reps;
   int sets;
   int maxWeight;
+  int uid;
 
-  Exercise(this.name, this.type, this.reps, this.sets, this.maxWeight);
+  Exercise(
+      this.name, this.type, this.reps, this.sets, this.maxWeight, this.uid);
 }
