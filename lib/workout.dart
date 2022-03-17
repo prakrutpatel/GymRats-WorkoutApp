@@ -28,21 +28,32 @@ class _ExerciseListState extends State<ExerciseList> {
 
   Future createAlertDialog(BuildContext context) {
     TextEditingController exNameCont = TextEditingController();
+    TextEditingController exTypeCont = TextEditingController();
 
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: const Text("Enter Exercise:"),
-            content: TextField(
-              controller: exNameCont,
+            content: Column(
+              children: <Widget>[
+                TextField(
+                  controller: exNameCont,
+                  decoration: const InputDecoration(hintText: 'Exercise name'),
+                ),
+                TextField(
+                  controller: exTypeCont,
+                  decoration: const InputDecoration(hintText: 'Exercise type'),
+                )
+              ],
             ),
             actions: [
               MaterialButton(
                 elevation: 5.0,
                 child: const Text("Submit"),
                 onPressed: () {
-                  Navigator.of(context).pop(exNameCont.text.toString());
+                  Navigator.of(context).pop(Exercise(exNameCont.text.toString(),
+                      exTypeCont.text.toString(), 0, 0, 0));
                 },
               )
             ],
@@ -60,7 +71,7 @@ class _ExerciseListState extends State<ExerciseList> {
         child: const Icon(Icons.add),
         onPressed: () {
           createAlertDialog(context).then((onValue) {
-            Exercise t = Exercise(onValue, "[empty]", 0, 0, 0);
+            Exercise t = onValue;
             setState(() {
               bottom.add(t);
             });
@@ -72,7 +83,8 @@ class _ExerciseListState extends State<ExerciseList> {
           itemBuilder: (context, index) {
             final item = bottom[index];
             return Dismissible(
-              key: Key('$index'),
+              //currently does not dismiss
+              key: UniqueKey(),
               onDismissed: (direction) {
                 // Remove the item from the data source.
                 setState(() {
