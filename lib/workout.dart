@@ -48,9 +48,7 @@ class _ExerciseListState extends State<ExerciseList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Exercise list'),
-      ),
+      appBar: null,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
@@ -82,6 +80,8 @@ class _ExerciseListState extends State<ExerciseList> {
               // Show a red background as the item is swiped away.
               background: Container(color: Colors.red),
               child: ListTile(
+                  tileColor: const Color.fromRGBO(143, 148, 251, 1),
+                  textColor: const Color.fromRGBO(255, 255, 255, 1),
                   title: Text("Name: " + item.name + "\nType: " + item.type),
                   trailing: const Icon(Icons.drag_handle)),
             );
