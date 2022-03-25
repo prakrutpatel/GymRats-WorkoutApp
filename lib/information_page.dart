@@ -2,158 +2,47 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Animation/FadeAnimation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app/information_page.dart';
+import 'package:flutter_app/Tutorial/onboarding_screen.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
-import 'homepage.dart';
-class SignUp extends StatelessWidget {
+import 'package:firebase_database/firebase_database.dart';
+
+
+class Additional_Info_Screen extends StatefulWidget{
+  Info createState()=> Info();
+}
+class Info extends State<Additional_Info_Screen> {
   @override
-  var _email = TextEditingController();
-  var _password = TextEditingController();
-  var _confirm_password = TextEditingController();
-  RegExp regExp = new RegExp(
-    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
-    caseSensitive: false,
-    multiLine: false,
-  );
+  var _fullname = TextEditingController();
+  var _age = TextEditingController();
+  var _weight = TextEditingController();
+  var _height = TextEditingController();
+  var _gender = TextEditingController();
+  var _skill_level = TextEditingController();
+  String dropdownValuegender = 'Male';
+  String dropdownValueskill = 'Beginner';
+
 
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.currentUser?.reload();
-    StreamSubscription<User?> authManager = FirebaseAuth.instance.userChanges()
-        .listen((User? user) async {
-      if (user == null) {
-      } else {
-        Navigator.pushReplacement<void, void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => Additional_Info_Screen(),
-          ),
-        );
-      }
-    });
+    final FirebaseAuth auth = FirebaseAuth.instance;
 
-    Future<void> showMyDialogforUserfound() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        useSafeArea: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Authentication Error'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[
-                  Text('User already signed up.'),
-                  Text('Try logging in or reset password.'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Close'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
+    Future<void> _dbpush() async {
+      DatabaseReference ref = FirebaseDatabase.instance.ref("users/"+auth.currentUser!.uid);
+      await ref.set({
+        "name": _fullname.text,
+        "age": _age.text,
+        "weight": _weight.text,
+        "height": _height.text,
+        "gender": _gender.text,
+        "skill level": _skill_level.text,
+      });
+      Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => const OnboardingScreen(),
+        ),
       );
     }
 
-    Future<void> showMyDialogforInvalidPassword() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        useSafeArea: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Password Error'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[
-                  Text('Passwords do not match'),
-                  Text('Try again.'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Close'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> showMyDialogforWeakPassword() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        useSafeArea: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Password Error'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[
-                  Text('Weak password is used'),
-                  Text('Try again with a stronger password.'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Close'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    Future<void> _signup() async {
-      if ((_password.text == _confirm_password.text) &&
-          (regExp.hasMatch(_password.text))) {
-        try {
-          UserCredential userCredential = await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-              email: _email.text,
-              password: _password.text
-          );
-          if (userCredential.additionalUserInfo!.isNewUser) {
-            //User logging in for the first time
-            // Redirect user to tutorial
-
-          }
-          else{
-
-          }
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            print('The password provided is too weak.');
-          } else if (e.code == 'email-already-in-use') {
-            showMyDialogforUserfound();
-          }
-        } catch (e) {
-          print(e);
-        }
-      }
-      else {
-        if ((_password.text != _confirm_password.text)) {
-          showMyDialogforInvalidPassword();
-        }
-        if ((regExp.hasMatch(_password.text))) {
-          showMyDialogforWeakPassword();
-        }
-      }
-    }
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -212,7 +101,7 @@ class SignUp extends StatelessWidget {
                         child: FadeAnimation(1.6, Container(
                           margin: EdgeInsets.only(top: 50),
                           child: Center(
-                            child: Text("Sign Up", style: TextStyle(
+                            child: Text("Additional Information", style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold),),
@@ -248,17 +137,16 @@ class SignUp extends StatelessWidget {
                                       color: Colors.grey.shade100))
                               ),
                               child: TextFormField(
-                                controller: _email,
+                                controller: _fullname,
                                 keyboardType: TextInputType.emailAddress,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction,
                                 validator: Validators.compose([
-                                  Validators.required('Email is required'),
-                                  Validators.email('Invalid email address'),
+                                  Validators.required('Name is required'),
                                 ]),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Email",
+                                  hintText: "Name",
                                   hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
@@ -270,21 +158,17 @@ class SignUp extends StatelessWidget {
                                       color: Colors.grey.shade100))
                               ),
                               child: TextFormField(
-                                controller: _password,
-                                keyboardType: TextInputType.emailAddress,
-                                obscureText: true,
+                                controller: _age,
+                                keyboardType: TextInputType.number,
                                 autocorrect: false,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction,
                                 validator: Validators.compose([
-                                  Validators.required('Password is required'),
-                                  Validators.patternString(
-                                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
-                                      'Invalid Password')
+                                  Validators.required('Age is required'),
                                 ]),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Password",
+                                  hintText: "Age",
                                   hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
@@ -292,24 +176,96 @@ class SignUp extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(8.0),
                               child: TextFormField(
-                                controller: _confirm_password,
-                                keyboardType: TextInputType.emailAddress,
-                                obscureText: true,
-                                autocorrect: false,
+                                controller: _weight,
+                                keyboardType: TextInputType.number,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction,
                                 validator: Validators.compose([
-                                  Validators.required('Password is required'),
-                                  Validators.patternString(
-                                      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
-                                      'Invalid Password')
+                                  Validators.required('Weight is required'),
                                 ]),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Confirm Password",
+                                  hintText: "Weight",
                                   hintStyle: TextStyle(color: Colors.grey[400]),
                                 ),
                               ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: _height,
+                                keyboardType: TextInputType.number,
+                                autovalidateMode: AutovalidateMode
+                                    .onUserInteraction,
+                                validator: Validators.compose([
+                                  Validators.required('Height is required'),
+                                ]),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Height",
+                                  hintStyle: TextStyle(color: Colors.grey[400]),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                                child: DropdownButton<String>(
+                                  value: dropdownValuegender,
+                                  isExpanded: true,
+                                  elevation: 16,
+                                  underline: Container(
+                                    height: 2,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownValuegender = newValue!;
+                                    });
+                                  },
+                                  items: <String>['Male','Female']
+                                      .map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  hint:Text(
+                                    "Please choose a gender",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: DropdownButton<String>(
+                              value: dropdownValueskill,
+                              isExpanded: true,
+                              elevation: 16,
+                              underline: Container(
+                                height: 2,
+                              ),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownValueskill = newValue!;
+                                });
+                              },
+                              items: <String>['Beginner','Intermediate','Advanced']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                                hint:Text(
+                                  "Please choose a skill level",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                            ),
                             )
                           ],
                         ),
@@ -319,7 +275,7 @@ class SignUp extends StatelessWidget {
                       FadeAnimation(2,
                           GestureDetector(
                             onTap: () async {
-                              _signup();
+                              _dbpush();
                             },
                             child: Container(
                               height: 50,
@@ -333,28 +289,11 @@ class SignUp extends StatelessWidget {
                                   )
                               ),
                               child: Center(
-                                child: Text("Sign Up", style: TextStyle(
+                                child: Text("Continue", style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),),
                               ),
                             ),
-                          )
-                      ),
-                      SizedBox(height: 25,),
-                      FadeAnimation(1.5,
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.pushReplacement<void, void>(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        HomePage(),
-                                  ),
-                                );
-                              },
-                              child: Text(
-                                "Log in?", style: TextStyle(color: Color
-                                  .fromRGBO(143, 148, 251, 1)),)
                           )
                       ),
                     ],

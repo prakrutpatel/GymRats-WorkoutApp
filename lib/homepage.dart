@@ -16,7 +16,6 @@ class HomePage extends StatelessWidget {
     FirebaseAuth.instance.currentUser?.reload();
     StreamSubscription<User?> auth_manager = FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
-        print('User is currently signed out!');
       } else {
         Navigator.pushReplacement<void, void>(
           context,
@@ -175,12 +174,7 @@ class HomePage extends StatelessWidget {
                       FadeAnimation(1.5,
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement<void, void>(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) => ForgotPassword(),
-                                ),
-                              );
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPassword()));
                             },
                             child: Text("Forgot Password?", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
                           )
@@ -189,12 +183,7 @@ class HomePage extends StatelessWidget {
                       FadeAnimation(1.5,
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement<void, void>(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) => SignUp(),
-                                ),
-                              );
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
                             },
                             child: Text("Not a user", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
                           )
