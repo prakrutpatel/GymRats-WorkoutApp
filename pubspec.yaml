@@ -41,6 +41,14 @@ dependencies:
   image_picker: ^0.8.4
   cached_network_image: ^3.2.0
   settings_ui: ^2.0.2
+  google_sign_in: ^4.5.1
+  twitter_login: 4.1.0-dev
+  toast: ^0.1.5
+  curved_navigation_bar: ^1.0.3
+
+
+
+
 
 
 
@@ -48,12 +56,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

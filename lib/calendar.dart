@@ -26,9 +26,10 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
       body: SfCalendar(
         view: CalendarView.month,
-        monthViewSettings: MonthViewSettings(
+        monthViewSettings: const MonthViewSettings(
             appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
         dataSource: _calendarDataSource,
         loadMoreWidgetBuilder:
@@ -38,8 +39,8 @@ class _CalendarState extends State<Calendar> {
             builder: (context, snapShot) {
               return Container(
                 alignment: Alignment.center,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.blue),
+                child: const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.white),
                 ),
               );
             },
@@ -124,7 +125,7 @@ class MeetingDataSource extends CalendarDataSource {
     while (appStartDate.isBefore(appEndDate)) {
       final List<Appointment>? data = _dataCollection[appStartDate];
       if (data == null) {
-        appStartDate = appStartDate.add(Duration(days: 1));
+        appStartDate = appStartDate.add(const Duration(days: 1));
         continue;
       }
       for (final Appointment meeting in data) {
@@ -133,7 +134,7 @@ class MeetingDataSource extends CalendarDataSource {
         }
         meetings.add(meeting);
       }
-      appStartDate = appStartDate.add(Duration(days: 1));
+      appStartDate = appStartDate.add(const Duration(days: 1));
     }
     appointments!.addAll(meetings);
     notifyListeners(CalendarDataSourceAction.add, meetings);

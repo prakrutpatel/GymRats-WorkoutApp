@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/settings.dart';
 import 'package:flutter_app/workout.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sidebarx/sidebarx.dart';
+import 'package:toast/toast.dart';
 import 'Animation/FadeAnimation.dart';
 import 'calendar.dart';
 import 'homepage.dart';
-import 'Tutorial/onboarding_screen.dart';
 import 'workout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:animations/animations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -22,6 +23,8 @@ class Dashboard extends StatefulWidget{
 class _Dashboard extends State<Dashboard>{
   @override
   int _num = 0;
+  int _page = 0;
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   String _name = '';
   late File _imageFile;
@@ -105,15 +108,101 @@ class _Dashboard extends State<Dashboard>{
       profile_image_url = result;
     });
 
+    Widget _getWidget() {
+      if (_page.toString() == '0') {
+        return ListView(
+          children: <Widget>[
+            const FadeAnimation(1, SizedBox(
+              height: 50.0,
+              child: Center(
+                child: Text("Today's Workouts", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400)),
+              ),
+            ),
+            ),
+            FadeAnimation(1.5, SizedBox(height: 75, child: ListView.separated(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+              scrollDirection: Axis.horizontal,
+              itemCount: 6,
+              separatorBuilder: (context, _) => const SizedBox(width: 10.0,),
+              itemBuilder: (context, index) =>
+                  GestureDetector(
+                    onTap: () {
+                      Toast.show("Starting Workout ${index + 1}", context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        width: 200.0,
+                        height: 75.0,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage('assets/images/dbell.png')
+                            )
+                        ),
+                        child: Center(
+                            child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Stack(
+                                    children: <Widget>[
+                                      Text(
+                                        'Custom HIIT Workout made for ${index +
+                                            1}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 3,
+                                      ),
+                                    ]
+                                ))),
+                      ),
+                    ),
+                  ),
+            ),),)
+          ],
+        );
+      }
+      else if (_page.toString() == '1'){
+        return const FadeAnimation(1, Calendar(title: 'prakrut'));
+      }
+      else if (_page.toString() == '2'){
+        return FadeAnimation(1, const ExerciseList());
+      }
+      else {
+        return Text('Null');
+      }
+    }
+
 
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+        bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
+          index: 0,
+          height: 60.0,
+          items: const <Widget>[
+            Icon(Icons.home_rounded, size: 30),
+            Icon(Icons.calendar_view_day_rounded, size: 30),
+            Icon(Icons.menu_open_rounded, size: 30),
+            Icon(Icons.perm_identity, size: 30),
+          ],
+          color: Colors.white,
+          buttonBackgroundColor: Colors.white,
+          backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+          animationCurve: Curves.easeInOut,
+          animationDuration: const Duration(milliseconds: 600),
+          onTap: (index) {
+            setState(() {
+              _page = index;
+            });
+          },
+          letIndexChange: (index) => true,
+        ),
         key: _scaffoldKey,
         drawer: SidebarX(
           controller: SidebarXController(selectedIndex: 0, extended: true),
           theme: SidebarXTheme(
             margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Color.fromRGBO(143, 148, 251, .6),
+              color: const Color.fromRGBO(143, 148, 251, .6),
               borderRadius: BorderRadius.circular(20),
             ),
             textStyle: const TextStyle(color: Colors.white),
@@ -123,7 +212,7 @@ class _Dashboard extends State<Dashboard>{
             itemDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: Color.fromRGBO(143, 148, 251, .2).withOpacity(0.37),
+                color: const Color.fromRGBO(143, 148, 251, .2).withOpacity(0.37),
               ),
               gradient: const LinearGradient(
                 colors: [
@@ -141,7 +230,7 @@ class _Dashboard extends State<Dashboard>{
             selectedItemDecoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: Color.fromRGBO(143, 148, 251, .2).withOpacity(0.37),
+                color: const Color.fromRGBO(143, 148, 251, .2).withOpacity(0.37),
               ),
               gradient: const LinearGradient(
                 colors: [
@@ -214,7 +303,7 @@ class _Dashboard extends State<Dashboard>{
                             width: 150,
                           ),
                         ),
-                        SizedBox(height: 7.0),
+                        const SizedBox(height: 7.0),
                         GestureDetector(
                           child: Text(_name,
                               style: const TextStyle(height: 1.2,fontSize: 25),
@@ -231,11 +320,11 @@ class _Dashboard extends State<Dashboard>{
                 label: "Calender",
               onTap: () {
                 {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Calendar(title: '')));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Calendar(title: '')));
                 }
             }
             ),
-            SidebarXItem(icon: Icons.account_box_outlined,
+            SidebarXItem(icon: Icons.menu,
                 label: "Workout Menu",
                 onTap: () {
                   {
@@ -253,103 +342,19 @@ class _Dashboard extends State<Dashboard>{
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(30.0),
-                  child: Column(
-                    children: <Widget>[
-                      FadeAnimation(1.8, Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromRGBO(143, 148, 251, .2),
-                                  blurRadius: 20.0,
-                                  offset: Offset(0, 10)
-                              )
-                            ]
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                  border: Border(bottom: BorderSide(color: Colors.grey.shade100))
-                              ),
-                              child: Text(('First')),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(('Second')),
-                            )
-                          ],
-                        ),
-                      )
-                      ),
-                      SizedBox(height: 20,),
-                      FadeAnimation(2,
-                          GestureDetector(
-                            onTap: () async {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen()));
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(143, 148, 251, 1),
-                                        Color.fromRGBO(143, 148, 251, .4),
-                                      ]
-                                  )
-                              ),
-                              child: Center(
-                                child: Text("Settings Screen", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                              ),
-                            ) ,
-                          )
-                      ),
-                      SizedBox(height: 60,),
-                      FadeAnimation(1.5,
-                          GestureDetector(
-                              onTap: () {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                  content: Text('snack'),
-                                  shape: RoundedRectangleBorder(
-
-                                  ),
-                                  duration: Duration(seconds: 2),
-
-                                ));
-                              },
-                              child: Text("Snack Bar", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
-                          )
-                      ),
-                      SizedBox(height: 25,),
-                      FadeAnimation(1.5,
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnboardingScreen()));
-                              },
-                              child: Text("Onboarding", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
-                          )
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+        body: SafeArea(
+          child: _getWidget()
         )
     );
   }
   Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
+    if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'google.com') {
+      await GoogleSignIn().signOut();
+      await FirebaseAuth.instance.signOut();
+    }
+    else if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'password'){
+      await FirebaseAuth.instance.signOut();
+    }
   }
 }
 

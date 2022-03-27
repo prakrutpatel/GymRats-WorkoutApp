@@ -133,9 +133,11 @@ class ForgotPassword extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.all(8.0),
+                              height: 50.0,
                               child: TextFormField(
                                 controller: _email,
                                 keyboardType: TextInputType.emailAddress,
+                                autofocus: true,
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
                                 validator: Validators.compose([
                                   Validators.required('Email is required'),
@@ -143,6 +145,7 @@ class ForgotPassword extends StatelessWidget {
                                 ]),
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
+                                    contentPadding: EdgeInsets.only(top: 0.0),
                                     hintText: "Email",
                                     hintStyle: TextStyle(color: Colors.grey[400]),
                                     errorText: _errorname

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations/simple_animations.dart';
-import 'package:supercharged/supercharged.dart';
+import 'package:simple_animations/multi_tween/multi_tween.dart';
+import 'package:simple_animations/stateless_animation/play_animation.dart';
 
 enum AnimationType { opacity, translateX }
 
@@ -14,11 +14,11 @@ class FadeAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
     final tween = MultiTween<AnimationType>()
       ..add(AnimationType.opacity, Tween(begin: 0.0, end: 1.0),
-        Duration(milliseconds: 500),)
+        const Duration(milliseconds: 500),)
       ..add(
         AnimationType.translateX,
         Tween(begin: 30.0, end: 1.0),
-        Duration(milliseconds: 500),
+        const Duration(milliseconds: 500),
       );
 
     return PlayAnimation<MultiTweenValues<AnimationType>>(

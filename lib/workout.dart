@@ -7,7 +7,23 @@ class ExerciseList extends StatefulWidget {
   State<ExerciseList> createState() => _ExerciseListState();
 }
 
-class _ExerciseListState extends State<ExerciseList> {
+class _ExerciseListState extends State<ExerciseList> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   List<Exercise> bottom = <Exercise>[];
   int _counter = 0;
   Future createAlertDialog(BuildContext context) {
@@ -35,9 +51,11 @@ class _ExerciseListState extends State<ExerciseList> {
               MaterialButton(
                 elevation: 5.0,
                 child: const Text("Submit"),
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop(Exercise(exNameCont.text.toString(),
                       exTypeCont.text.toString(), 0, 0, 0, _counter));
+                  _controller.reverse();
+                  await Future.delayed(const Duration(milliseconds: 750), (){});
                 },
               )
             ],
@@ -48,19 +66,24 @@ class _ExerciseListState extends State<ExerciseList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          createAlertDialog(context).then((onValue) {
-            Exercise t = onValue;
-            setState(() {
-              bottom.add(t);
-              _counter += 1;
+      backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+      floatingActionButton: RotationTransition(
+        turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+        child:  FloatingActionButton(
+          backgroundColor: Colors.white,
+          child: const Icon(Icons.add_rounded, color: Colors.black, size: 50.0,),
+          onPressed: () async {
+            _controller.forward();
+            await Future.delayed(const Duration(milliseconds: 750), (){});
+            createAlertDialog(context).then((onValue) {
+              Exercise t = onValue;
+              setState(() {
+                bottom.add(t);
+                _counter += 1;
+              });
             });
-          });
-        },
-      ),
+          },
+        ),),
       body: ReorderableListView.builder(
           itemCount: bottom.length,
           itemBuilder: (context, index) {
@@ -111,3 +134,4 @@ class Exercise {
   Exercise(
       this.name, this.type, this.reps, this.sets, this.maxWeight, this.uid);
 }
+

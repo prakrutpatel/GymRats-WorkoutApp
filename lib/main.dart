@@ -9,10 +9,13 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-  runApp(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: HomePage(),
-      )
-  );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(
+        MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomePage(),
+        )
+    );
+  });
 }
