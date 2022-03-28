@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ExerciseList extends StatefulWidget {
   const ExerciseList({Key? key}) : super(key: key);
@@ -7,7 +8,8 @@ class ExerciseList extends StatefulWidget {
   State<ExerciseList> createState() => _ExerciseListState();
 }
 
-class _ExerciseListState extends State<ExerciseList> with SingleTickerProviderStateMixin {
+class _ExerciseListState extends State<ExerciseList>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   @override
   void initState() {
@@ -29,6 +31,8 @@ class _ExerciseListState extends State<ExerciseList> with SingleTickerProviderSt
   Future createAlertDialog(BuildContext context) {
     TextEditingController exNameCont = TextEditingController();
     TextEditingController exTypeCont = TextEditingController();
+    TextEditingController repsCont = TextEditingController();
+    TextEditingController setsCont = TextEditingController();
 
     return showDialog(
         context: context,
@@ -44,6 +48,18 @@ class _ExerciseListState extends State<ExerciseList> with SingleTickerProviderSt
                 TextField(
                   controller: exTypeCont,
                   decoration: const InputDecoration(hintText: 'Exercise type'),
+                ),
+                TextField(
+                  controller: repsCont,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: const InputDecoration(hintText: "reps"),
+                ),
+                TextField(
+                  controller: setsCont,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: const InputDecoration(hintText: "sets"),
                 )
               ],
             ),
@@ -51,11 +67,14 @@ class _ExerciseListState extends State<ExerciseList> with SingleTickerProviderSt
               MaterialButton(
                 elevation: 5.0,
                 child: const Text("Submit"),
-                onPressed: () async {
-                  Navigator.of(context).pop(Exercise(exNameCont.text.toString(),
-                      exTypeCont.text.toString(), 0, 0, 0, _counter));
-                  _controller.reverse();
-                  await Future.delayed(const Duration(milliseconds: 750), (){});
+                onPressed: () {
+                  Navigator.of(context).pop(Exercise(
+                      exNameCont.text.toString(),
+                      exTypeCont.text.toString(),
+                      int.parse(repsCont.text),
+                      int.parse(setsCont.text),
+                      0,
+                      _counter));
                 },
               )
             ],
@@ -66,34 +85,26 @@ class _ExerciseListState extends State<ExerciseList> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
-      floatingActionButton: RotationTransition(
-        turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
-        child:  FloatingActionButton(
-          backgroundColor: Colors.white,
-          child: const Icon(Icons.add_rounded, color: Colors.black, size: 50.0,),
-          onPressed: () async {
-            _controller.forward();
-            await Future.delayed(const Duration(milliseconds: 750), (){});
-            createAlertDialog(context).then((onValue) {
-              Exercise t = onValue;
-              setState(() {
-                bottom.add(t);
-                _counter += 1;
-              });
+      appBar: null,
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          createAlertDialog(context).then((onValue) {
+            Exercise t = onValue;
+            setState(() {
+              bottom.add(t);
+              _counter += 1;
             });
-          },
-        ),),
+          });
+        },
+      ),
       body: ReorderableListView.builder(
           itemCount: bottom.length,
           itemBuilder: (context, index) {
             final item = bottom[index];
             return Dismissible(
-              key: ValueKey<int>(bottom[index]
-                  .uid), //this line causes errors when deleting items that have been moved
-              //(i.e. create 2 items, move the second item to the first spot, delete the item that was moved)
+              key: ValueKey<int>(bottom[index].uid),
               onDismissed: (direction) {
-                // Remove the item from the data source.
                 setState(() {
                   bottom.removeAt(bottom.indexOf(item));
                 });
@@ -105,7 +116,14 @@ class _ExerciseListState extends State<ExerciseList> with SingleTickerProviderSt
               child: ListTile(
                   tileColor: const Color.fromRGBO(143, 148, 251, 1),
                   textColor: const Color.fromRGBO(255, 255, 255, 1),
-                  title: Text("Name: " + item.name + "\nType: " + item.type),
+                  title: Text("Name: " +
+                      item.name +
+                      "\nType: " +
+                      item.type +
+                      "\nReps: " +
+                      item.reps.toString() +
+                      "\nSets: " +
+                      item.sets.toString()),
                   trailing: const Icon(Icons.drag_handle)),
             );
           },
@@ -134,4 +152,3 @@ class Exercise {
   Exercise(
       this.name, this.type, this.reps, this.sets, this.maxWeight, this.uid);
 }
-
