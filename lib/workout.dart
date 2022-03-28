@@ -1,3 +1,4 @@
+//Written by Micah Lessnick
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -36,6 +37,7 @@ class _ExerciseListState extends State<ExerciseList>
 
     return showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             title: const Text("Enter Exercise:"),
