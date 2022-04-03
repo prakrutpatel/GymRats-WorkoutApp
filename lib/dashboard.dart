@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/runSummary.dart';
 import 'package:flutter_app/settings.dart';
 import 'package:flutter_app/workout.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -169,7 +170,7 @@ class _Dashboard extends State<Dashboard>{
         return FadeAnimation(1, const ExerciseList());
       }
       else {
-        return Text('Null');
+        return FadeAnimation(1, const RunSummary());
       }
     }
 
