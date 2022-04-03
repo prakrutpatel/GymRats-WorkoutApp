@@ -1,9 +1,9 @@
+//Written by PK
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Animation/FadeAnimation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/forgotpassword.dart';
-import 'package:twitter_login/twitter_login.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 import 'signup.dart';
 import 'package:google_sign_in/google_sign_in.dart';
