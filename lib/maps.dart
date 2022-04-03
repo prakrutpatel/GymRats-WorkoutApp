@@ -16,9 +16,9 @@ class _MapPageState extends State<MapPage> {
   final Set<Polyline> polyline = {};
   Location _location = Location();
   late GoogleMapController _mapController;
-  LatLng _center = const LatLng(0, 0);
+  LatLng _center = LatLng(0, 0);
   List<LatLng> route = [];
-
+  int _id = 0;
   double _dist = 0;
   late String _displayTime;
   late int _time;
@@ -82,15 +82,18 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: Stack(children: [
       Container(
           child: GoogleMap(
-        polylines: polyline,
-        zoomControlsEnabled: false,
-        onMapCreated: _onMapCreated,
-        myLocationEnabled: true,
-        initialCameraPosition: CameraPosition(target: _center, zoom: 11),
+            mapType: MapType.satellite,
+            polylines: polyline,
+            zoomControlsEnabled: false,
+            zoomGesturesEnabled: false,
+            onMapCreated: _onMapCreated,
+            myLocationEnabled: true,
+            initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
       )),
       Align(
           alignment: Alignment.bottomCenter,
@@ -160,12 +163,13 @@ class _MapPageState extends State<MapPage> {
                   ),
                   padding: EdgeInsets.all(0),
                   onPressed: () async {
+                    _id+=1;
                     Entry en = Entry(
                         date: DateFormat.yMMMMd('en_US').format(DateTime.now()),
                         duration: _displayTime,
                         speed:
                             _speedCounter == 0 ? 0 : _avgSpeed / _speedCounter,
-                        distance: _dist);
+                        distance: _dist, id: _id);
                     Navigator.pop(context, en);
                   },
                 )

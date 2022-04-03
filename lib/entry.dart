@@ -7,7 +7,7 @@ class Entry {
   double speed;
   double distance;
  
-  Entry({this.id = 0000, required this.date, required this.duration, required this.speed, required this.distance});
+  Entry({required this.id, required this.date, required this.duration, required this.speed, required this.distance});
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
