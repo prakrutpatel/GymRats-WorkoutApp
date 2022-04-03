@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:cardio_tracker_vid/model/entry.dart';
+import 'entry.dart';
 
 class MapPage extends StatefulWidget {
   @override

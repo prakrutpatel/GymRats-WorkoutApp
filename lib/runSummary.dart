@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cardio_tracker_vid/db/db.dart';
-import 'package:cardio_tracker_vid/model/entry.dart';
-import 'package:cardio_tracker_vid/pages/maps.dart';
-import 'package:cardio_tracker_vid/widgets/entry_card.dart';
+import 'db.dart';
+import 'entry.dart';
+import 'maps.dart';
+import 'entry_card.dart';
 
 class RunSummary extends StatefulWidget {
   const RunSummary({Key? key}) : super(key: key);
