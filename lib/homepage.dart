@@ -171,7 +171,7 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: const [
                             BoxShadow(
-                                color: Color.fromRGBO(143, 148, 251, .2),
+                                color: Color.fromRGBO(186, 221, 245, 0.2),
                                 blurRadius: 20.0,
                                 offset: Offset(0, 10)
                             )
@@ -228,7 +228,7 @@ class HomePage extends StatelessWidget {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPassword()));
                               },
-                              child: const Text("Forgot Password?", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
+                              child: const Text("Forgot Password?", style: TextStyle(color: Color.fromRGBO(186, 221, 245, 1.0)),)
                           ),
                         )
                     ),
@@ -244,8 +244,8 @@ class HomePage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 gradient: const LinearGradient(
                                     colors: [
-                                      Color.fromRGBO(143, 148, 251, 1),
-                                      Color.fromRGBO(143, 148, 251, .6),
+                                      Color.fromRGBO(186, 221, 245, 1.0),
+                                      Color.fromRGBO(186, 221, 245, 0.6),
                                     ]
                                 )
                             ),
@@ -305,7 +305,7 @@ class HomePage extends StatelessWidget {
                                     onTap: () {
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
                                     },
-                                    child: const Text("Register here", style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),)
+                                    child: const Text("Register here", style: TextStyle(color: Color.fromRGBO(186, 221, 245, 1.0)),)
                                 ),
                             const SizedBox(width: 8.0,),
 

@@ -26,7 +26,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+      backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
       body: SfCalendar(
         view: CalendarView.month,
         monthViewSettings: const MonthViewSettings(

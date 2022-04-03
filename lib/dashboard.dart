@@ -150,6 +150,7 @@ class _Dashboard extends State<Dashboard>{
                                             1}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
+                                        style: TextStyle(color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.w500),
                                       ),
                                     ]
                                 ))),
@@ -173,7 +174,7 @@ class _Dashboard extends State<Dashboard>{
 
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+      backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         bottomNavigationBar: CurvedNavigationBar(
           key: _bottomNavigationKey,
           index: 0,
@@ -186,7 +187,7 @@ class _Dashboard extends State<Dashboard>{
           ],
           color: Colors.white,
           buttonBackgroundColor: Colors.white,
-          backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+          backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
           animationCurve: Curves.easeInOut,
           animationDuration: const Duration(milliseconds: 600),
           onTap: (index) {
