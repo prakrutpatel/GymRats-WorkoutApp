@@ -42,7 +42,6 @@ dependencies:
   cached_network_image: ^3.2.0
   settings_ui: ^2.0.2
   google_sign_in: ^4.5.1
-  twitter_login: 4.1.0-dev
   toast: ^0.1.5
   curved_navigation_bar: ^1.0.3
 

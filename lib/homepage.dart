@@ -74,27 +74,6 @@ class HomePage extends StatelessWidget {
       return user;
     }
 
-    Future<User?> signInWithTwitter() async {
-      // Create a TwitterLogin instance
-      final twitterLogin = TwitterLogin(
-          apiKey: 'eWkPMrDbDt9EhvNCwhUHr800D',
-          apiSecretKey:'WZEPDGbyZtCHspUXyMbKQX9MAmm2wd74Wd4L46By87vapGnRx5',
-          redirectURI: 'ec-fitness://'
-      );
-
-      // Trigger the sign-in flow
-      final authResult = await twitterLogin.loginV2(forceLogin: true);
-
-      // Create a credential from the access token
-      final twitterAuthCredential = TwitterAuthProvider.credential(
-        accessToken: authResult.authToken!,
-        secret: authResult.authTokenSecret!,
-      );
-
-      // Once signed in, return the UserCredential
-      await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
-      return null;
-    }
 
 
     return Scaffold(
@@ -279,7 +258,6 @@ class HomePage extends StatelessWidget {
                           ),
                           GestureDetector(
                               onTap: () {
-                                signInWithTwitter();
                               },
                               child: Container(
                                 height: 50.0,
