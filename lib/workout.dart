@@ -35,6 +35,7 @@ class _ExerciseListState extends State<ExerciseList>
     TextEditingController exTypeCont = TextEditingController();
     TextEditingController repsCont = TextEditingController();
     TextEditingController setsCont = TextEditingController();
+    TextEditingController wtCont = TextEditingController();
     TextEditingController timeCont = TextEditingController();
 
     return showDialog(
@@ -65,6 +66,12 @@ class _ExerciseListState extends State<ExerciseList>
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(hintText: "sets"),
                 ),
+                TextField(
+                  controller: wtCont,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: const InputDecoration(hintText: "Max weight"),
+                ),
                 TextFormField(
                   controller: timeCont,
                   keyboardType:
@@ -83,24 +90,43 @@ class _ExerciseListState extends State<ExerciseList>
                 elevation: 5.0,
                 child: const Text("Submit"),
                 onPressed: () {
+                  //setting and overriding default cases
+                  String nameTemp = "";
+                  if (exNameCont.text.isNotEmpty) {
+                    nameTemp = exNameCont.text.toString();
+                  }
+                  String typeTemp = "";
+                  if (exTypeCont.text.isNotEmpty) {
+                    typeTemp = exTypeCont.text.toString();
+                  }
+                  int repsTemp = 0;
+                  if (repsCont.text.isNotEmpty) {
+                    repsTemp = int.parse(repsCont.text);
+                  }
+                  int setsTemp = 0;
+                  if (setsCont.text.isNotEmpty) {
+                    setsTemp = int.parse(setsCont.text);
+                  }
+                  int wtTemp = 0;
+                  if (wtCont.text.isNotEmpty) {
+                    wtTemp = int.parse(wtCont.text);
+                  }
                   int durInSec = 0; //duration in seconds
-                  String durTemp = timeCont.text;
-                  List<String> splitDur = timeCont.text
-                      .toString()
-                      .split(':'); //time segments stored into array
+                  String timeTemp = "00:00:00";
+                  if ((timeCont.text.isNotEmpty) &&
+                      (timeCont.text != "00:00:00")) {
+                    timeTemp = timeCont.text;
+                  }
+
+                  String durTemp = timeTemp;
+                  List<String> splitDur =
+                      timeTemp.split(':'); //time segments stored into array
                   durInSec += (int.parse(splitDur[0]) * 3600) +
                       (int.parse(splitDur[1]) * 60) +
                       (int.parse(splitDur[
                           2])); //convert array into actual time (in seconds)
-                  Navigator.of(context).pop(Exercise(
-                      exNameCont.text.toString(),
-                      exTypeCont.text.toString(),
-                      int.parse(repsCont.text),
-                      int.parse(setsCont.text),
-                      0,
-                      durInSec,
-                      durTemp,
-                      _counter));
+                  Navigator.of(context).pop(Exercise(nameTemp, typeTemp,
+                      repsTemp, setsTemp, wtTemp, durInSec, durTemp, _counter));
                 },
               )
             ],
@@ -141,7 +167,7 @@ class _ExerciseListState extends State<ExerciseList>
               // Show a red background as the item is swiped away.
               background: Container(color: Colors.red),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: ListTile(
                     tileColor: const Color.fromRGBO(143, 148, 251, 1),
                     textColor: const Color.fromRGBO(255, 255, 255, 1),
