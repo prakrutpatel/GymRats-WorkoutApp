@@ -203,7 +203,7 @@ class _Dashboard extends State<Dashboard>{
                   top: true,
                   minimum: EdgeInsets.zero,
                   child: SizedBox(
-                    height: 190,
+                    height: 300.0,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Column(children: <Widget>[
@@ -232,7 +232,7 @@ class _Dashboard extends State<Dashboard>{
                                   'assets/images/user_placeholder.png'),
                             ),
                             useOldImageOnUrlChange: true,
-                            height: 137,
+                            height: 150,
                             width: 150,
                           ),
                         ),
@@ -242,7 +242,15 @@ class _Dashboard extends State<Dashboard>{
                             _name,
                             style: const TextStyle(height: 1.2, fontSize: 25),
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 7.0),
+                        GestureDetector(
+                          onTap: _signOut,
+                          child: const Text(
+                            'Logout',
+                            style: TextStyle(height: 1.2, fontSize: 25),
+                          ),
+                        ),
                       ]),
                     ),
                   ),
@@ -279,152 +287,6 @@ class _Dashboard extends State<Dashboard>{
             });
           },
           letIndexChange: (index) => true,
-        ),
-        key: _scaffoldKey,
-        drawer: SidebarX(
-          controller: SidebarXController(selectedIndex: 0, extended: true),
-          theme: SidebarXTheme(
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(143, 148, 251, .6),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            textStyle: const TextStyle(color: Colors.white),
-            selectedTextStyle: const TextStyle(color: Colors.white),
-            itemTextPadding: const EdgeInsets.only(left: 30),
-            selectedItemTextPadding: const EdgeInsets.only(left: 30),
-            itemDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color.fromRGBO(143, 148, 251, .2).withOpacity(0.37),
-              ),
-              gradient: const LinearGradient(
-                colors: [
-                  Color.fromRGBO(143, 148, 251, 1),
-                  Color.fromRGBO(143, 148, 251, .6),
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.20),
-                  blurRadius: 20,
-                )
-              ],
-            ),
-            selectedItemDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color.fromRGBO(143, 148, 251, .2).withOpacity(0.37),
-              ),
-              gradient: const LinearGradient(
-                colors: [
-                  Color.fromRGBO(143, 148, 251, 1),
-                  Color.fromRGBO(143, 148, 251, .6),
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.20),
-                  blurRadius: 20,
-                )
-              ],
-            ),
-            iconTheme: const IconThemeData(
-              color: Color(0xFF2E2E48),
-              size: 20,
-            ),
-          ),
-          extendedTheme: const SidebarXTheme(
-            width: 250,
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            margin: EdgeInsets.only(right: 10),
-          ),
-          footerDivider: SizedBox(
-            height: 5.0,
-            width: 5.0,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 190.0),
-              child: IconButton(icon: const Icon(Icons.settings_suggest_outlined),iconSize: 30.0, onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsScreen()));
-              },),
-            ),
-          ),
-          headerBuilder: (context, extended) {
-            networkImage();
-            return SafeArea(
-              top: true,
-              minimum: EdgeInsets.zero,
-              child: SizedBox(
-                height: 190,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: Column(
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            pickImage();
-
-                          },
-                          child: CachedNetworkImage(
-                            imageUrl: profile_image_url,
-                            imageBuilder: (context, imageProvider) => Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            placeholder: (context, url) => const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => const CircleAvatar(
-                              backgroundImage: AssetImage('assets/images/user_placeholder.png'),
-                            ),
-                            useOldImageOnUrlChange: true,
-                            height: 137,
-                            width: 150,
-                          ),
-                        ),
-                        const SizedBox(height: 7.0),
-                        GestureDetector(
-                          child: Text(_name,
-                              style: const TextStyle(height: 1.2,fontSize: 25),
-                            ),
-                        )
-                      ]
-                  ),
-                ),
-              ),
-            );
-          },
-          items: [
-            SidebarXItem(icon: Icons.calendar_today_outlined,
-                label: "Calender",
-              onTap: () {
-                {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Calendar(title: '')));
-                }
-            }
-            ),
-            SidebarXItem(icon: Icons.menu,
-                label: "Workout Menu",
-                onTap: () {
-                  {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExerciseList()));
-                  }
-                }
-            ),
-            SidebarXItem(icon: Icons.logout_rounded,
-                label: "Logout",
-                onTap: () async {
-                  {
-                    await _signOut();
-                  }
-                }
-            ),
-          ],
         ),
         body: SafeArea(
           child: _getWidget()
