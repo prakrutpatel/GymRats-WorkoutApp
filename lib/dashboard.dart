@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/information_page.dart';
 import 'package:flutter_app/runSummary.dart';
 import 'package:flutter_app/settings.dart';
 import 'package:flutter_app/workout.dart';
@@ -61,6 +62,15 @@ class _Dashboard extends State<Dashboard>{
     }
     dbInfo(path: 'name').then((String result){
       _name = result;
+      if (_name == '') {
+        Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) =>
+                Additional_Info_Screen(),
+          ),
+        );
+      }
     });
 
     final picker = ImagePicker();
@@ -105,6 +115,9 @@ class _Dashboard extends State<Dashboard>{
         _imageFile = File(pickedFile!.path);
       });
       await uploadImageToFirebase(context);
+      await networkImage().then((String result){
+        profile_image_url = result;
+      });
     }
     networkImage().then((String result){
       profile_image_url = result;
@@ -138,9 +151,7 @@ class _Dashboard extends State<Dashboard>{
                         width: 200.0,
                         height: 75.0,
                         decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/dbell.png')
-                            )
+                            color: Colors.white
                         ),
                         child: Center(
                             child: Padding(
@@ -152,14 +163,28 @@ class _Dashboard extends State<Dashboard>{
                                             1}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
-                                        style: TextStyle(color: Colors.red, fontSize: 20.0, fontWeight: FontWeight.w500),
+                                        style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w500),
                                       ),
                                     ]
                                 ))),
                       ),
                     ),
                   ),
-            ),),)
+            ),),),
+            const FadeAnimation(1, SizedBox(
+              height: 50.0,
+              child: Center(
+                child: Text("Run Summary", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400)),
+              ),
+            ),
+            ),
+
+            FadeAnimation(1.7, Container(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              height: 300.0,
+                child:  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: RunSummary())))
           ],
         );
       }
@@ -170,7 +195,63 @@ class _Dashboard extends State<Dashboard>{
         return FadeAnimation(1, const ExerciseList());
       }
       else {
-        return FadeAnimation(1, const RunSummary());
+        return StatefulBuilder(
+          builder: (_context, _setState) {
+            return ListView(
+              children: <Widget>[
+                FadeAnimation(1, SafeArea(
+                  top: true,
+                  minimum: EdgeInsets.zero,
+                  child: SizedBox(
+                    height: 190,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Column(children: <Widget>[
+                        GestureDetector(
+                          onTap: () async {
+                            await pickImage();
+                            _setState(() {
+                            });
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: profile_image_url,
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                            const CircleAvatar(
+                              backgroundImage: AssetImage(
+                                  'assets/images/user_placeholder.png'),
+                            ),
+                            useOldImageOnUrlChange: true,
+                            height: 137,
+                            width: 150,
+                          ),
+                        ),
+                        const SizedBox(height: 7.0),
+                        GestureDetector(
+                          child: Text(
+                            _name,
+                            style: const TextStyle(height: 1.2, fontSize: 25),
+                          ),
+                        )
+                      ]),
+                    ),
+                  ),
+                ),
+                ),
+              ],
+            );
+          },
+        );
       }
     }
 
@@ -351,6 +432,7 @@ class _Dashboard extends State<Dashboard>{
     );
   }
   Future<void> _signOut() async {
+    print(FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId']);
     if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'google.com') {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();

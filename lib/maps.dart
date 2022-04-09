@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/runSummary.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,7 +19,7 @@ class _MapPageState extends State<MapPage> {
   late GoogleMapController _mapController;
   LatLng _center = LatLng(0, 0);
   List<LatLng> route = [];
-  final int _id = MyID.idCounter; // MyID.idCounter added
+  int _id = MyID.idCounter; // MyID.idCounter added
   double _dist = 0;
   late String _displayTime;
   late int _time;

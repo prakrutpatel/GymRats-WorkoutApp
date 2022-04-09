@@ -40,9 +40,6 @@ class _RunSummaryState extends State<RunSummary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("My Runs"),
-      ),
       body: ListView(
         children: _cards,
       ),
@@ -51,7 +48,7 @@ class _RunSummaryState extends State<RunSummary> {
           Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MapPage())).then((value) => _addEntries(value));
           MyID.idCounter += 1;
-            }
+            },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
