@@ -4,6 +4,10 @@ import 'entry.dart';
 import 'maps.dart';
 import 'entry_card.dart';
 
+class MyID {
+  static int idCounter = 5;
+}
+
 class RunSummary extends StatefulWidget {
   const RunSummary({Key? key}) : super(key: key);
 
@@ -43,9 +47,11 @@ class _RunSummaryState extends State<RunSummary> {
         children: _cards,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MapPage()))
-            .then((value) => _addEntries(value)),
+        onPressed: (){ 
+          Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MapPage())).then((value) => _addEntries(value));
+          MyID.idCounter += 1;
+            }
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

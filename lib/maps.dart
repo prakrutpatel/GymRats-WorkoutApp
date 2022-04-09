@@ -18,7 +18,7 @@ class _MapPageState extends State<MapPage> {
   late GoogleMapController _mapController;
   LatLng _center = LatLng(0, 0);
   List<LatLng> route = [];
-  int _id = 0;
+  final int _id = MyID.idCounter; // MyID.idCounter added
   double _dist = 0;
   late String _displayTime;
   late int _time;
