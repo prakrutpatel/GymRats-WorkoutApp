@@ -127,7 +127,7 @@ class _Dashboard extends State<Dashboard>{
       if (_page.toString() == '0') {
         return ListView(
           children: <Widget>[
-            const FadeAnimation(1, SizedBox(
+            const FadeAnimation(0.75, SizedBox(
               height: 50.0,
               child: Center(
                 child: Text("Today's Workouts", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400)),
@@ -171,7 +171,7 @@ class _Dashboard extends State<Dashboard>{
                     ),
                   ),
             ),),),
-            const FadeAnimation(1, SizedBox(
+            const FadeAnimation(0.75, SizedBox(
               height: 50.0,
               child: Center(
                 child: Text("Run Summary", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400)),
@@ -179,7 +179,7 @@ class _Dashboard extends State<Dashboard>{
             ),
             ),
 
-            FadeAnimation(1.7, Container(
+            FadeAnimation(1.5, Container(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),
               height: 300.0,
                 child:  ClipRRect(
@@ -189,21 +189,21 @@ class _Dashboard extends State<Dashboard>{
         );
       }
       else if (_page.toString() == '1'){
-        return const FadeAnimation(1, Calendar(title: 'prakrut'));
+        return const FadeAnimation(0.75, Calendar(title: 'prakrut'));
       }
       else if (_page.toString() == '2'){
-        return FadeAnimation(1, const ExerciseList());
+        return FadeAnimation(0.75, const ExerciseList());
       }
       else {
         return StatefulBuilder(
           builder: (_context, _setState) {
             return ListView(
               children: <Widget>[
-                FadeAnimation(1, SafeArea(
+                FadeAnimation(0.75, SafeArea(
                   top: true,
                   minimum: EdgeInsets.zero,
                   child: SizedBox(
-                    height: 300.0,
+                    height: MediaQuery.of(context).size.height,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Column(children: <Widget>[
@@ -244,13 +244,18 @@ class _Dashboard extends State<Dashboard>{
                           ),
                         ),
                         const SizedBox(height: 7.0),
-                        GestureDetector(
-                          onTap: _signOut,
-                          child: const Text(
-                            'Logout',
-                            style: TextStyle(height: 1.2, fontSize: 25),
-                          ),
-                        ),
+                        SizedBox(height: 400.0,),
+                        Padding(
+                              padding: const EdgeInsets.only(top: 0.0, bottom: 0.0, left: 250.0, right: 0.0),
+                              child: FloatingActionButton(
+                                child: Icon(Icons.logout_rounded),
+                                elevation: 2.5,
+                                backgroundColor: const Color(0xFF0CC9C6),
+                                onPressed: () {
+                                  _signOut();
+                                },
+                              ),
+                            ),
                       ]),
                     ),
                   ),
