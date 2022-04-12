@@ -166,7 +166,6 @@ class HomePage extends StatelessWidget {
                             child: TextFormField(
                               controller: _email,
                               keyboardType: TextInputType.emailAddress,
-                              autofocus: true,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
                               validator: Validators.compose([
                                 Validators.required('Email is required'),
@@ -187,7 +186,6 @@ class HomePage extends StatelessWidget {
                               obscureText: true,
                               autocorrect: false,
                               enableSuggestions: false,
-                              autofocus: true,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: "Password",
@@ -235,8 +233,19 @@ class HomePage extends StatelessWidget {
                         )
                     ),
                     const SizedBox(height: 25,),
-                    const FadeAnimation(1.5,
-                      const Text('-------------- or continue with --------------', style: TextStyle(color: Colors.grey),)),
+                    FadeAnimation(1.5, Stack(
+                        children: const [
+                          Divider(
+                            thickness: 1.7,
+                            endIndent: 205.0,
+                          ),
+                          Center(child: Text('or continue with', style: TextStyle(color: Colors.grey), textAlign: TextAlign.center,)),
+                          Divider(
+                            thickness: 1.7,
+                            indent: 205.0,
+                          ),
+                        ]
+                    ),),
                     const SizedBox(height: 30.0,),
                     FadeAnimation(1.5,
                       Row(
@@ -299,6 +308,10 @@ class HomePage extends StatelessWidget {
     );
   }
   Future<void> _signin() async {
+    if (_email.text == 't') {
+      _email.text = 'test@test.com';
+      _password.text = 'Testuser123';
+    }
     try {
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text,

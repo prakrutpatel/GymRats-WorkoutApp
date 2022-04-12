@@ -93,7 +93,7 @@ class _ExerciseListState extends State<ExerciseList>
               MaterialButton(
                 elevation: 5.0,
                 child: const Text("Submit"),
-                onPressed: () {
+                onPressed: () async {
                   //setting and overriding default cases
                   String nameTemp = "";
                   if (exNameCont.text.isNotEmpty) {
@@ -131,6 +131,8 @@ class _ExerciseListState extends State<ExerciseList>
                           2])); //convert array into actual time (in seconds)
                   Navigator.of(context).pop(Exercise(nameTemp, typeTemp,
                       repsTemp, setsTemp, wtTemp, durInSec, durTemp, _counter));
+                  _controller.reverse();
+                  await Future.delayed(const Duration(milliseconds: 750), (){});
                 },
               )
             ],
@@ -140,9 +142,35 @@ class _ExerciseListState extends State<ExerciseList>
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController workoutname = TextEditingController();
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
+        elevation: 0.0,
+        title: Container(
+          height: 40.0,
+          decoration: BoxDecoration(
+            color: Colors.white70,
+            borderRadius:  BorderRadius.circular(32),
+          ),
+          child: Center(
+            child: TextFormField(
+              textAlign: TextAlign.center,
+              controller: workoutname,
+              style: const TextStyle(color: Color.fromRGBO(150, 206, 243, 1.0), fontSize: 27, fontWeight: FontWeight.w400, ),
+              decoration: const InputDecoration.collapsed(
+                hintText: 'Untitled Workout',
+                hintStyle: TextStyle(
+                  color: Color.fromRGBO(150, 206, 243, 1.0),
+                  fontSize: 27,
+                  fontWeight: FontWeight.w400,
+                ),
+                  ),
+              ),
+              ),
+          ),
+        ),
       backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
-      appBar: null,
       body: SafeArea(
         child: Stack(
           children: [
@@ -160,10 +188,17 @@ class _ExerciseListState extends State<ExerciseList>
                           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                     },
                     // Show a red background as the item is swiped away.
-                    background: Container(color: Colors.red),
+                    background: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(color: Colors.red),
+                      ),
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: ListTile(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                           tileColor: const Color.fromRGBO(141, 192, 228, 1.0),
                           textColor: const Color.fromRGBO(255, 255, 255, 1),
                           title: Text("Name: " +
@@ -190,15 +225,16 @@ class _ExerciseListState extends State<ExerciseList>
                   });
                 }),
             Padding(
-              padding: const EdgeInsets.only(top: 640.0, bottom: 0.0, left: 10.0, right: 0.0),
+              padding: const EdgeInsets.only(top: 585.0, bottom: 0.0, left: 10.0, right: 0.0),
               child: FloatingActionButton(
-                child: Icon(Icons.save_alt_rounded),
+                child: Icon(Icons.upgrade_rounded,
+                size: 30.0,),
                 elevation: 2.5,
                 backgroundColor: const Color(0xFF0CC9C6),
                 onPressed: () {
                   final FirebaseAuth auth = FirebaseAuth.instance;
                   for (var element in bottom) {
-                    DatabaseReference ref = FirebaseDatabase.instance.ref("workouts/"+auth.currentUser!.uid+"/workout name/"+element.name);
+                    DatabaseReference ref = FirebaseDatabase.instance.ref("workouts/"+auth.currentUser!.uid+"/${workoutname.text}/"+element.name);
                     ref.set({
                       "name": element.name,
                       "type": element.type,
@@ -212,19 +248,24 @@ class _ExerciseListState extends State<ExerciseList>
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 640.0, bottom: 0.0, left: (MediaQuery.of(context).size.width-70.0), right: 0.0),
-              child: FloatingActionButton(
-                child: const Icon(Icons.add),
-                backgroundColor: const Color(0xFF0CC9C6),
-                onPressed: () {
-                  createAlertDialog(context).then((onValue) {
-                    Exercise t = onValue;
-                    setState(() {
-                      bottom.add(t);
-                      _counter += 1;
+              padding: EdgeInsets.only(top: 585.0, bottom: 0.0, left: (MediaQuery.of(context).size.width-70.0), right: 0.0),
+              child: RotationTransition(
+                turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                child: FloatingActionButton(
+                  child: const Icon(Icons.add),
+                  backgroundColor: const Color(0xFF0CC9C6),
+                  onPressed: () async {
+                    _controller.forward();
+                    await Future.delayed(const Duration(milliseconds: 750), (){});
+                    createAlertDialog(context).then((onValue) {
+                      Exercise t = onValue;
+                      setState(() {
+                        bottom.add(t);
+                        _counter += 1;
+                      });
                     });
-                  });
-                },
+                  },
+                ),
               ),
             ),
           ]

@@ -19,10 +19,12 @@ class _RunSummaryState extends State<RunSummary> {
   late List<Entry> _data;
   List<EntryCard> _cards = [];
 
+  @override
   void initState() {
     super.initState();
     DB.init().then((value) => _fetchEntries());
   }
+
 
   void _fetchEntries() async {
     _cards = [];
@@ -50,7 +52,7 @@ class _RunSummaryState extends State<RunSummary> {
           MyID.idCounter += 1;
             },
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

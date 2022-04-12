@@ -159,7 +159,7 @@ class _Dashboard extends State<Dashboard>{
                                 child: Stack(
                                     children: <Widget>[
                                       Text(
-                                        'Custom HIIT Workout made for ${index +
+                                        'Workout ${index +
                                             1}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
