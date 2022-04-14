@@ -48,6 +48,7 @@ class _ExerciseListState extends State<ExerciseList>
         builder: (context) {
           return AlertDialog(
             title: const Text("Enter Exercise:"),
+            scrollable: true,
             content: Column(
               children: <Widget>[
                 TextField(
@@ -132,7 +133,8 @@ class _ExerciseListState extends State<ExerciseList>
                   Navigator.of(context).pop(Exercise(nameTemp, typeTemp,
                       repsTemp, setsTemp, wtTemp, durInSec, durTemp, _counter));
                   _controller.reverse();
-                  await Future.delayed(const Duration(milliseconds: 750), (){});
+                  await Future.delayed(
+                      const Duration(milliseconds: 750), () {});
                 },
               )
             ],
@@ -151,13 +153,17 @@ class _ExerciseListState extends State<ExerciseList>
           height: 40.0,
           decoration: BoxDecoration(
             color: Colors.white70,
-            borderRadius:  BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(32),
           ),
           child: Center(
             child: TextFormField(
               textAlign: TextAlign.center,
               controller: workoutname,
-              style: const TextStyle(color: Color.fromRGBO(150, 206, 243, 1.0), fontSize: 27, fontWeight: FontWeight.w400, ),
+              style: const TextStyle(
+                color: Color.fromRGBO(150, 206, 243, 1.0),
+                fontSize: 27,
+                fontWeight: FontWeight.w400,
+              ),
               decoration: const InputDecoration.collapsed(
                 hintText: 'Untitled Workout',
                 hintStyle: TextStyle(
@@ -165,111 +171,132 @@ class _ExerciseListState extends State<ExerciseList>
                   fontSize: 27,
                   fontWeight: FontWeight.w400,
                 ),
-                  ),
               ),
-              ),
+            ),
           ),
         ),
+      ),
       backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
       body: SafeArea(
-        child: Stack(
-          children: [
-            ReorderableListView.builder(
-                itemCount: bottom.length,
-                itemBuilder: (context, index) {
-                  final item = bottom[index];
-                  return Dismissible(
-                    key: ValueKey<int>(bottom[index].uid),
-                    onDismissed: (direction) {
-                      setState(() {
-                        bottom.removeAt(bottom.indexOf(item));
-                      });
-                      Toast.show(item.name + ' dismissed', context,
-                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                    },
-                    // Show a red background as the item is swiped away.
-                    background: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(color: Colors.red),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                          tileColor: const Color.fromRGBO(141, 192, 228, 1.0),
-                          textColor: const Color.fromRGBO(255, 255, 255, 1),
-                          title: Text("Name: " +
-                              item.name +
-                              "\nType: " +
-                              item.type +
-                              "\nReps: " +
-                              item.reps.toString() +
-                              "\nSets: " +
-                              item.sets.toString() +
-                              "\nDuration: " +
-                              item.durDisp),
-                          trailing: const Icon(Icons.drag_handle)),
-                    ),
-                  );
-                },
-                onReorder: (int oldIndex, int newIndex) {
-                  setState(() {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-                    final Exercise item = bottom.removeAt(oldIndex);
-                    bottom.insert(newIndex, item);
-                  });
-                }),
-            Padding(
-              padding: const EdgeInsets.only(top: 585.0, bottom: 0.0, left: 10.0, right: 0.0),
-              child: FloatingActionButton(
-                child: Icon(Icons.upgrade_rounded,
-                size: 30.0,),
-                elevation: 2.5,
-                backgroundColor: const Color(0xFF0CC9C6),
-                onPressed: () {
-                  final FirebaseAuth auth = FirebaseAuth.instance;
-                  for (var element in bottom) {
-                    DatabaseReference ref = FirebaseDatabase.instance.ref("workouts/"+auth.currentUser!.uid+"/${workoutname.text}/"+element.name);
-                    ref.set({
-                      "name": element.name,
-                      "type": element.type,
-                      "reps": element.reps,
-                      "sets": element.sets,
-                      "duration": element.durDisp,
-                      "max weight": element.maxWeight,
+        child: Stack(children: [
+          ReorderableListView.builder(
+              itemCount: bottom.length,
+              itemBuilder: (context, index) {
+                final item = bottom[index];
+                return Dismissible(
+                  key: ValueKey<int>(bottom[index].uid),
+                  onDismissed: (direction) {
+                    setState(() {
+                      bottom.removeAt(bottom.indexOf(item));
                     });
-                  }
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 585.0, bottom: 0.0, left: (MediaQuery.of(context).size.width-70.0), right: 0.0),
-              child: RotationTransition(
-                turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
-                child: FloatingActionButton(
-                  child: const Icon(Icons.add),
-                  backgroundColor: const Color(0xFF0CC9C6),
-                  onPressed: () async {
-                    _controller.forward();
-                    await Future.delayed(const Duration(milliseconds: 750), (){});
-                    createAlertDialog(context).then((onValue) {
-                      Exercise t = onValue;
-                      setState(() {
-                        bottom.add(t);
-                        _counter += 1;
-                      });
-                    });
+                    Toast.show(item.name + ' dismissed', context,
+                        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                   },
-                ),
+                  // Show a red background as the item is swiped away.
+                  background: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(color: Colors.red),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        tileColor: const Color.fromRGBO(141, 192, 228, 1.0),
+                        textColor: const Color.fromRGBO(255, 255, 255, 1),
+                        title: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("Name: " + item.name),
+                                Text("Type: " + item.type)
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("Reps: " + item.reps.toString()),
+                                Text("Sets: " + item.sets.toString())
+                              ],
+                            ),
+                            Text("Duration: " + item.durDisp),
+                          ],
+                        ),
+                        trailing: const Icon(Icons.drag_handle)),
+                  ),
+                );
+              },
+              onReorder: (int oldIndex, int newIndex) {
+                setState(() {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final Exercise item = bottom.removeAt(oldIndex);
+                  bottom.insert(newIndex, item);
+                });
+              }),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 585.0, bottom: 0.0, left: 10.0, right: 0.0),
+            child: FloatingActionButton(
+              child: const Icon(
+                Icons.upgrade_rounded,
+                size: 30.0,
+              ),
+              elevation: 2.5,
+              backgroundColor: const Color(0xFF0CC9C6),
+              onPressed: () {
+                final FirebaseAuth auth = FirebaseAuth.instance;
+                for (var element in bottom) {
+                  DatabaseReference ref = FirebaseDatabase.instance.ref(
+                      "workouts/" +
+                          auth.currentUser!.uid +
+                          "/${workoutname.text}/" +
+                          element.name);
+                  ref.set({
+                    "name": element.name,
+                    "type": element.type,
+                    "reps": element.reps,
+                    "sets": element.sets,
+                    "duration": element.durDisp,
+                    "max weight": element.maxWeight,
+                  });
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                top: 585.0,
+                bottom: 0.0,
+                left: (MediaQuery.of(context).size.width - 70.0),
+                right: 0.0),
+            child: RotationTransition(
+              turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+              child: FloatingActionButton(
+                child: const Icon(Icons.add),
+                backgroundColor: const Color(0xFF0CC9C6),
+                onPressed: () async {
+                  _controller.forward();
+                  await Future.delayed(
+                      const Duration(milliseconds: 750), () {});
+                  createAlertDialog(context).then((onValue) {
+                    Exercise t = onValue;
+                    setState(() {
+                      bottom.add(t);
+                      _counter += 1;
+                    });
+                  });
+                },
               ),
             ),
-          ]
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -403,6 +430,7 @@ class Exercise {
   Exercise(this.name, this.type, this.reps, this.sets, this.maxWeight, this.dur,
       this.durDisp, this.uid);
 }
+
 class TextBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -411,7 +439,7 @@ class TextBox extends StatelessWidget {
       color: Colors.white,
       child: TextField(
         decoration:
-        InputDecoration(border: InputBorder.none, hintText: 'Search'),
+            InputDecoration(border: InputBorder.none, hintText: 'Search'),
       ),
     );
   }
