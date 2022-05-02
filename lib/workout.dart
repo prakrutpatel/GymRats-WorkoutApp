@@ -33,6 +33,7 @@ class _ExerciseListState extends State<ExerciseList>
     super.dispose();
   }
 
+  String dropVal = "Weightlifting";
   List<Exercise> bottom = <Exercise>[];
   int _counter = 0;
   Future createAlertDialog(BuildContext context) {
@@ -55,10 +56,37 @@ class _ExerciseListState extends State<ExerciseList>
                   controller: exNameCont,
                   decoration: const InputDecoration(hintText: 'Exercise name'),
                 ),
-                TextField(
-                  controller: exTypeCont,
-                  decoration: const InputDecoration(hintText: 'Exercise type'),
-                ),
+                DropdownButtonFormField(
+                    value: dropVal,
+                    isExpanded: true,
+                    elevation: 16,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropVal = newValue!;
+                      });
+                    },
+                    onSaved: (value) {
+                      setState(() {
+                        dropVal = value!.toString();
+                      });
+                    },
+                    items: <String>[
+                      'Weightlifting',
+                      'Cardio',
+                      'Long-distance run'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    hint: const Text(
+                      "Please choose an exercise type",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500),
+                    )),
                 TextField(
                   controller: repsCont,
                   keyboardType: TextInputType.number,
@@ -100,10 +128,10 @@ class _ExerciseListState extends State<ExerciseList>
                   if (exNameCont.text.isNotEmpty) {
                     nameTemp = exNameCont.text.toString();
                   }
-                  String typeTemp = "";
-                  if (exTypeCont.text.isNotEmpty) {
+                  String typeTemp = dropVal;
+                  /*if (exTypeCont.text.isNotEmpty) {
                     typeTemp = exTypeCont.text.toString();
-                  }
+                  }*/
                   int repsTemp = 0;
                   if (repsCont.text.isNotEmpty) {
                     repsTemp = int.parse(repsCont.text);
@@ -322,7 +350,7 @@ class TimeTextInputFormatter extends TextInputFormatter {
 
       String leftChunk = '';
       String rightChunk = '';
-
+      //parse entered string, add/remove leading 0s as needed based on user input
       if (value.length >= 8) {
         if (value.substring(0, 7) == '00:00:0') {
           leftChunk = '00:00:';
