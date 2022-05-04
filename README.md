@@ -1,6 +1,6 @@
-# flutter_app
+# EC Workout App
 
-A new Flutter application.
+This Flutter Application is a part of the Capstone Project for the class of 2022. The idea behind this app was to replace Jodie:)
 
 ## Getting Started
 
