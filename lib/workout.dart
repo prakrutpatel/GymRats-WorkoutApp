@@ -38,10 +38,12 @@ class _ExerciseListState extends State<ExerciseList>
   int _counter = 0;
   Future createAlertDialog(BuildContext context) {
     TextEditingController exNameCont = TextEditingController();
-    TextEditingController exTypeCont = TextEditingController();
-    TextEditingController repsCont = TextEditingController();
-    TextEditingController setsCont = TextEditingController();
-    TextEditingController wtCont = TextEditingController();
+    TextEditingController comp1Cont =
+        TextEditingController(); //reps, based on workout type
+    TextEditingController comp2Cont =
+        TextEditingController(); //sets, based on workout type
+    TextEditingController comp3Cont =
+        TextEditingController(); //weight, based on workout type
     TextEditingController timeCont = TextEditingController();
     return showDialog(
         context: context,
@@ -87,20 +89,23 @@ class _ExerciseListState extends State<ExerciseList>
                           fontSize: 10,
                           fontWeight: FontWeight.w500),
                     )),
-                TextField(
-                  controller: repsCont,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: const InputDecoration(hintText: "reps"),
+                Visibility(
+                  visible: identical(dropVal, "Weightlifting"),
+                  child: TextField(
+                    controller: comp1Cont,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: const InputDecoration(hintText: "reps"),
+                  ),
                 ),
                 TextField(
-                  controller: setsCont,
+                  controller: comp2Cont,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(hintText: "sets"),
                 ),
                 TextField(
-                  controller: wtCont,
+                  controller: comp3Cont,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(hintText: "Max weight"),
@@ -132,17 +137,17 @@ class _ExerciseListState extends State<ExerciseList>
                   /*if (exTypeCont.text.isNotEmpty) {
                     typeTemp = exTypeCont.text.toString();
                   }*/
-                  int repsTemp = 0;
-                  if (repsCont.text.isNotEmpty) {
-                    repsTemp = int.parse(repsCont.text);
+                  int comp1Temp = 0;
+                  if (comp1Cont.text.isNotEmpty) {
+                    comp1Temp = int.parse(comp1Cont.text);
                   }
-                  int setsTemp = 0;
-                  if (setsCont.text.isNotEmpty) {
-                    setsTemp = int.parse(setsCont.text);
+                  int comp2Temp = 0;
+                  if (comp2Cont.text.isNotEmpty) {
+                    comp2Temp = int.parse(comp2Cont.text);
                   }
-                  int wtTemp = 0;
-                  if (wtCont.text.isNotEmpty) {
-                    wtTemp = int.parse(wtCont.text);
+                  int comp3Temp = 0;
+                  if (comp3Cont.text.isNotEmpty) {
+                    comp3Temp = int.parse(comp3Cont.text);
                   }
                   int durInSec = 0; //duration in seconds
                   String timeTemp = "00:00:00";
@@ -158,8 +163,15 @@ class _ExerciseListState extends State<ExerciseList>
                       (int.parse(splitDur[1]) * 60) +
                       (int.parse(splitDur[
                           2])); //convert array into actual time (in seconds)
-                  Navigator.of(context).pop(Exercise(nameTemp, typeTemp,
-                      repsTemp, setsTemp, wtTemp, durInSec, durTemp, _counter));
+                  Navigator.of(context).pop(Exercise(
+                      nameTemp,
+                      typeTemp,
+                      comp1Temp,
+                      comp2Temp,
+                      comp3Temp,
+                      durInSec,
+                      durTemp,
+                      _counter));
                   _controller.reverse();
                   await Future.delayed(
                       const Duration(milliseconds: 750), () {});
@@ -248,8 +260,8 @@ class _ExerciseListState extends State<ExerciseList>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text("Reps: " + item.reps.toString()),
-                                Text("Sets: " + item.sets.toString())
+                                Text("Reps: " + item.comp1.toString()),
+                                Text("Sets: " + item.comp2.toString())
                               ],
                             ),
                             Text("Duration: " + item.durDisp),
@@ -289,10 +301,10 @@ class _ExerciseListState extends State<ExerciseList>
                   ref.set({
                     "name": element.name,
                     "type": element.type,
-                    "reps": element.reps,
-                    "sets": element.sets,
+                    "comp1": element.comp1,
+                    "comp2": element.comp2,
                     "duration": element.durDisp,
-                    "max weight": element.maxWeight,
+                    "max weight": element.comp3,
                   });
                 }
               },
@@ -448,14 +460,14 @@ class Exercise {
   //constructor to act like tuple
   String name;
   String type;
-  int reps;
-  int sets;
-  int maxWeight;
+  int comp1;
+  int comp2;
+  int comp3;
   int dur;
   String durDisp; //allows real time to be stored and formatted to be displayed
   int uid;
 
-  Exercise(this.name, this.type, this.reps, this.sets, this.maxWeight, this.dur,
+  Exercise(this.name, this.type, this.comp1, this.comp2, this.comp3, this.dur,
       this.durDisp, this.uid);
 }
 
