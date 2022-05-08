@@ -9,6 +9,7 @@ import 'package:flutter_app/information_page.dart';
 import 'package:flutter_app/runSummary.dart';
 import 'package:flutter_app/settings.dart';
 import 'package:flutter_app/workout.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:toast/toast.dart';
@@ -127,10 +128,10 @@ class _Dashboard extends State<Dashboard>{
       if (_page.toString() == '0') {
         return ListView(
           children: <Widget>[
-            const FadeAnimation(0.75, SizedBox(
+             FadeAnimation(0.75, SizedBox(
               height: 50.0,
               child: Center(
-                child: Text("Today's Workouts", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400)),
+                child: Text("Today's Workouts", style: GoogleFonts.montserrat(fontSize: 30)),
               ),
             ),
             ),
@@ -163,7 +164,7 @@ class _Dashboard extends State<Dashboard>{
                                             1}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
-                                        style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w500),
+                                        style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w400),
                                       ),
                                     ]
                                 ))),
@@ -171,10 +172,10 @@ class _Dashboard extends State<Dashboard>{
                     ),
                   ),
             ),),),
-            const FadeAnimation(0.75, SizedBox(
+            FadeAnimation(0.75, SizedBox(
               height: 50.0,
               child: Center(
-                child: Text("Run Summary", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400)),
+                child: Text("Run Summary", style: GoogleFonts.montserrat(fontSize: 30)),
               ),
             ),
             ),
@@ -245,8 +246,34 @@ class _Dashboard extends State<Dashboard>{
                         ),
                         const SizedBox(height: 7.0),
                         SizedBox(height: 400.0,),
-                        Padding(
-                              padding: const EdgeInsets.only(top: 0.0, bottom: 0.0, left: 250.0, right: 0.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: SizedBox(
+                                height: 40.0,
+                                width: 80.0,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    await FirebaseAuth.instance.currentUser?.delete();
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      color: Colors.red,
+                                      child: Center(
+                                        child: Text(
+                                          'Delete', style: TextStyle(color: Colors.white, fontSize: 20.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15.0),
                               child: FloatingActionButton(
                                 child: Icon(Icons.logout_rounded),
                                 elevation: 2.5,
@@ -256,6 +283,8 @@ class _Dashboard extends State<Dashboard>{
                                 },
                               ),
                             ),
+                          ],
+                        ),
                       ]),
                     ),
                   ),
