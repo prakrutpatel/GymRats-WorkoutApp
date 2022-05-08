@@ -36,7 +36,9 @@ class _ExerciseListState extends State<ExerciseList>
   String dropVal = "Weightlifting";
   List<Exercise> bottom = <Exercise>[];
   int _counter = 0;
+  bool _wlSelect = true;
   Future createAlertDialog(BuildContext context) {
+    //need to put alert dialog into stateful widget to get it to update contents in real time
     TextEditingController exNameCont = TextEditingController();
     TextEditingController comp1Cont =
         TextEditingController(); //reps, based on workout type
@@ -49,136 +51,139 @@ class _ExerciseListState extends State<ExerciseList>
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return AlertDialog(
-            title: const Text("Enter Exercise:"),
-            scrollable: true,
-            content: Column(
-              children: <Widget>[
-                TextField(
-                  controller: exNameCont,
-                  decoration: const InputDecoration(hintText: 'Exercise name'),
-                ),
-                DropdownButtonFormField(
-                    value: dropVal,
-                    isExpanded: true,
-                    elevation: 16,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropVal = newValue!;
-                      });
-                    },
-                    onSaved: (value) {
-                      setState(() {
-                        dropVal = value!.toString();
-                      });
-                    },
-                    items: <String>[
-                      'Weightlifting',
-                      'Cardio',
-                      'Long-distance run'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    hint: const Text(
-                      "Please choose an exercise type",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500),
-                    )),
-                Visibility(
-                  visible: identical(dropVal, "Weightlifting"),
-                  child: TextField(
-                    controller: comp1Cont,
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: const Text("Enter Exercise:"),
+              scrollable: true,
+              content: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: exNameCont,
+                    decoration:
+                        const InputDecoration(hintText: 'Exercise name'),
+                  ),
+                  DropdownButtonFormField(
+                      value: dropVal,
+                      isExpanded: true,
+                      elevation: 16,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropVal = newValue!;
+                          _wlSelect = identical(dropVal, "Weightlifting");
+                        });
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          dropVal = value!.toString();
+                          _wlSelect = identical(dropVal, "Weightlifting");
+                        });
+                      },
+                      items: <String>[
+                        'Weightlifting',
+                        'Cardio',
+                        'Long-distance run'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      hint: const Text(
+                        "Please choose an exercise type",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500),
+                      )),
+                  Visibility(
+                    visible: _wlSelect,
+                    child: TextField(
+                      controller: comp1Cont,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: const InputDecoration(hintText: "reps"),
+                    ),
+                  ),
+                  TextField(
+                    controller: comp2Cont,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(hintText: "reps"),
+                    decoration: const InputDecoration(hintText: "sets"),
                   ),
-                ),
-                TextField(
-                  controller: comp2Cont,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: const InputDecoration(hintText: "sets"),
-                ),
-                TextField(
-                  controller: comp3Cont,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: const InputDecoration(hintText: "Max weight"),
-                ),
-                TextFormField(
-                  controller: timeCont,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: false),
-                  decoration: const InputDecoration(
-                    hintText: '00:00:00',
+                  TextField(
+                    controller: comp3Cont,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: const InputDecoration(hintText: "Max weight"),
                   ),
-                  inputFormatters: <TextInputFormatter>[
-                    TimeTextInputFormatter() // This input formatter will do the job
-                  ],
+                  TextFormField(
+                    controller: timeCont,
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: false),
+                    decoration: const InputDecoration(
+                      hintText: '00:00:00',
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      TimeTextInputFormatter() // This input formatter will do the job
+                    ],
+                  )
+                ],
+              ),
+              actions: [
+                MaterialButton(
+                  elevation: 5.0,
+                  child: const Text("Submit"),
+                  onPressed: () async {
+                    //setting and overriding default cases
+                    String nameTemp = "";
+                    if (exNameCont.text.isNotEmpty) {
+                      nameTemp = exNameCont.text.toString();
+                    }
+                    String typeTemp = dropVal;
+
+                    int comp1Temp = 0;
+                    if (comp1Cont.text.isNotEmpty) {
+                      comp1Temp = int.parse(comp1Cont.text);
+                    }
+                    int comp2Temp = 0;
+                    if (comp2Cont.text.isNotEmpty) {
+                      comp2Temp = int.parse(comp2Cont.text);
+                    }
+                    int comp3Temp = 0;
+                    if (comp3Cont.text.isNotEmpty) {
+                      comp3Temp = int.parse(comp3Cont.text);
+                    }
+                    int durInSec = 0; //duration in seconds
+                    String timeTemp = "00:00:00";
+                    if ((timeCont.text.isNotEmpty) &&
+                        (timeCont.text != "00:00:00")) {
+                      timeTemp = timeCont.text;
+                    }
+
+                    String durTemp = timeTemp;
+                    List<String> splitDur =
+                        timeTemp.split(':'); //time segments stored into array
+                    durInSec += (int.parse(splitDur[0]) * 3600) +
+                        (int.parse(splitDur[1]) * 60) +
+                        (int.parse(splitDur[
+                            2])); //convert array into actual time (in seconds)
+                    Navigator.of(context).pop(Exercise(
+                        nameTemp,
+                        typeTemp,
+                        comp1Temp,
+                        comp2Temp,
+                        comp3Temp,
+                        durInSec,
+                        durTemp,
+                        _counter));
+                    _controller.reverse();
+                    await Future.delayed(
+                        const Duration(milliseconds: 750), () {});
+                  },
                 )
               ],
-            ),
-            actions: [
-              MaterialButton(
-                elevation: 5.0,
-                child: const Text("Submit"),
-                onPressed: () async {
-                  //setting and overriding default cases
-                  String nameTemp = "";
-                  if (exNameCont.text.isNotEmpty) {
-                    nameTemp = exNameCont.text.toString();
-                  }
-                  String typeTemp = dropVal;
-                  /*if (exTypeCont.text.isNotEmpty) {
-                    typeTemp = exTypeCont.text.toString();
-                  }*/
-                  int comp1Temp = 0;
-                  if (comp1Cont.text.isNotEmpty) {
-                    comp1Temp = int.parse(comp1Cont.text);
-                  }
-                  int comp2Temp = 0;
-                  if (comp2Cont.text.isNotEmpty) {
-                    comp2Temp = int.parse(comp2Cont.text);
-                  }
-                  int comp3Temp = 0;
-                  if (comp3Cont.text.isNotEmpty) {
-                    comp3Temp = int.parse(comp3Cont.text);
-                  }
-                  int durInSec = 0; //duration in seconds
-                  String timeTemp = "00:00:00";
-                  if ((timeCont.text.isNotEmpty) &&
-                      (timeCont.text != "00:00:00")) {
-                    timeTemp = timeCont.text;
-                  }
-
-                  String durTemp = timeTemp;
-                  List<String> splitDur =
-                      timeTemp.split(':'); //time segments stored into array
-                  durInSec += (int.parse(splitDur[0]) * 3600) +
-                      (int.parse(splitDur[1]) * 60) +
-                      (int.parse(splitDur[
-                          2])); //convert array into actual time (in seconds)
-                  Navigator.of(context).pop(Exercise(
-                      nameTemp,
-                      typeTemp,
-                      comp1Temp,
-                      comp2Temp,
-                      comp3Temp,
-                      durInSec,
-                      durTemp,
-                      _counter));
-                  _controller.reverse();
-                  await Future.delayed(
-                      const Duration(milliseconds: 750), () {});
-                },
-              )
-            ],
-          );
+            );
+          });
         });
   }
 
