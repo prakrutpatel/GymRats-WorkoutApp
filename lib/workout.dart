@@ -310,11 +310,11 @@ class _ExerciseListState extends State<ExerciseList>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                if (_wlSelect) ...[
+                                if (bottom[index].type == "Weightlifting") ...[
                                   //workout type is weightlifting
                                   Text("Reps: " + item.comp1.toString()),
                                   Text("Sets: " + item.comp2.toString())
-                                ] else if (_cardioSelect) ...[
+                                ] else if (bottom[index].type == "Cardio") ...[
 //current bug: display will update ALL items in list to newest added item
                                   //workout type is cardio
                                   Text("Distance: " +
