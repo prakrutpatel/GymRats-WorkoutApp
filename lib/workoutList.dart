@@ -41,7 +41,7 @@ class _WorkoutListState extends State<WorkoutList>
     final ref = FirebaseDatabase.instance.ref();
     dbInfo() async {
       final snapshot =
-          await ref.child('workouts/' + auth.currentUser!.uid).
+          await ref.child('workouts/' + auth.currentUser!.uid)
       if (snapshot.exists) {
         return snapshot.value!;
       } else {
@@ -86,6 +86,12 @@ class _WorkoutListState extends State<WorkoutList>
                         title: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("Placeholder workout name")
+                              ],
+                            ),
                           ]
                         )
                   ),
