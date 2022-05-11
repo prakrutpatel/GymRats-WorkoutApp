@@ -40,17 +40,10 @@ class _WorkoutListState extends State<WorkoutList>
     final FirebaseAuth auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
     dbInfo() async {
-      final snapshot =
-          await ref.child('workouts/' + auth.currentUser!.uid)
-      if (snapshot.exists) {
-        return snapshot.value!;
-      } else {
-        print('No data available.');
-        return "";
-      }
+      await ref.child('workouts').child(auth.currentUser!.uid.toString()).orderByValue().get().then((value) => print(value.value));
     }
 
-    print(dbInfo());
+    dbInfo();
     return Scaffold(
         backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         body: SafeArea(

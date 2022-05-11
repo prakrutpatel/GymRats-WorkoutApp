@@ -31,7 +31,9 @@ class _RunSummaryState extends State<RunSummary> {
     List<Map<String, dynamic>> _results = await DB.query(Entry.table);
     _data = _results.map((item) => Entry.fromMap(item)).toList();
     _data.forEach((element) => _cards.add(EntryCard(entry: element)));
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   void _addEntries(Entry en) async {
@@ -46,7 +48,7 @@ class _RunSummaryState extends State<RunSummary> {
         children: _cards,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){ 
+        onPressed: (){
           Navigator.push(
                 context, MaterialPageRoute(builder: (context) => MapPage())).then((value) => _addEntries(value));
           MyID.idCounter += 1;
@@ -56,4 +58,5 @@ class _RunSummaryState extends State<RunSummary> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
 }
