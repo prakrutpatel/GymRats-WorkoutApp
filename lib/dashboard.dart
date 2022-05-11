@@ -1,7 +1,6 @@
 //Written by PK
 import 'dart:async';
 import 'dart:io';
-import 'package:awesome_dropdown/awesome_dropdown.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -315,7 +314,7 @@ class _Dashboard extends State<Dashboard>{
                             Container(
                                 height: 70.0,
                                 width: 200.0,
-                                child: FullyFunctionalAwesomeDropDown(title: 'age',)),
+                                child: FullyFunctionalAwesomeDropDown()),
                           ],
                         ),
                         Column(
@@ -335,7 +334,7 @@ class _Dashboard extends State<Dashboard>{
                             Container(
                                 height: 70.0,
                                 width: 200.0,
-                                child: FullyFunctionalAwesomeDropDown(title: 'weight',)),
+                                child: FullyFunctionalAwesomeDropDown()),
                           ],
                         ),
                         Column(
@@ -355,7 +354,7 @@ class _Dashboard extends State<Dashboard>{
                             Container(
                                 height: 70.0,
                                 width: 200.0,
-                                child: FullyFunctionalAwesomeDropDown(title: 'height',)),
+                                child: FullyFunctionalAwesomeDropDown()),
                           ],
                         ),
                         Row(
