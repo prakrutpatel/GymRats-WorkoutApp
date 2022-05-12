@@ -1,4 +1,4 @@
-package com.example.flutter_app
+package com.eckerd.gym_rats
 
 import io.flutter.embedding.android.FlutterActivity
 

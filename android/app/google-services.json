@@ -8,6 +8,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:302602094649:android:ecc1c8057eafb4d039e5e8",
+        "android_client_info": {
+          "package_name": "com.eckerd.gym_rats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302602094649-i6n79k907et7oup7kupkd2o6bjdli99l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eckerd.gym_rats",
+            "certificate_hash": "706bf0925273b1ec2adc5188d0b93ddae951b18b"
+          }
+        },
+        {
+          "client_id": "302602094649-668ei02loph577orm526mps70hvv2t79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABTFBQUq6o5x6JRkmx81ZKGx6rYiM9Nis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302602094649-668ei02loph577orm526mps70hvv2t79.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "302602094649-m6vmp35u6rm0u87u9i852k1lkuc08335.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.eckerd.gymrats"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:302602094649:android:1257f480d33592fa39e5e8",
         "android_client_info": {
           "package_name": "com.example.flutter_app"
@@ -38,6 +82,13 @@
             {
               "client_id": "302602094649-668ei02loph577orm526mps70hvv2t79.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "302602094649-m6vmp35u6rm0u87u9i852k1lkuc08335.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.eckerd.gymrats"
+              }
             }
           ]
         }
