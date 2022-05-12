@@ -15,7 +15,7 @@ class WorkoutList extends StatefulWidget {
 }
 
 class _WorkoutListState extends State<WorkoutList>
-  with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   bool typing = false;
@@ -34,70 +34,70 @@ class _WorkoutListState extends State<WorkoutList>
     super.dispose();
   }
 
-  List<String> bottom = <String>[];
+  List<Workout> bottom = <Workout>[];
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
     dbInfo() async {
-      final snapshot =
-          await ref.child('workouts/' + auth.currentUser!.uid).
-      if (snapshot.exists) {
-        return snapshot.value!;
-      } else {
-        print('No data available.');
-        return "";
-      }
+      await ref
+          .child('workouts')
+          .child(auth.currentUser!.uid.toString())
+          .orderByValue()
+          .get()
+          .then((value) => print(value.value));
     }
 
-    print(dbInfo());
+    dbInfo();
     return Scaffold(
-        backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
-        body: SafeArea(
-          child: Stack(children: [
+      backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
+      body: SafeArea(
+        child: Stack(children: [
           ReorderableListView.builder(
               itemCount: bottom.length,
               itemBuilder: (context, index) {
                 final item = bottom[index];
                 return Dismissible(
-                  key: ValueKey<int>(bottom[index].uid),
-                  onDismissed: (direction) {
-                    setState(() {
-                      bottom.removeAt(bottom.indexOf(item));
-                    });
-                    Toast.show(item.name + ' dismissed', context,
-                        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                  },
-                  // Show a red background as the item is swiped away.
-                  background: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(color: Colors.red),
+                    key: ValueKey<int>(bottom[index].uid),
+                    onDismissed: (direction) {
+                      setState(() {
+                        bottom.removeAt(bottom.indexOf(item));
+                      });
+                      Toast.show(item.name + ' dismissed', context,
+                          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                    },
+                    // Show a red background as the item is swiped away.
+                    background: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(color: Colors.red),
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        tileColor: const Color.fromRGBO(141, 192, 228, 1.0),
-                        textColor: const Color.fromRGBO(255, 255, 255, 1),
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                          ]
-                        )
-                  ),
-                  )
-                );
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          tileColor: const Color.fromRGBO(141, 192, 228, 1.0),
+                          textColor: const Color.fromRGBO(255, 255, 255, 1),
+                          title: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [Text("Placeholder workout name")],
+                                ),
+                              ])),
+                    ));
               },
               onReorder: (int oldIndex, int newIndex) {
                 setState(() {
                   if (oldIndex < newIndex) {
                     newIndex -= 1;
                   }
-                  final String item = bottom.removeAt(oldIndex);
+                  final Workout item = bottom.removeAt(oldIndex);
                   bottom.insert(newIndex, item);
                 });
               }),
@@ -114,7 +114,7 @@ class _WorkoutListState extends State<WorkoutList>
               onPressed: () {
                 final FirebaseAuth auth = FirebaseAuth.instance;
                 for (var element in bottom) {
-                  DatabaseReference ref = FirebaseDatabase.instance.ref(
+                  /*DatabaseReference ref = FirebaseDatabase.instance.ref(
                       "workouts/" +
                           auth.currentUser!.uid +
                           "/${workoutname.text}/" +
@@ -126,7 +126,8 @@ class _WorkoutListState extends State<WorkoutList>
                     "comp2": element.comp2,
                     "duration": element.durDisp,
                     "max weight": element.comp3,
-                  });
+                  });*/
+                  break;
                 }
               },
             ),
@@ -146,7 +147,9 @@ class _WorkoutListState extends State<WorkoutList>
                   _controller.forward();
                   await Future.delayed(
                       const Duration(milliseconds: 750), () {});
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ExerciseList()));
+                  //does not properly push to exerciselist page
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ExerciseList()));
                 },
               ),
             ),
@@ -155,4 +158,12 @@ class _WorkoutListState extends State<WorkoutList>
       ),
     );
   }
+}
+
+class Workout {
+  //workout tuple containing name and unique ID of each workout, similar to exercise object
+  String name;
+  int uid;
+
+  Workout(this.name, this.uid);
 }

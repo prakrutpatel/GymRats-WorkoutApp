@@ -7,13 +7,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/information_page.dart';
 import 'package:flutter_app/runSummary.dart';
-import 'package:flutter_app/settings.dart';
 import 'package:flutter_app/workout.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sidebarx/sidebarx.dart';
 import 'package:toast/toast.dart';
 import 'Animation/FadeAnimation.dart';
+import 'Dropdown.dart';
 import 'calendar.dart';
 import 'homepage.dart';
 import 'workout.dart';
@@ -33,12 +32,19 @@ class _Dashboard extends State<Dashboard> {
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
   String _name = '';
+
   late File _imageFile;
   String profile_image_url = '';
 
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
+    final commentsRef = FirebaseDatabase.instance
+        .ref('workouts/' + auth.currentUser!.uid + "/");
+    commentsRef.onChildChanged.listen((event) {
+      print(event.toString());
+    });
+
     StreamSubscription<User?> authManager =
         FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null && _num == 0) {
@@ -108,6 +114,14 @@ class _Dashboard extends State<Dashboard> {
       } catch (e) {
         return '';
       }
+    }
+
+    Future<void> _dbpush(String key, String value) async {
+      DatabaseReference ref =
+          FirebaseDatabase.instance.ref("users/" + auth.currentUser!.uid);
+      await ref.update({
+        key: value,
+      });
     }
 
     Future pickImage() async {
@@ -198,7 +212,7 @@ class _Dashboard extends State<Dashboard> {
                     height: 300.0,
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: RunSummary())))
+                        child: RunSummary()))),
           ],
         );
       } else if (_page.toString() == '1') {
@@ -220,6 +234,13 @@ class _Dashboard extends State<Dashboard> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 16.0),
                         child: Column(children: <Widget>[
+                          SizedBox(
+                            height: 50.0,
+                            child: Center(
+                              child: Text("Edit Profile",
+                                  style: GoogleFonts.montserrat(fontSize: 30)),
+                            ),
+                          ),
                           GestureDetector(
                             onTap: () async {
                               await pickImage();
@@ -249,16 +270,105 @@ class _Dashboard extends State<Dashboard> {
                               width: 150,
                             ),
                           ),
-                          const SizedBox(height: 7.0),
-                          GestureDetector(
-                            child: Text(
-                              _name,
-                              style: const TextStyle(height: 1.2, fontSize: 25),
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.0),
+                                child: Text(
+                                  'Name',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 70.0,
+                                width: 200.0,
+                                child: TextFormField(
+                                  onChanged: (text) async {
+                                    await _dbpush('name', text);
+                                  },
+                                  textAlign: TextAlign.center,
+                                  initialValue: _name,
+                                  keyboardType: TextInputType.emailAddress,
+                                  style: GoogleFonts.montserrat(fontSize: 25),
+                                  decoration: InputDecoration(
+                                    disabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    contentPadding: EdgeInsets.only(
+                                        left: 15,
+                                        bottom: 11,
+                                        top: 11,
+                                        right: 15),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
-                          const SizedBox(height: 7.0),
-                          SizedBox(
-                            height: 400.0,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.0),
+                                child: Text(
+                                  'Age',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  height: 70.0,
+                                  width: 200.0,
+                                  child: FullyFunctionalAwesomeDropDown()),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.0),
+                                child: Text(
+                                  'Weight',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  height: 70.0,
+                                  width: 200.0,
+                                  child: FullyFunctionalAwesomeDropDown()),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.0),
+                                child: Text(
+                                  'Height',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  height: 70.0,
+                                  width: 200.0,
+                                  child: FullyFunctionalAwesomeDropDown()),
+                            ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -36,12 +36,14 @@ class _ExerciseListState extends State<ExerciseList>
   String dropVal = "Weightlifting";
   List<Exercise> bottom = <Exercise>[];
   int _counter = 0;
+  //workout type flags
   bool _wlSelect = true;
+  bool _cardioSelect = false;
+  bool _longDistSelect = false;
   Future createAlertDialog(BuildContext context) {
-    //need to put alert dialog into stateful widget to get it to update contents in real time
     TextEditingController exNameCont = TextEditingController();
     TextEditingController comp1Cont =
-        TextEditingController(); //reps, based on workout type
+        TextEditingController(); //reps, distance based on workout type
     TextEditingController comp2Cont =
         TextEditingController(); //sets, based on workout type
     TextEditingController comp3Cont =
@@ -63,6 +65,7 @@ class _ExerciseListState extends State<ExerciseList>
                         const InputDecoration(hintText: 'Exercise name'),
                   ),
                   DropdownButtonFormField(
+                      //create dropdown that lets user select a given workout type
                       value: dropVal,
                       isExpanded: true,
                       elevation: 16,
@@ -70,12 +73,18 @@ class _ExerciseListState extends State<ExerciseList>
                         setState(() {
                           dropVal = newValue!;
                           _wlSelect = identical(dropVal, "Weightlifting");
+                          _cardioSelect = identical(dropVal, "Cardio");
+                          _longDistSelect =
+                              identical(dropVal, "Long-distance run");
                         });
                       },
                       onSaved: (value) {
                         setState(() {
                           dropVal = value!.toString();
                           _wlSelect = identical(dropVal, "Weightlifting");
+                          _cardioSelect = identical(dropVal, "Cardio");
+                          _longDistSelect =
+                              identical(dropVal, "Long-distance run");
                         });
                       },
                       items: <String>[
@@ -96,37 +105,105 @@ class _ExerciseListState extends State<ExerciseList>
                             fontWeight: FontWeight.w500),
                       )),
                   Visibility(
+                    //weightlifting type chosen, display necessary parts in popup
                     visible: _wlSelect,
-                    child: TextField(
-                      controller: comp1Cont,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: const InputDecoration(hintText: "reps"),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: comp1Cont,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: const InputDecoration(hintText: "reps"),
+                        ),
+                        TextField(
+                          controller: comp2Cont,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: const InputDecoration(hintText: "sets"),
+                        ),
+                        TextField(
+                          controller: comp3Cont,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration:
+                              const InputDecoration(hintText: "Max weight"),
+                        ),
+                        TextFormField(
+                          controller: timeCont,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: false),
+                          decoration: const InputDecoration(
+                            hintText: '00:00:00',
+                          ),
+                          inputFormatters: <TextInputFormatter>[
+                            TimeTextInputFormatter() // This input formatter will do the job
+                          ],
+                        )
+                      ],
                     ),
                   ),
-                  TextField(
-                    controller: comp2Cont,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(hintText: "sets"),
-                  ),
-                  TextField(
-                    controller: comp3Cont,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    decoration: const InputDecoration(hintText: "Max weight"),
-                  ),
-                  TextFormField(
-                    controller: timeCont,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: false),
-                    decoration: const InputDecoration(
-                      hintText: '00:00:00',
+                  Visibility(
+                    //cardio type chosen, display necessary parts in popup
+                    visible: _cardioSelect,
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: comp1Cont,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: const InputDecoration(
+                              hintText: "distance (miles)"),
+                        ),
+                        TextFormField(
+                          controller: timeCont,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: false),
+                          decoration: const InputDecoration(
+                            hintText: '00:00:00',
+                          ),
+                          inputFormatters: <TextInputFormatter>[
+                            TimeTextInputFormatter() // This input formatter will do the job
+                          ],
+                        )
+                      ],
                     ),
-                    inputFormatters: <TextInputFormatter>[
-                      TimeTextInputFormatter() // This input formatter will do the job
-                    ],
-                  )
+                  ),
+                  Visibility(
+                    //long-distance run chosen, display necessary parts in popup
+                    visible: _longDistSelect,
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: comp1Cont,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          decoration: const InputDecoration(
+                              hintText: "distance (miles)"),
+                        ),
+                        TextFormField(
+                          controller: timeCont,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: false),
+                          decoration: const InputDecoration(
+                            hintText: '00:00:00',
+                          ),
+                          inputFormatters: <TextInputFormatter>[
+                            TimeTextInputFormatter() // This input formatter will do the job
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
               actions: [
@@ -229,6 +306,7 @@ class _ExerciseListState extends State<ExerciseList>
               itemBuilder: (context, index) {
                 final item = bottom[index];
                 return Dismissible(
+                  //remove element that was swiped away, used uid as index can shift (reordering)
                   key: ValueKey<int>(bottom[index].uid),
                   onDismissed: (direction) {
                     setState(() {
@@ -246,6 +324,7 @@ class _ExerciseListState extends State<ExerciseList>
                     ),
                   ),
                   child: Padding(
+                    //display individual exercise element
                     padding: const EdgeInsets.all(8.0),
                     child: ListTile(
                         shape: RoundedRectangleBorder(
@@ -265,8 +344,21 @@ class _ExerciseListState extends State<ExerciseList>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text("Reps: " + item.comp1.toString()),
-                                Text("Sets: " + item.comp2.toString())
+                                if (bottom[index].type == "Weightlifting") ...[
+                                  //workout type is weightlifting
+                                  Text("Reps: " + item.comp1.toString()),
+                                  Text("Sets: " + item.comp2.toString())
+                                ] else if (bottom[index].type == "Cardio") ...[
+                                  //workout type is cardio
+                                  Text("Distance: " +
+                                      item.comp1.toString() +
+                                      " miles")
+                                ] else ...[
+                                  //workout type is long-dist run
+                                  Text("Distance: " +
+                                      item.comp1.toString() +
+                                      " miles")
+                                ]
                               ],
                             ),
                             Text("Duration: " + item.durDisp),

@@ -52,6 +52,7 @@ dependencies:
   path_provider: ^2.0.1
   sqflite: ^2.0.0+3
   stop_watch_timer: ^1.1.0+1
+  awesome_dropdown: ^0.0.4
 
 
 
