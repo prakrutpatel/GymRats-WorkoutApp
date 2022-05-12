@@ -59,6 +59,7 @@ class CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -86,6 +87,8 @@ class CalendarState extends State<Calendar> {
         onSelectionChanged: selectionChanged,
         onTap: calendarTapCallback,
         initialDisplayDate: DateTime(DateTime.now().year, DateTime.now().month,
+            DateTime.now().day, 0, 0, 0),
+        initialSelectedDate: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 0, 0, 0),
         allowedViews: <CalendarView>[
           CalendarView.month,
