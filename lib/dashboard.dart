@@ -21,25 +21,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class Dashboard extends StatefulWidget{
-  _Dashboard createState()=> _Dashboard();
+class Dashboard extends StatefulWidget {
+  _Dashboard createState() => _Dashboard();
 }
-class _Dashboard extends State<Dashboard>{
+
+class _Dashboard extends State<Dashboard> {
   @override
   int _num = 0;
   int _page = 0;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
   String _name = '';
   late File _imageFile;
   String profile_image_url = '';
 
-
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
-    StreamSubscription<User?> authManager = FirebaseAuth.instance.userChanges()
-        .listen((User? user) {
+    StreamSubscription<User?> authManager =
+        FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null && _num == 0) {
         _num = 1;
         Navigator.pushReplacement<void, void>(
@@ -48,27 +49,27 @@ class _Dashboard extends State<Dashboard>{
             builder: (BuildContext context) => HomePage(),
           ),
         );
-      } else {
-      }
+      } else {}
     });
 
     Future<String> dbInfo({required String path}) async {
-      final snapshot = await ref.child('users/'+ auth.currentUser!.uid+"/"+path).get();
+      final snapshot =
+          await ref.child('users/' + auth.currentUser!.uid + "/" + path).get();
       if (snapshot.exists) {
-       return snapshot.value.toString();
+        return snapshot.value.toString();
       } else {
         print('No data available.');
         return "";
       }
     }
-    dbInfo(path: 'name').then((String result){
+
+    dbInfo(path: 'name').then((String result) {
       _name = result;
       if (_name == '') {
         Navigator.pushReplacement<void, void>(
           context,
           MaterialPageRoute<void>(
-            builder: (BuildContext context) =>
-                Additional_Info_Screen(),
+            builder: (BuildContext context) => Additional_Info_Screen(),
           ),
         );
       }
@@ -79,32 +80,32 @@ class _Dashboard extends State<Dashboard>{
       try {
         String url;
         FirebaseStorage storage = FirebaseStorage.instance;
-        Reference ref = storage.ref().child('uploads/'+ auth.currentUser!.uid);
+        Reference ref = storage.ref().child('uploads/' + auth.currentUser!.uid);
         UploadTask uploadTask = ref.putFile(_imageFile);
         uploadTask.then((res) {
           res.ref.getDownloadURL();
         });
         try {
           var res = await uploadTask.whenComplete(() {
-            ref.getDownloadURL().then((String url1) {
-            });
+            ref.getDownloadURL().then((String url1) {});
           });
           setState(() {});
         } on FirebaseException catch (error) {
           print(error);
         }
-      } catch (err){
+      } catch (err) {
         print(err);
       }
-  }
+    }
 
     Future<String> networkImage() async {
-      final ref = FirebaseStorage.instance.ref().child('uploads/'+ auth.currentUser!.uid);
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('uploads/' + auth.currentUser!.uid);
       try {
         var url = await ref.getDownloadURL();
         return url as String;
-      }
-      catch (e) {
+      } catch (e) {
         return '';
       }
     }
@@ -116,11 +117,12 @@ class _Dashboard extends State<Dashboard>{
         _imageFile = File(pickedFile!.path);
       });
       await uploadImageToFirebase(context);
-      await networkImage().then((String result){
+      await networkImage().then((String result) {
         profile_image_url = result;
       });
     }
-    networkImage().then((String result){
+
+    networkImage().then((String result) {
       profile_image_url = result;
     });
 
@@ -128,20 +130,28 @@ class _Dashboard extends State<Dashboard>{
       if (_page.toString() == '0') {
         return ListView(
           children: <Widget>[
-             FadeAnimation(0.75, SizedBox(
-              height: 50.0,
-              child: Center(
-                child: Text("Today's Workouts", style: GoogleFonts.montserrat(fontSize: 30)),
+            FadeAnimation(
+              0.75,
+              SizedBox(
+                height: 50.0,
+                child: Center(
+                  child: Text("Today's Workouts",
+                      style: GoogleFonts.montserrat(fontSize: 30)),
+                ),
               ),
             ),
-            ),
-            FadeAnimation(1.5, SizedBox(height: 75, child: ListView.separated(
-              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-              scrollDirection: Axis.horizontal,
-              itemCount: 6,
-              separatorBuilder: (context, _) => const SizedBox(width: 10.0,),
-              itemBuilder: (context, index) =>
-                  GestureDetector(
+            FadeAnimation(
+              1.5,
+              SizedBox(
+                height: 75,
+                child: ListView.separated(
+                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 6,
+                  separatorBuilder: (context, _) => const SizedBox(
+                    width: 10.0,
+                  ),
+                  itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
                       Toast.show("Starting Workout ${index + 1}", context,
                           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -151,144 +161,152 @@ class _Dashboard extends State<Dashboard>{
                       child: Container(
                         width: 200.0,
                         height: 75.0,
-                        decoration: const BoxDecoration(
-                            color: Colors.white
-                        ),
+                        decoration: const BoxDecoration(color: Colors.white),
                         child: Center(
                             child: Padding(
                                 padding: const EdgeInsets.all(10.0),
-                                child: Stack(
-                                    children: <Widget>[
-                                      Text(
-                                        'Workout ${index +
-                                            1}',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 3,
-                                        style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w400),
-                                      ),
-                                    ]
-                                ))),
+                                child: Stack(children: <Widget>[
+                                  Text(
+                                    'Workout ${index + 1}',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ]))),
                       ),
                     ),
                   ),
-            ),),),
-            FadeAnimation(0.75, SizedBox(
-              height: 50.0,
-              child: Center(
-                child: Text("Run Summary", style: GoogleFonts.montserrat(fontSize: 30)),
+                ),
               ),
             ),
+            FadeAnimation(
+              0.75,
+              SizedBox(
+                height: 50.0,
+                child: Center(
+                  child: Text("Run Summary",
+                      style: GoogleFonts.montserrat(fontSize: 30)),
+                ),
+              ),
             ),
-
-            FadeAnimation(1.5, Container(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              height: 300.0,
-                child:  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: RunSummary())))
+            FadeAnimation(
+                1.5,
+                Container(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    height: 300.0,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: RunSummary())))
           ],
         );
-      }
-      else if (_page.toString() == '1'){
-        return const FadeAnimation(0.75, Calendar(title: 'prakrut'));
-      }
-      else if (_page.toString() == '2'){
+      } else if (_page.toString() == '1') {
+        return const FadeAnimation(0.75, Calendar());
+      } else if (_page.toString() == '2') {
         return FadeAnimation(0.75, const ExerciseList());
-      }
-      else {
+      } else {
         return StatefulBuilder(
           builder: (_context, _setState) {
             return ListView(
               children: <Widget>[
-                FadeAnimation(0.75, SafeArea(
-                  top: true,
-                  minimum: EdgeInsets.zero,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: Column(children: <Widget>[
-                        GestureDetector(
-                          onTap: () async {
-                            await pickImage();
-                            _setState(() {
-                            });
-                          },
-                          child: CachedNetworkImage(
-                            imageUrl: profile_image_url,
-                            imageBuilder: (context, imageProvider) => Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
+                FadeAnimation(
+                  0.75,
+                  SafeArea(
+                    top: true,
+                    minimum: EdgeInsets.zero,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Column(children: <Widget>[
+                          GestureDetector(
+                            onTap: () async {
+                              await pickImage();
+                              _setState(() {});
+                            },
+                            child: CachedNetworkImage(
+                              imageUrl: profile_image_url,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  const CircleAvatar(
+                                backgroundImage: AssetImage(
+                                    'assets/images/user_placeholder.png'),
+                              ),
+                              useOldImageOnUrlChange: true,
+                              height: 150,
+                              width: 150,
                             ),
-                            placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                            const CircleAvatar(
-                              backgroundImage: AssetImage(
-                                  'assets/images/user_placeholder.png'),
+                          ),
+                          const SizedBox(height: 7.0),
+                          GestureDetector(
+                            child: Text(
+                              _name,
+                              style: const TextStyle(height: 1.2, fontSize: 25),
                             ),
-                            useOldImageOnUrlChange: true,
-                            height: 150,
-                            width: 150,
                           ),
-                        ),
-                        const SizedBox(height: 7.0),
-                        GestureDetector(
-                          child: Text(
-                            _name,
-                            style: const TextStyle(height: 1.2, fontSize: 25),
+                          const SizedBox(height: 7.0),
+                          SizedBox(
+                            height: 400.0,
                           ),
-                        ),
-                        const SizedBox(height: 7.0),
-                        SizedBox(height: 400.0,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15.0),
-                              child: SizedBox(
-                                height: 40.0,
-                                width: 80.0,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    await FirebaseAuth.instance.currentUser?.delete();
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    child: Container(
-                                      color: Colors.red,
-                                      child: Center(
-                                        child: Text(
-                                          'Delete', style: TextStyle(color: Colors.white, fontSize: 20.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 15.0),
+                                child: SizedBox(
+                                  height: 40.0,
+                                  width: 80.0,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await FirebaseAuth.instance.currentUser
+                                          ?.delete();
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Container(
+                                        color: Colors.red,
+                                        child: Center(
+                                          child: Text(
+                                            'Delete',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20.0),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 15.0),
-                              child: FloatingActionButton(
-                                child: Icon(Icons.logout_rounded),
-                                elevation: 2.5,
-                                backgroundColor: const Color(0xFF0CC9C6),
-                                onPressed: () {
-                                  _signOut();
-                                },
+                              Padding(
+                                padding: const EdgeInsets.only(right: 15.0),
+                                child: FloatingActionButton(
+                                  child: Icon(Icons.logout_rounded),
+                                  elevation: 2.5,
+                                  backgroundColor: const Color(0xFF0CC9C6),
+                                  onPressed: () {
+                                    _signOut();
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ]),
+                            ],
+                          ),
+                        ]),
+                      ),
                     ),
                   ),
-                ),
                 ),
               ],
             );
@@ -297,9 +315,8 @@ class _Dashboard extends State<Dashboard>{
       }
     }
 
-
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
+        backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         bottomNavigationBar: CurvedNavigationBar(
           key: _bottomNavigationKey,
           index: 0,
@@ -322,18 +339,26 @@ class _Dashboard extends State<Dashboard>{
           },
           letIndexChange: (index) => true,
         ),
-        body: SafeArea(
-          child: _getWidget()
-        )
-    );
+        body: SafeArea(child: _getWidget()));
   }
+
   Future<void> _signOut() async {
-    print(FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId']);
-    if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'google.com') {
+    print(FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']
+        ['providerData'][0]['providerId']);
+    if (FirebaseAuth
+            .instance
+            .pluginConstants['APP_CURRENT_USER']['providerData'][0]
+                ['providerId']
+            .toString() ==
+        'google.com') {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
-    }
-    else if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'password'){
+    } else if (FirebaseAuth
+            .instance
+            .pluginConstants['APP_CURRENT_USER']['providerData'][0]
+                ['providerId']
+            .toString() ==
+        'password') {
       await FirebaseAuth.instance.signOut();
     }
   }
