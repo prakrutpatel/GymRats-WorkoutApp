@@ -38,29 +38,42 @@ class _Dashboard extends State<Dashboard>{
   DateTime dob = DateTime(1980, 5, 11);
   String curr_gender = "Male";
   String curr_skill = "Intermediate";
+  String curr_weight = "180";
+  String curr_weight_scale = "lbs";
+  String curr_height_feet = "6";
+  String curr_height_inches = "2";
 
 
 
   late File _imageFile;
   String profile_image_url = '';
-  static const PickerData2 = '''
-[
+  static const heightlist = '''
+[ 
+    [
+        4,
+        5,
+        6,
+        7,
+        8
+    ],
+    [
+        "'"
+    ],
     [
         1,
         2,
         3,
-        4
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
     ],
     [
-        11,
-        22,
-        33,
-        44
-    ],
-    [
-        "aaa",
-        "bbb",
-        "ccc"
+        "''"
     ]
 ]
     ''';
@@ -70,6 +83,337 @@ class _Dashboard extends State<Dashboard>{
         "Male",
         "Female",
         "Others"
+    ]
+]
+
+    ''';
+  static const weightlist = '''
+[ 
+    [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313,
+        314,
+        315,
+        316,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        323,
+        324,
+        325,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349
+    ],
+    [
+        "lbs",
+        "kgs"
     ]
 ]
 
@@ -85,6 +429,12 @@ class _Dashboard extends State<Dashboard>{
 
     ''';
 
+  var weight = [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349];
+  var weight_scale = ["lbs","kgs"];
+  var skill = ["Beginner","Intermediate","Advanced"];
+  var gender = ["Male","Female","Others"];
+  var height = [4,5,6,7,8];
+  var height_scale = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -129,8 +479,26 @@ class _Dashboard extends State<Dashboard>{
         );
       }
     });
+    dbInfo(path: 'gender').then((String result){
+      curr_gender = result;
+    });
+    dbInfo(path: 'skill level').then((String result){
+      curr_skill = result;
+    });
     dbInfo(path: 'location').then((String result){
       _location = result;
+    });
+    dbInfo(path: 'weight').then((String result){
+      curr_weight = result;
+    });
+    dbInfo(path: 'weight scale').then((String result){
+      curr_weight_scale = result;
+    });
+    dbInfo(path: 'height').then((String result){
+      curr_height_feet = result;
+    });
+    dbInfo(path: 'height inches').then((String result){
+      curr_height_inches = result;
     });
 
     final picker = ImagePicker();
@@ -456,9 +824,22 @@ class _Dashboard extends State<Dashboard>{
                         endIndent: 2,
                       ),
                       GestureDetector(
-                        onTap: () async {
-                          _pickDateDialog;
-                        },
+                        onTap: () => Picker(
+                            height: 50.0,
+                            adapter: PickerDataAdapter<String>(
+                              pickerdata: JsonDecoder().convert(heightlist),
+                              isArray: true,),
+                            hideHeader: true,
+                            selecteds: [height.indexOf(int.parse(curr_height_feet)),0,height_scale.indexOf(int.parse(curr_height_inches)),0],
+                            selectedTextStyle: TextStyle(color: Colors.blue),
+                            onConfirm: (Picker picker, List value) async {
+                              await _dbpush('height', picker.getSelectedValues()[0]);
+                              await _dbpush('height inches', picker.getSelectedValues()[2]);
+                              setState(() {
+                                curr_height_feet = picker.getSelectedValues()[0];
+                                curr_height_inches = picker.getSelectedValues()[2];
+                              });
+                            }).showDialog(context),
                         child: Container(
                           //color: Colors.white,
                             height: 40.0,
@@ -472,7 +853,7 @@ class _Dashboard extends State<Dashboard>{
                                   style: GoogleFonts.montserrat(fontSize: 20),
                                 ),
                                 Text(
-                                  '6-ft 2-in',
+                                  curr_height_feet+"'"+" "+curr_height_inches+"''",
                                   style: GoogleFonts.montserrat(fontSize: 13,color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -484,9 +865,22 @@ class _Dashboard extends State<Dashboard>{
                         endIndent: 2,
                       ),
                       GestureDetector(
-                        onTap: () async {
-                          _pickDateDialog;
-                        },
+                        onTap: () => Picker(
+                            height: 50.0,
+                            adapter: PickerDataAdapter<String>(
+                              pickerdata: JsonDecoder().convert(weightlist),
+                              isArray: true,),
+                            hideHeader: true,
+                            selecteds: [weight.indexOf(int.parse(curr_weight)),weight_scale.indexOf(curr_weight_scale)],
+                            selectedTextStyle: TextStyle(color: Colors.blue),
+                            onConfirm: (Picker picker, List value) async {
+                              await _dbpush('weight', picker.getSelectedValues()[0]);
+                              await _dbpush('weight scale', picker.getSelectedValues()[1]);
+                              setState(() {
+                                curr_weight = picker.getSelectedValues()[0];
+                                curr_weight_scale = picker.getSelectedValues()[1];
+                              });
+                            }).showDialog(context),
                         child: Container(
                           //color: Colors.white,
                             height: 40.0,
@@ -500,7 +894,7 @@ class _Dashboard extends State<Dashboard>{
                                   style: GoogleFonts.montserrat(fontSize: 20),
                                 ),
                                 Text(
-                                  '185 lbs',
+                                  curr_weight+' '+curr_weight_scale,
                                   style: GoogleFonts.montserrat(fontSize: 13,color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -513,14 +907,15 @@ class _Dashboard extends State<Dashboard>{
                       ),
                       GestureDetector(
                         onTap: () => Picker(
-                          height: 75.0,
+                          height: 50.0,
                             adapter: PickerDataAdapter<String>(
                               pickerdata: JsonDecoder().convert(skilllist),
                               isArray: true,),
-                            hideHeader: false,
-                            selecteds: [0],
+                            hideHeader: true,
+                            selecteds: [skill.indexOf(curr_skill)],
                             selectedTextStyle: TextStyle(color: Colors.blue),
-                            onConfirm: (Picker picker, List value) {
+                            onConfirm: (Picker picker, List value) async {
+                              await _dbpush('skill level', picker.getSelectedValues()[0]);
                               setState(() {
                                 curr_skill = picker.getSelectedValues()[0];
                               });
@@ -528,7 +923,6 @@ class _Dashboard extends State<Dashboard>{
                               print(picker.getSelectedValues());
                             }).showDialog(context),
                         child: Container(
-                          //color: Colors.white,
                             height: 40.0,
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.only(left: 5.0),
@@ -553,23 +947,23 @@ class _Dashboard extends State<Dashboard>{
                       ),
                       GestureDetector(
                         onTap: () =>  Picker(
+                          height: 50,
                             adapter: PickerDataAdapter<String>(
                             pickerdata: JsonDecoder().convert(genderlist),
                             isArray: true,),
                             hideHeader: true,
-                            selecteds: [0],
+                            selecteds: [gender.indexOf(curr_gender)],
                             selectedTextStyle: TextStyle(color: Colors.blue),
                             cancel: TextButton(
                             onPressed: () {
                             Navigator.pop(context);
                             },
                                 child: Text('Cancel')),
-                                onConfirm: (Picker picker, List value) {
+                                onConfirm: (Picker picker, List value) async {
+                                  await _dbpush('gender', picker.getSelectedValues()[0]);
                               setState(() {
                                 curr_gender = picker.getSelectedValues()[0];
                               });
-                                print(value.toString());
-                                print(picker.getSelectedValues());
                             }).showDialog(context),
                         child: Container(
                           //color: Colors.white,

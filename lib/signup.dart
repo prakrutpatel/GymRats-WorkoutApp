@@ -251,7 +251,6 @@ class SignUp extends StatelessWidget {
                               child: TextFormField(
                                 controller: _email,
                                 keyboardType: TextInputType.emailAddress,
-                                autofocus: true,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction,
                                 validator: Validators.compose([
@@ -277,7 +276,6 @@ class SignUp extends StatelessWidget {
                                 obscureText: true,
                                 autocorrect: false,
                                 enableSuggestions: false,
-                                autofocus: true,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction,
                                 validator: Validators.compose([
@@ -301,7 +299,6 @@ class SignUp extends StatelessWidget {
                                 obscureText: true,
                                 autocorrect: false,
                                 enableSuggestions: false,
-                                autofocus: true,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction,
                                 validator: Validators.compose([
