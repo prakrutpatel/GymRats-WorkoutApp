@@ -266,14 +266,6 @@ class _ExerciseListState extends State<ExerciseList>
 
   @override
   Widget build(BuildContext context) {
-    final devheight = MediaQuery.of(context).size.height;
-    final devwidth = MediaQuery.of(context).size.width;
-    double getheight(double val){
-      return (val/770.6)*devheight;
-    }
-    double getwidth(double val){
-      return (val/360.0)*devwidth;
-    }
     TextEditingController workoutname = TextEditingController();
     return Scaffold(
       appBar: AppBar(
@@ -281,7 +273,7 @@ class _ExerciseListState extends State<ExerciseList>
         backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         elevation: 0.0,
         title: Container(
-          height: getheight(40.0),
+          height: 40.0,
           decoration: BoxDecoration(
             color: Colors.white70,
             borderRadius: BorderRadius.circular(32),
@@ -387,13 +379,13 @@ class _ExerciseListState extends State<ExerciseList>
                 });
               }),
           Padding(
-            padding: EdgeInsets.only(
-                top: getheight(585.0), bottom: 0.0, left: getwidth(10.0), right: 0.0),
+            padding: const EdgeInsets.only(
+                top: 585.0, bottom: 0.0, left: 10.0, right: 0.0),
             child: FloatingActionButton(
               heroTag: "addExerciseToDB",
-              child: Icon(
+              child: const Icon(
                 Icons.upgrade_rounded,
-                size: getwidth(30.0),
+                size: 30.0,
               ),
               elevation: 2.5,
               backgroundColor: const Color(0xFF0CC9C6),
@@ -419,9 +411,9 @@ class _ExerciseListState extends State<ExerciseList>
           ),
           Padding(
             padding: EdgeInsets.only(
-                top: getheight(585.0),
+                top: 585.0,
                 bottom: 0.0,
-                left: (MediaQuery.of(context).size.width - getwidth(70)),
+                left: (MediaQuery.of(context).size.width - 70.0),
                 right: 0.0),
             child: RotationTransition(
               turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
