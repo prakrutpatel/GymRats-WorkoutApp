@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Animation/FadeAnimation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/information_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 import 'homepage.dart';
 class SignUp extends StatelessWidget {
@@ -138,12 +139,10 @@ class SignUp extends StatelessWidget {
           }
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
-            print('The password provided is too weak.');
           } else if (e.code == 'email-already-in-use') {
             showMyDialogforUserfound();
           }
         } catch (e) {
-          print(e);
         }
       }
       else {
@@ -155,6 +154,14 @@ class SignUp extends StatelessWidget {
         }
       }
     }
+    final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
+    double getheight(double val){
+      return (val/770.6)*devheight;
+    }
+    double getwidth(double val){
+      return (val/360.0)*devwidth;
+    }
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -163,62 +170,28 @@ class SignUp extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 400,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/background.png'),
-                          fit: BoxFit.fill
-                      )
-                  ),
+                  height: getheight(250.0),
                   child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        left: 30,
-                        width: 80,
-                        height: 200,
-                        child: FadeAnimation(1, Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/light-1.png')
-                              )
-                          ),
-                        )),
+                    children: [
+                      Container(
+                          height: getheight(200),
+                          color: Color.fromRGBO(186, 221, 245, 1.0)
                       ),
-                      Positioned(
-                        left: 140,
-                        width: 80,
-                        height: 150,
-                        child: FadeAnimation(1.3, Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/light-2.png')
-                              )
+                      Padding(
+                        padding: EdgeInsets.only(top:getheight(165.0).floorToDouble()),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: Container(
+                            height: getheight(100.0),
+                            color: Colors.white,
                           ),
-                        )),
+                        ),
                       ),
-                      Positioned(
-                        right: 40,
-                        top: 40,
-                        width: 80,
-                        height: 150,
-                        child: FadeAnimation(1.5, Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/clock.png')
-                              )
-                          ),
-                        )),
-                      ),
-                      Positioned(
-                        child: FadeAnimation(1.6, Container(
-                          margin: EdgeInsets.only(top: 50),
-                          child: Center(
-                            child: Text("Sign Up", style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold),),
-                          ),
-                        )),
+                      Container(
+                        height: getheight(200.0),
+                        child: Center(
+                          child: Text("Sign Up", style: GoogleFonts.montserrat(fontSize: 50,color: Colors.white),),
+                        ),
                       )
                     ],
                   ),
@@ -330,8 +303,8 @@ class SignUp extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10),
                                   gradient: LinearGradient(
                                       colors: [
-                                        Color.fromRGBO(143, 148, 251, 1),
-                                        Color.fromRGBO(143, 148, 251, .6),
+                                        Color.fromRGBO(186, 221, 245, 1.0),
+                                        Color.fromRGBO(186, 221, 245, 0.6),
                                       ]
                                   )
                               ),
@@ -357,7 +330,7 @@ class SignUp extends StatelessWidget {
                               },
                               child: Text(
                                 "Log in?", style: TextStyle(color: Color
-                                  .fromRGBO(143, 148, 251, 1)),)
+                                  .fromRGBO(186, 221, 245, 1.0)),)
                           )
                       ),
                     ],

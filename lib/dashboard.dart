@@ -465,7 +465,6 @@ class _Dashboard extends State<Dashboard>{
       if (snapshot.exists) {
        return snapshot.value.toString();
       } else {
-        print('No data available.');
         return "";
       }
     }
@@ -524,10 +523,8 @@ class _Dashboard extends State<Dashboard>{
           });
           setState(() {});
         } on FirebaseException catch (error) {
-          print(error);
         }
       } catch (err){
-        print(err);
       }
   }
 
@@ -933,8 +930,6 @@ class _Dashboard extends State<Dashboard>{
                               setState(() {
                                 curr_skill = picker.getSelectedValues()[0];
                               });
-                              print(value.toString());
-                              print(picker.getSelectedValues());
                             }).showDialog(context),
                         child: Container(
                             height: getheight(40.0).floorToDouble(),
@@ -1041,7 +1036,6 @@ class _Dashboard extends State<Dashboard>{
                               width: getwidth(100.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                  print('policy');
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -1067,7 +1061,6 @@ class _Dashboard extends State<Dashboard>{
                             width: getwidth(100.0),
                             child: GestureDetector(
                               onTap: () async {
-                                print('policy');
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -1087,7 +1080,6 @@ class _Dashboard extends State<Dashboard>{
                             width: getwidth(100.0),
                             child: GestureDetector(
                               onTap: () async {
-                                print('policy');
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -1186,7 +1178,6 @@ class _Dashboard extends State<Dashboard>{
     );
   }
   Future<void> _signOut() async {
-    print(FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId']);
     if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'google.com') {
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();

@@ -422,7 +422,6 @@ class Info extends State<Additional_Info_Screen> {
     if (snapshot.exists) {
       return snapshot.value.toString();
     } else {
-      print('No data available.');
       return "";
     }
   }
@@ -437,7 +436,9 @@ class Info extends State<Additional_Info_Screen> {
     });
     dbInfo(path: 'gender').then((String result){
       _gender.text = result;
-      defaultgender = result;
+      if (result != ''){
+        defaultgender = result;
+      }
       setState(() {
 
       });
@@ -451,7 +452,9 @@ class Info extends State<Additional_Info_Screen> {
     });
     dbInfo(path: 'skill level').then((String result){
       _skill_level.text = result;
-      defaultskill = result;
+      if (result != ''){
+        defaultskill = result;
+      }
       setState(() {
 
       });
@@ -485,12 +488,21 @@ class Info extends State<Additional_Info_Screen> {
 
 
 
+
   Widget build(BuildContext context) {
     if (_weight.text != "" && _weight_scale.text != ""){
       defaultweight = _weight.text+' '+_weight_scale.text;
     }
     if (_height.text != "" && _height_scale.text != ""){
       defaultheight = _height.text+"'"+" "+_height_scale.text+"''";
+    }
+    final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
+    double getheight(double val){
+      return (val/770.6)*devheight;
+    }
+    double getwidth(double val){
+      return (val/360.0)*devwidth;
     }
 
     Future<void> _dbpush() async {
@@ -525,62 +537,28 @@ class Info extends State<Additional_Info_Screen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 400,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/background.png'),
-                          fit: BoxFit.fill
-                      )
-                  ),
+                  height: getheight(250.0),
                   child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                        left: 30,
-                        width: 80,
-                        height: 200,
-                        child: FadeAnimation(1, Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/light-1.png')
-                              )
-                          ),
-                        )),
+                    children: [
+                      Container(
+                          height: getheight(200),
+                          color: Color.fromRGBO(186, 221, 245, 1.0)
                       ),
-                      Positioned(
-                        left: 140,
-                        width: 80,
-                        height: 150,
-                        child: FadeAnimation(1.3, Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/light-2.png')
-                              )
+                      Padding(
+                        padding: EdgeInsets.only(top:getheight(165.0).floorToDouble()),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: Container(
+                            height: getheight(100.0),
+                            color: Colors.white,
                           ),
-                        )),
+                        ),
                       ),
-                      Positioned(
-                        right: 40,
-                        top: 40,
-                        width: 80,
-                        height: 150,
-                        child: FadeAnimation(1.5, Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/clock.png')
-                              )
-                          ),
-                        )),
-                      ),
-                      Positioned(
-                        child: FadeAnimation(1.6, Container(
-                          margin: EdgeInsets.only(top: 50),
-                          child: Center(
-                            child: Text("Additional Information", style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold),),
-                          ),
-                        )),
+                      Container(
+                        height: getheight(200.0),
+                        child: Center(
+                          child: Text("Personal Information",textAlign: TextAlign.center, style: GoogleFonts.montserrat(fontSize: 50,color: Colors.white),),
+                        ),
                       )
                     ],
                   ),
@@ -790,8 +768,8 @@ class Info extends State<Additional_Info_Screen> {
                                   borderRadius: BorderRadius.circular(10),
                                   gradient: LinearGradient(
                                       colors: [
-                                        Color.fromRGBO(143, 148, 251, 1),
-                                        Color.fromRGBO(143, 148, 251, .6),
+                                        Color.fromRGBO(186, 221, 245, 1.0),
+                                        Color.fromRGBO(186, 221, 245, 0.6),
                                       ]
                                   )
                               ),

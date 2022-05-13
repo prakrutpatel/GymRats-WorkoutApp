@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Animation/FadeAnimation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/forgotpassword.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wc_form_validators/wc_form_validators.dart';
 import 'signup.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -90,59 +91,28 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Container(
-                height: getheight(300),
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/background.png'),
-                        fit: BoxFit.fill
-                    )
-                ),
+                height: getheight(250.0),
                 child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      left: 30,
-                      width: 80,
-                      height: 200,
-                      child: FadeAnimation(1, Container(
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/light-1.png')
-                            )
-                        ),
-                      )),
+                  children: [
+                    Container(
+                        height: getheight(200),
+                        color: Color.fromRGBO(186, 221, 245, 1.0)
                     ),
-                    Positioned(
-                      left: 140,
-                      width: 80,
-                      height: 150,
-                      child: FadeAnimation(1.3, Container(
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: const AssetImage('assets/images/light-2.png')
-                            )
+                    Padding(
+                      padding: EdgeInsets.only(top:getheight(165.0).floorToDouble()),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50.0),
+                        child: Container(
+                          height: getheight(100.0),
+                          color: Colors.white,
                         ),
-                      )),
+                      ),
                     ),
-                    Positioned(
-                      right: 40,
-                      top: 40,
-                      width: 80,
-                      height: 150,
-                      child: FadeAnimation(1.5, Container(
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/clock.png')
-                            )
-                        ),
-                      )),
-                    ),
-                    Positioned(
-                      child: FadeAnimation(1.6, Container(
-                        margin: const EdgeInsets.only(top: 50),
-                        child: const Center(
-                          child: Text("Login", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
-                        ),
-                      )),
+                    Container(
+                      height: getheight(200.0),
+                      child: Center(
+                        child: Text("Login", style: GoogleFonts.montserrat(fontSize: 50,color: Colors.white),),
+                      ),
                     )
                   ],
                 ),
@@ -158,8 +128,8 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: const [
                             BoxShadow(
-                                color: Color.fromRGBO(186, 221, 245, 0.2),
-                                blurRadius: 20.0,
+                                color: Color.fromRGBO(186, 221, 245, 0.7),
+                                blurRadius: 30.0,
                                 offset: Offset(0, 10)
                             )
                           ]
@@ -278,7 +248,7 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: getheight(30.0),),
+                    SizedBox(height: getheight(40.0),),
                     FadeAnimation(1.5,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -305,10 +275,6 @@ class HomePage extends StatelessWidget {
     );
   }
   Future<void> _signin() async {
-    if (_email.text == 't') {
-      _email.text = 'test@test.com';
-      _password.text = 'Testuser123';
-    }
     try {
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email.text,
@@ -316,9 +282,7 @@ class HomePage extends StatelessWidget {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
       }
     }
   }
