@@ -2,13 +2,12 @@
 library event_calendar;
 
 import 'dart:math';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/exercise-editor.dart';
 import 'package:flutter_app/workout.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/exercise-editor.dart';
-import 'package:flutter_app/workout.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -149,9 +148,10 @@ class CalendarState extends State<Calendar> {
       _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
 
       Navigator.push<Widget>(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => AppointmentEditor()));
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => AppointmentEditor()),
+      );
     });
   }
 
@@ -187,7 +187,7 @@ class CalendarState extends State<Calendar> {
         _startTime =
             TimeOfDay(hour: _startDate.hour, minute: _startDate.minute);
         _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
-        Navigator.push(
+        Navigator.push<Widget>(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) =>
@@ -200,16 +200,9 @@ class CalendarState extends State<Calendar> {
   List<Appointment> getAppointmentDetails() {
     final List<Appointment> AppointmentCollection = <Appointment>[];
     eventNameCollection = <String>[];
-    eventNameCollection.add('General Appointment');
-    eventNameCollection.add('Plan Execution');
-    eventNameCollection.add('Project Plan');
-    eventNameCollection.add('Consulting');
-    eventNameCollection.add('Support');
-    eventNameCollection.add('Development Appointment');
-    eventNameCollection.add('Scrum');
-    eventNameCollection.add('Project Completion');
-    eventNameCollection.add('Release updates');
-    eventNameCollection.add('Performance Check');
+    eventNameCollection.add('Weightlifting');
+    eventNameCollection.add('Cardio');
+    eventNameCollection.add('Long Distance Cardio');
 
     _colorCollection = <Color>[];
     _colorCollection.add(const Color(0xFF0F8644));
@@ -242,6 +235,31 @@ class CalendarState extends State<Calendar> {
     _timeZoneCollection.add('US Eastern Standard Time');
     _timeZoneCollection.add('US Mountain Standard Time');
 
+    /*
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final querySnap = FirebaseDatabase.instance
+        .ref('calendars/' + auth.currentUser!.uid + "/")
+        .get();
+    Map<dynamic, dynamic> values = querySnap;
+
+    List<dynamic> key = parsedData.key.toList();
+    print(parsedData.toString());
+    print(key.toString());
+    
+    if (parsedData != null) {
+      for (int i = 0; i < key.length; i++) {
+        data = values[key[i]];
+        collection ??= <Meeting>[];
+        final Random random = new Random();
+        collection.add(Meeting(
+            eventName: data['Subject'],
+            isAllDay: false,
+            from: DateFormat('dd/MM/yyyy HH:mm:ss').parse(data['StartTime']),
+            to: DateFormat('dd/MM/yyyy HH:mm:ss').parse(data['EndTime']),
+            background: _colorCollection[random.nextInt(9)],
+            resourceId: data['ResourceId']));
+      }
+    } */
     final DateTime today = DateTime.now();
     final Random random = Random();
     for (int month = -1; month < 2; month++) {
@@ -253,13 +271,13 @@ class CalendarState extends State<Calendar> {
                 .add(Duration(hours: hour)),
             to: today
                 .add(Duration(days: (month * 30) + day))
-                .add(Duration(hours: hour + 2)),
+                .add(Duration(hours: hour + 1)),
             background: _colorCollection[random.nextInt(9)],
             startTimeZone: '',
             endTimeZone: '',
             description: '',
             isAllDay: false,
-            eventName: eventNameCollection[random.nextInt(7)],
+            eventName: eventNameCollection[random.nextInt(3)],
           ));
         }
       }
