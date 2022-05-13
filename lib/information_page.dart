@@ -32,6 +32,7 @@ class Info extends State<Additional_Info_Screen> {
   String defaultgender = 'Gender';
   String defaultskill = 'Skill Level';
   String defaultdob = 'Date of Birth';
+  String defaultname = 'Name';
 
   static const weightlist = '''
 [ 
@@ -414,12 +415,83 @@ class Info extends State<Additional_Info_Screen> {
 ]
 
     ''';
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final ref = FirebaseDatabase.instance.ref();
+  Future<String> dbInfo({required String path}) async {
+    final snapshot = await ref.child('users/'+ auth.currentUser!.uid+"/"+path).get();
+    if (snapshot.exists) {
+      return snapshot.value.toString();
+    } else {
+      print('No data available.');
+      return "";
+    }
+  }
+
+  void initState() {
+    dbInfo(path: 'name').then((String result){
+      _fullname.text = result;
+      defaultname = result;
+      setState(() {
+
+      });
+    });
+    dbInfo(path: 'gender').then((String result){
+      _gender.text = result;
+      defaultgender = result;
+      setState(() {
+
+      });
+    });
+    dbInfo(path: 'dob').then((String result){
+      _dob.text = result;
+      defaultdob = DateTime.parse(result).month.toString()+'-'+DateTime.parse(result).day.toString()+'-'+DateTime.parse(result).year.toString();
+      setState(() {
+
+      });
+    });
+    dbInfo(path: 'skill level').then((String result){
+      _skill_level.text = result;
+      defaultskill = result;
+      setState(() {
+
+      });
+    });
+    dbInfo(path: 'weight').then((String result){
+      _weight.text = result;
+      setState(() {
+      });
+    });
+    dbInfo(path: 'weight scale').then((String result){
+      _weight_scale.text = result;
+      setState(() {
+
+      });
+    });
+    dbInfo(path: 'height').then((String result){
+      _height.text = result;
+      setState(() {
+
+      });
+    });
+    dbInfo(path: 'height inches').then((String result){
+      _height_scale.text = result;
+      setState(() {
+
+      });
+    });
+
+  }
 
 
 
 
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    if (_weight.text != "" && _weight_scale.text != ""){
+      defaultweight = _weight.text+' '+_weight_scale.text;
+    }
+    if (_height.text != "" && _height_scale.text != ""){
+      defaultheight = _height.text+"'"+" "+_height_scale.text+"''";
+    }
 
     Future<void> _dbpush() async {
       DatabaseReference ref = FirebaseDatabase.instance.ref("users/"+auth.currentUser!.uid);
@@ -440,6 +512,10 @@ class Info extends State<Additional_Info_Screen> {
         ),
       );
     }
+
+
+
+
 
 
     return Scaffold(

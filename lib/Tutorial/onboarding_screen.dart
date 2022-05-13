@@ -13,7 +13,8 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController();
   int _currentPage = 0;
-  List colors = [const Color(0xffDAD3C8), const Color(0xffFFE5DE), const Color(0xffDCF6E6)];
+  List colors = [const Color(0xffDAD3C8), const Color(0xffFFE5DE), const Color(0xffDCF6E6), const Color(
+      0xffDCE6F6)];
 
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
@@ -45,19 +46,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: Column(
           children: [
             Expanded(
-              flex: 3,
+              flex: 5,
               child: PageView.builder(
                 controller: _controller,
                 onPageChanged: (value) => setState(() => _currentPage = value),
                 itemCount: contents.length,
                 itemBuilder: (context, i) {
                   return Padding(
-                    padding: const EdgeInsets.all(40.0),
+                    padding: const EdgeInsets.all(25.0),
                     child: Column(
                       children: [
                         Image.asset(
                           contents[i].image,
-                          height: SizeConfig.blockV! * 35,
+                          height: SizeConfig.blockV! * 52,
                         ),
                         SizedBox(
                           height: (height >= 840) ? 60 : 30,
@@ -92,7 +93,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Expanded(
               flex: 1,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

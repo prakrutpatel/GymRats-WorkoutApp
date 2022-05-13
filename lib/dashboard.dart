@@ -437,6 +437,8 @@ class _Dashboard extends State<Dashboard>{
   var height_scale = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
   Widget build(BuildContext context) {
+    final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
 
@@ -560,6 +562,12 @@ class _Dashboard extends State<Dashboard>{
     networkImage().then((String result){
       profile_image_url = result;
     });
+    double getheight(double val){
+      return (val/770.6)*devheight;
+    }
+    double getwidth(double val){
+      return (val/360.0)*devwidth;
+    }
 
 
     Widget _getWidget(){
@@ -567,17 +575,17 @@ class _Dashboard extends State<Dashboard>{
         return ListView(
           children: <Widget>[
              FadeAnimation(0.3, SizedBox(
-              height: 50.0,
+              height: getheight(50.0),
               child: Center(
                 child: Text("Today's Workouts", style: GoogleFonts.montserrat(fontSize: 30)),
               ),
             ),
             ),
-            FadeAnimation(0.3, SizedBox(height: 75, child: ListView.separated(
-              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            FadeAnimation(0.3, SizedBox(height: getheight(75), child: ListView.separated(
+              padding: EdgeInsets.only(left: getwidth(15.0), right: getwidth(15.0)),
               scrollDirection: Axis.horizontal,
               itemCount: 6,
-              separatorBuilder: (context, _) => const SizedBox(width: 10.0,),
+              separatorBuilder: (context, _) => SizedBox(width: getwidth(10.0)),
               itemBuilder: (context, index) =>
                   GestureDetector(
                     onTap: () {
@@ -587,8 +595,8 @@ class _Dashboard extends State<Dashboard>{
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        width: 200.0,
-                        height: 75.0,
+                        width: getheight(200.0),
+                        height: getwidth(75.0),
                         decoration: const BoxDecoration(
                             color: Colors.white
                         ),
@@ -611,7 +619,7 @@ class _Dashboard extends State<Dashboard>{
                   ),
             ),),),
             FadeAnimation(0.3, SizedBox(
-              height: 50.0,
+              height: getheight(50.0),
               child: Center(
                 child: Text("Run Summary", style: GoogleFonts.montserrat(fontSize: 30)),
               ),
@@ -619,8 +627,8 @@ class _Dashboard extends State<Dashboard>{
             ),
 
             FadeAnimation(0.3, Container(
-              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-              height: 300.0,
+              padding: EdgeInsets.only(left: getwidth(10.0), right: getwidth(10.0)),
+              height: getheight(300.0),
                 child:  ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: RunSummary()))),
@@ -636,36 +644,15 @@ class _Dashboard extends State<Dashboard>{
       else {
         return StatefulBuilder(
           builder: (_context, _setState) {
-             _pickDateDialog() {
-              showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  //which date will display when user open the picker
-                  firstDate: DateTime(1950),
-                  //what will be the previous supported year in picker
-                  lastDate: DateTime
-                      .now()) //what will be the up to supported date in picker
-                  .then((pickedDate) {
-                //then usually do the future job
-                if (pickedDate == null) {
-                  //if user tap cancel then this function will stop
-                  return;
-                }
-                setState(() {
-                  dob = pickedDate;
-                });
-              });
-            }
             return ListView(
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
                 FadeAnimation(0.3, SizedBox(
-                  height: MediaQuery.of(context).size.height,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
+                    padding: EdgeInsets.only(top: getheight(16.0)),
                     child: Column(children: <Widget>[
                       SizedBox(
-                        height: 40.0,
+                        height: getheight(40.0),
                         child: Center(
                           child: Text("Profile", style: GoogleFonts.montserrat(fontSize: 30)),
                         ),
@@ -674,7 +661,7 @@ class _Dashboard extends State<Dashboard>{
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           SizedBox(
-                            width: 20.0,
+                            width: getwidth(20.0),
                           ),
                           GestureDetector(
                             onTap: () async {
@@ -703,20 +690,20 @@ class _Dashboard extends State<Dashboard>{
                                         'assets/images/user_placeholder.png'),
                                   ),
                                   useOldImageOnUrlChange: true,
-                                  height: 90,
-                                  width: 90,
+                                  height: getwidth(90),
+                                  width: getwidth(90),
                                 ),
                                 Text('change', style: GoogleFonts.montserrat(fontSize: 10, color: Colors.blueGrey),)
                               ],
                             ),
                           ),
-                          SizedBox(width: 10.0,),
+                          SizedBox(width: getwidth(10.0),),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                height: 30.0,
-                                width: 230.0,
+                                height: getheight(30.0),
+                                width: getwidth(230.0),
                                 child: TextFormField(
                                   onChanged: (text) async {
                                     if (text == ''){
@@ -735,11 +722,11 @@ class _Dashboard extends State<Dashboard>{
                                 ),
                               ),
                               SizedBox(
-                                height: 5.0,
+                                height: getheight(5.0),
                               ),
                               Container(
-                                height: 30.0,
-                                width: 230.0,
+                                height: getheight(30.0),
+                                width: getwidth(230.0),
                                 child: TextFormField(
                                   onChanged: (text) async {
                                     await _dbpush('location', text);
@@ -761,21 +748,21 @@ class _Dashboard extends State<Dashboard>{
                         ],
                       ),
                       SizedBox(
-                        height: 10.0,
+                        height: getheight(10.0),
                       ),
                       Container(
-                        height: 20.0,
+                        height: getheight(20.0),
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(left: 5.0),
+                        padding: EdgeInsets.only(left: getwidth(5.0)),
                         child: Text(
                           'Personal Information',
                           style: GoogleFonts.montserrat(fontSize: 20,color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
                         ),
                       ),
                       Divider(
-                        thickness: 1.2,
+                        thickness: getheight(1.2),
                         color: Colors.black,
-                        endIndent: 2,
+                        endIndent: getwidth(2.0),
                       ),
                       GestureDetector(
                         onTap: () => showDatePicker(
@@ -799,9 +786,9 @@ class _Dashboard extends State<Dashboard>{
                         }),
                         child: Container(
                           //color: Colors.white,
-                          height: 40.0,
+                          height: getheight(40.0),
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(left: 5.0),
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -817,15 +804,15 @@ class _Dashboard extends State<Dashboard>{
                             )),
                       ),
                       Divider(
-                        thickness: 1.2,
+                        thickness: getheight(1.2),
                         color: Colors.black,
-                        endIndent: 2,
+                        endIndent: getwidth(2.0),
                       ),
                       Container(
                         //color: Colors.white,
-                          height: 40.0,
+                          height: getheight(40.0),
                           width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.only(left: 5.0),
+                          padding: EdgeInsets.only(left: getwidth(5.0)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -840,13 +827,13 @@ class _Dashboard extends State<Dashboard>{
                             ],
                           )),
                       Divider(
-                        thickness: 1.2,
+                        thickness: getheight(1.2),
                         color: Colors.black,
-                        endIndent: 2,
+                        endIndent: getwidth(2.0),
                       ),
                       GestureDetector(
                         onTap: () => Picker(
-                            height: 50.0,
+                            height: getheight(60.0),
                             adapter: PickerDataAdapter<String>(
                               pickerdata: JsonDecoder().convert(heightlist),
                               isArray: true,),
@@ -863,9 +850,9 @@ class _Dashboard extends State<Dashboard>{
                             }).showDialog(context),
                         child: Container(
                           //color: Colors.white,
-                            height: 40.0,
+                            height: getheight(40.0),
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(left: 5.0),
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -881,13 +868,13 @@ class _Dashboard extends State<Dashboard>{
                             )),
                       ),
                       Divider(
-                        thickness: 1.2,
+                        thickness: getheight(1.2),
                         color: Colors.black,
-                        endIndent: 2,
+                        endIndent: getwidth(2.0),
                       ),
                       GestureDetector(
                         onTap: () => Picker(
-                            height: 50.0,
+                            height: getheight(50.0),
                             adapter: PickerDataAdapter<String>(
                               pickerdata: JsonDecoder().convert(weightlist),
                               isArray: true,),
@@ -904,9 +891,9 @@ class _Dashboard extends State<Dashboard>{
                             }).showDialog(context),
                         child: Container(
                           //color: Colors.white,
-                            height: 40.0,
+                            height: getheight(40.0),
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(left: 5.0),
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -922,13 +909,13 @@ class _Dashboard extends State<Dashboard>{
                             )),
                       ),
                       Divider(
-                        thickness: 1.2,
+                        thickness: getheight(1.2),
                         color: Colors.black,
-                        endIndent: 2,
+                        endIndent: getwidth(2.0),
                       ),
                       GestureDetector(
                         onTap: () => Picker(
-                          height: 50.0,
+                          height: getheight(50.0),
                             adapter: PickerDataAdapter<String>(
                               pickerdata: JsonDecoder().convert(skilllist),
                               isArray: true,),
@@ -944,9 +931,9 @@ class _Dashboard extends State<Dashboard>{
                               print(picker.getSelectedValues());
                             }).showDialog(context),
                         child: Container(
-                            height: 40.0,
+                            height: getheight(40.0),
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(left: 5.0),
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -962,13 +949,13 @@ class _Dashboard extends State<Dashboard>{
                             )),
                       ),
                       Divider(
-                        thickness: 1.2,
+                        thickness: getheight(1.2),
                         color: Colors.black,
-                        endIndent: 2,
+                        endIndent: getwidth(2.0),
                       ),
                       GestureDetector(
                         onTap: () =>  Picker(
-                          height: 50,
+                          height: getheight(50.0),
                             adapter: PickerDataAdapter<String>(
                             pickerdata: JsonDecoder().convert(genderlist),
                             isArray: true,),
@@ -988,9 +975,9 @@ class _Dashboard extends State<Dashboard>{
                             }).showDialog(context),
                         child: Container(
                           //color: Colors.white,
-                            height: 40.0,
+                            height: getheight(40.0),
                             width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(left: 5.0),
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -1006,21 +993,27 @@ class _Dashboard extends State<Dashboard>{
                             )),
                       ),
                       Divider(
-                        thickness: 1.2,
+                        thickness: getheight(1.2),
                         color: Colors.black,
-                        endIndent: 2,
+                        endIndent: getwidth(2.0),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0),
+                        padding: EdgeInsets.only(bottom: getheight(5.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
-                              height: 35.0,
-                              width: 100.0,
+                              height: getheight(35.0),
+                              width: getwidth(100.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                  print('policy');
+                                  Navigator.pushReplacement<void, void>(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          Additional_Info_Screen(),
+                                    ),
+                                  );
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -1036,8 +1029,8 @@ class _Dashboard extends State<Dashboard>{
                               ),
                             ),
                             SizedBox(
-                              height: 35.0,
-                              width: 100.0,
+                              height: getheight(35.0),
+                              width: getwidth(100.0),
                               child: GestureDetector(
                                 onTap: () async {
                                   print('policy');
@@ -1062,8 +1055,8 @@ class _Dashboard extends State<Dashboard>{
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           SizedBox(
-                            height: 35.0,
-                            width: 100.0,
+                            height: getheight(35.0),
+                            width: getwidth(100.0),
                             child: GestureDetector(
                               onTap: () async {
                                 print('policy');
@@ -1082,8 +1075,8 @@ class _Dashboard extends State<Dashboard>{
                             ),
                           ),
                           SizedBox(
-                            height: 35.0,
-                            width: 100.0,
+                            height: getheight(35.0),
+                            width: getwidth(100.0),
                             child: GestureDetector(
                               onTap: () async {
                                 print('policy');
@@ -1104,16 +1097,16 @@ class _Dashboard extends State<Dashboard>{
                         ],
                       ),
                       SizedBox(
-                        height: 15.0,
+                        height: getheight(15.0),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
+                            padding: EdgeInsets.only(left: getwidth(15.0)),
                             child: SizedBox(
-                              height: 40.0,
-                              width: 80.0,
+                              height: getheight(40.0),
+                              width: getwidth(80.0),
                               child: GestureDetector(
                                 onTap: () async {
                                   await FirebaseAuth.instance.currentUser?.delete();
@@ -1133,7 +1126,7 @@ class _Dashboard extends State<Dashboard>{
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 15.0),
+                            padding: EdgeInsets.only(right: getwidth(15.0)),
                             child: FloatingActionButton(
                               child: Icon(Icons.logout_rounded),
                               elevation: 2.5,
@@ -1162,12 +1155,12 @@ class _Dashboard extends State<Dashboard>{
         bottomNavigationBar: CurvedNavigationBar(
           key: _bottomNavigationKey,
           index: 0,
-          height: 60.0,
-          items: const <Widget>[
-            Icon(Icons.home_rounded, size: 30),
-            Icon(Icons.calendar_view_day_rounded, size: 30),
-            Icon(Icons.menu_open_rounded, size: 30),
-            Icon(Icons.perm_identity, size: 30),
+          height: getheight(60.0),
+          items: <Widget>[
+            Icon(Icons.home_rounded, size: getwidth(30.0)),
+            Icon(Icons.calendar_view_day_rounded, size: getwidth(30.0)),
+            Icon(Icons.menu_open_rounded, size: getwidth(30.0)),
+            Icon(Icons.perm_identity, size: getwidth(30.0)),
           ],
           color: Colors.white,
           buttonBackgroundColor: Colors.white,
