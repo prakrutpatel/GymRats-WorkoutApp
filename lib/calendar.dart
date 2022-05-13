@@ -7,6 +7,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/exercise-editor.dart';
 import 'package:flutter_app/workout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/exercise-editor.dart';
+import 'package:flutter_app/workout.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -147,10 +149,9 @@ class CalendarState extends State<Calendar> {
       _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
 
       Navigator.push<Widget>(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => AppointmentEditor()),
-      );
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => AppointmentEditor()));
     });
   }
 
@@ -186,7 +187,7 @@ class CalendarState extends State<Calendar> {
         _startTime =
             TimeOfDay(hour: _startDate.hour, minute: _startDate.minute);
         _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
-        Navigator.push<Widget>(
+        Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) =>
