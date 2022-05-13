@@ -6,14 +6,19 @@ import 'package:flutter/services.dart';
 import 'dart:math' as math;
 import 'package:toast/toast.dart';
 
-class ExerciseList extends StatefulWidget {
-  const ExerciseList({Key? key}) : super(key: key);
+late String global_name;
+
+class ExerciseEditor extends StatefulWidget {
+  const ExerciseEditor({Key? key, required this.name}) : super(key: key);
+
+  //name is the key of given workout
+  final String name;
 
   @override
-  State<ExerciseList> createState() => _ExerciseListState();
+  State<ExerciseEditor> createState() => _ExerciseEditorState();
 }
 
-class _ExerciseListState extends State<ExerciseList>
+class _ExerciseEditorState extends State<ExerciseEditor>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -270,7 +275,6 @@ class _ExerciseListState extends State<ExerciseList>
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         elevation: 0.0,
         title: Container(
           height: 40.0,
@@ -279,27 +283,10 @@ class _ExerciseListState extends State<ExerciseList>
             borderRadius: BorderRadius.circular(32),
           ),
           child: Center(
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              controller: workoutname,
-              style: const TextStyle(
-                color: Color.fromRGBO(150, 206, 243, 1.0),
-                fontSize: 27,
-                fontWeight: FontWeight.w400,
-              ),
-              decoration: const InputDecoration.collapsed(
-                hintText: 'Untitled Workout',
-                hintStyle: TextStyle(
-                  color: Color.fromRGBO(150, 206, 243, 1.0),
-                  fontSize: 27,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
+            child: Text(widget.name),
           ),
         ),
       ),
-      backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
       body: SafeArea(
         child: Stack(children: [
           ReorderableListView.builder(
@@ -384,7 +371,7 @@ class _ExerciseListState extends State<ExerciseList>
             child: FloatingActionButton(
               heroTag: "addExerciseToDB",
               child: const Icon(
-                Icons.upgrade_rounded,
+                Icons.arrow_back,
                 size: 30.0,
               ),
               elevation: 2.5,
@@ -406,6 +393,7 @@ class _ExerciseListState extends State<ExerciseList>
                     "max weight": element.comp3,
                   });
                 }
+                Navigator.pop(context);
               },
             ),
           ),
@@ -576,7 +564,7 @@ class TextBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      color: Colors.white,
+      color: Colors.black,
       child: TextField(
         decoration:
             InputDecoration(border: InputBorder.none, hintText: 'Search'),
