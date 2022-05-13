@@ -389,12 +389,14 @@ class _ExerciseEditorState extends State<ExerciseEditor>
                       "workouts/" +
                           auth.currentUser!.uid +
                           "/${workoutname.text}/" +
-                          element.name);
+                          element.uid.toString());
                   ref.set({
                     "name": element.name,
                     "type": element.type,
                     "comp1": element.comp1,
                     "comp2": element.comp2,
+                    "duration value": element.dur,
+                    "execise ID": element.uid,
                     "duration": element.durDisp,
                     "max weight": element.comp3,
                   });

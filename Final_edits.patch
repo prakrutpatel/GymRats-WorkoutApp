@@ -1,0 +1,74 @@
+Index: lib/workout.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/workout.dart b/lib/workout.dart
+--- a/lib/workout.dart	(revision 667b2ce6770b2c4f157d52eb32d4c62bdea75b42)
++++ b/lib/workout.dart	(date 1652468874835)
+@@ -416,12 +416,14 @@
+                       "workouts/" +
+                           auth.currentUser!.uid +
+                           "/${workoutname.text}/" +
+-                          element.name);
++                          element.uid.toString());
+                   ref.set({
+                     "name": element.name,
+                     "type": element.type,
+                     "comp1": element.comp1,
+                     "comp2": element.comp2,
++                    "duration value": element.dur,
++                    "execise ID": element.uid,
+                     "duration": element.durDisp,
+                     "max weight": element.comp3,
+                   });
+Index: lib/exercise-editor.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/exercise-editor.dart b/lib/exercise-editor.dart
+--- a/lib/exercise-editor.dart	(revision 667b2ce6770b2c4f157d52eb32d4c62bdea75b42)
++++ b/lib/exercise-editor.dart	(date 1652468874826)
+@@ -389,12 +389,14 @@
+                       "workouts/" +
+                           auth.currentUser!.uid +
+                           "/${workoutname.text}/" +
+-                          element.name);
++                          element.uid.toString());
+                   ref.set({
+                     "name": element.name,
+                     "type": element.type,
+                     "comp1": element.comp1,
+                     "comp2": element.comp2,
++                    "duration value": element.dur,
++                    "execise ID": element.uid,
+                     "duration": element.durDisp,
+                     "max weight": element.comp3,
+                   });
+Index: lib/Animation/FadeAnimation.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/Animation/FadeAnimation.dart b/lib/Animation/FadeAnimation.dart
+--- a/lib/Animation/FadeAnimation.dart	(revision 667b2ce6770b2c4f157d52eb32d4c62bdea75b42)
++++ b/lib/Animation/FadeAnimation.dart	(date 1652467895638)
+@@ -1,3 +1,4 @@
++//Written by PK
+ import 'package:flutter/material.dart';
+ import 'package:simple_animations/multi_tween/multi_tween.dart';
+ import 'package:simple_animations/stateless_animation/play_animation.dart';
+Index: lib/Tutorial/onboarding_screen.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/Tutorial/onboarding_screen.dart b/lib/Tutorial/onboarding_screen.dart
+--- a/lib/Tutorial/onboarding_screen.dart	(revision 667b2ce6770b2c4f157d52eb32d4c62bdea75b42)
++++ b/lib/Tutorial/onboarding_screen.dart	(date 1652467855711)
+@@ -1,3 +1,4 @@
++//Written by PK
+ import 'package:flutter/material.dart';
+ import 'package:flutter_app/dashboard.dart';
+ import 'size_config.dart';
