@@ -1105,7 +1105,7 @@ class _Dashboard extends State<Dashboard>{
                         ],
                       ),
                       SizedBox(
-                        height: getheight(15.0).floorToDouble(),
+                        height: getheight(30.0).floorToDouble(),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1113,7 +1113,7 @@ class _Dashboard extends State<Dashboard>{
                           Padding(
                             padding: EdgeInsets.only(left: getwidth(15.0)),
                             child: SizedBox(
-                              height: getheight(40.0).floorToDouble(),
+                              height: getheight(30.0).floorToDouble(),
                               width: getwidth(80.0),
                               child: GestureDetector(
                                 onTap: () async {
@@ -1125,7 +1125,7 @@ class _Dashboard extends State<Dashboard>{
                                     color: Colors.red,
                                     child: Center(
                                       child: Text(
-                                        'Delete', style: TextStyle(color: Colors.white, fontSize: getheight(20.0).floorToDouble()),
+                                        'Delete Account', style: TextStyle(color: Colors.white, fontSize: getheight(10.0).floorToDouble()),
                                       ),
                                     ),
                                   ),

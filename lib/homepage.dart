@@ -14,6 +14,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
+    double getheight(double val){
+      return (val/770.6)*devheight;
+    }
+    double getwidth(double val){
+      return (val/360.0)*devwidth;
+    }
     FirebaseAuth.instance.currentUser?.reload();
     StreamSubscription<User?> authManager = FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user == null) {
@@ -82,7 +90,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Container(
-                height: 300,
+                height: getheight(300),
                 decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('assets/images/background.png'),
@@ -140,7 +148,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(30.0),
+                padding: EdgeInsets.all(getwidth(30.0)),
                 child: Column(
                   children: <Widget>[
                     FadeAnimation(1.8, Container(
@@ -197,10 +205,10 @@ class HomePage extends StatelessWidget {
                       ),
                     )
                     ),
-                    const SizedBox(height: 15,),
+                    SizedBox(height: getheight(15).floorToDouble(),),
                     FadeAnimation(1.5,
                         Padding(
-                          padding: const EdgeInsets.only(left: 175.0),
+                          padding: EdgeInsets.only(left: getwidth(150)),
                           child: GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPassword()));
@@ -209,14 +217,14 @@ class HomePage extends StatelessWidget {
                           ),
                         )
                     ),
-                    const SizedBox(height: 30,),
+                    SizedBox(height: getheight(30.0),),
                     FadeAnimation(2,
                         GestureDetector(
                           onTap: () async {
                             _signin();
                           },
                           child: Container(
-                            height: 50,
+                            height: getheight(50.0),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 gradient: const LinearGradient(
@@ -232,21 +240,23 @@ class HomePage extends StatelessWidget {
                           ) ,
                         )
                     ),
-                    const SizedBox(height: 25,),
+                    SizedBox(height: getheight(25),),
                     FadeAnimation(1.5, Stack(
-                        children: const [
+                        children:  [
                           Divider(
+                            height: getheight(16).floorToDouble(),
                             thickness: 1.7,
-                            endIndent: 205.0,
+                            endIndent: getwidth(205.0),
                           ),
                           Center(child: Text('or continue with', style: TextStyle(color: Colors.grey), textAlign: TextAlign.center,)),
                           Divider(
+                            height: getheight(16).floorToDouble(),
                             thickness: 1.7,
-                            indent: 205.0,
+                            indent: getwidth(205.0),
                           ),
                         ]
                     ),),
-                    const SizedBox(height: 30.0,),
+                    SizedBox(height: getheight(30.0),),
                     FadeAnimation(1.5,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -256,8 +266,8 @@ class HomePage extends StatelessWidget {
                                 signInWithGoogle();
                               },
                               child: Container(
-                                height: 50.0,
-                                width: 50.0,
+                                height: getheight(50.0),
+                                width: getwidth(50.0),
                                 decoration: const BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage('assets/images/google.png')
@@ -268,20 +278,20 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 30.0,),
+                    SizedBox(height: getheight(30.0),),
                     FadeAnimation(1.5,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             const Text("Don't have an account?", style: TextStyle(color: Colors.grey)),
-                            const SizedBox(width: 10.0,),
+                            SizedBox(width: getwidth(10.0),),
                             GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
                                     },
                                     child: const Text("Register here", style: TextStyle(color: Color.fromRGBO(186, 221, 245, 1.0)),)
                                 ),
-                            const SizedBox(width: 8.0,),
+                            SizedBox(width: getwidth(8.0),),
 
                           ],
                         ),
