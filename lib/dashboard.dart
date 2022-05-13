@@ -801,14 +801,10 @@ class _Dashboard extends State<Dashboard> {
     dbInfo(path: 'gender').then((String result) {
       curr_gender = result;
     });
-<<<<<<< HEAD
-    dbInfo(path: 'skill level').then((String result) {
-=======
     dbInfo(path: 'dob').then((String result){
       dob = DateTime.parse(result);
     });
     dbInfo(path: 'skill level').then((String result){
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
       curr_skill = result;
     });
     dbInfo(path: 'location').then((String result) {
@@ -844,12 +840,7 @@ class _Dashboard extends State<Dashboard> {
           setState(() {});
         } on FirebaseException catch (error) {
         }
-<<<<<<< HEAD
-      } catch (err) {
-        print(err);
-=======
       } catch (err){
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
       }
     }
 
@@ -899,30 +890,6 @@ class _Dashboard extends State<Dashboard> {
       if (_page.toString() == '0') {
         return ListView(
           children: <Widget>[
-<<<<<<< HEAD
-            FadeAnimation(
-              0.3,
-              SizedBox(
-                height: 50.0,
-                child: Center(
-                  child: Text("Today's Workouts",
-                      style: GoogleFonts.montserrat(fontSize: 30)),
-                ),
-              ),
-            ),
-            FadeAnimation(
-              0.3,
-              SizedBox(
-                height: 75,
-                child: ListView.separated(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  separatorBuilder: (context, _) => const SizedBox(
-                    width: 10.0,
-                  ),
-                  itemBuilder: (context, index) => GestureDetector(
-=======
              FadeAnimation(0.3, SizedBox(
               height: getheight(50.0),
               child: Center(
@@ -937,7 +904,6 @@ class _Dashboard extends State<Dashboard> {
               separatorBuilder: (context, _) => SizedBox(width: getwidth(10.0)),
               itemBuilder: (context, index) =>
                   GestureDetector(
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                     onTap: () {
                       Toast.show("Starting Workout ${index + 1}", context,
                           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -945,17 +911,11 @@ class _Dashboard extends State<Dashboard> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
-<<<<<<< HEAD
-                        width: 200.0,
-                        height: 75.0,
-                        decoration: const BoxDecoration(color: Colors.white),
-=======
                         width: getheight(200.0),
                         height: getwidth(75.0),
                         decoration: const BoxDecoration(
                             color: Colors.white
                         ),
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                         child: Center(
                             child: Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -972,15 +932,11 @@ class _Dashboard extends State<Dashboard> {
                       ),
                     ),
                   ),
-<<<<<<< HEAD
-                ),
-=======
             ),),),
             FadeAnimation(0.3, SizedBox(
               height: getheight(50.0),
               child: Center(
                 child: Text("Run Summary", style: GoogleFonts.montserrat(fontSize: 30)),
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
               ),
             ),
             FadeAnimation(
@@ -993,16 +949,6 @@ class _Dashboard extends State<Dashboard> {
                 ),
               ),
             ),
-<<<<<<< HEAD
-            FadeAnimation(
-                0.3,
-                Container(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    height: 300.0,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: RunSummary()))),
-=======
 
             FadeAnimation(0.3, Container(
               padding: EdgeInsets.only(left: getwidth(10.0), right: getwidth(10.0)),
@@ -1010,7 +956,6 @@ class _Dashboard extends State<Dashboard> {
                 child:  ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: RunSummary()))),
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
           ],
         );
       } else if (_page.toString() == '1') {
@@ -1020,44 +965,6 @@ class _Dashboard extends State<Dashboard> {
       } else {
         return StatefulBuilder(
           builder: (_context, _setState) {
-<<<<<<< HEAD
-            _pickDateDialog() {
-              showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      //which date will display when user open the picker
-                      firstDate: DateTime(1950),
-                      //what will be the previous supported year in picker
-                      lastDate: DateTime
-                          .now()) //what will be the up to supported date in picker
-                  .then((pickedDate) {
-                //then usually do the future job
-                if (pickedDate == null) {
-                  //if user tap cancel then this function will stop
-                  return;
-                }
-                setState(() {
-                  dob = pickedDate;
-                });
-              });
-            }
-
-            return ListView(
-              physics: NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                FadeAnimation(
-                  0.3,
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: Column(children: <Widget>[
-                        SizedBox(
-                          height: 40.0,
-                          child: Center(
-                            child: Text("Profile",
-                                style: GoogleFonts.montserrat(fontSize: 30)),
-=======
             return ListView(
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
@@ -1076,7 +983,6 @@ class _Dashboard extends State<Dashboard> {
                         children: <Widget>[
                           SizedBox(
                             width: getwidth(20.0),
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                           ),
                         ),
                         Row(
@@ -1115,15 +1021,6 @@ class _Dashboard extends State<Dashboard> {
                                     height: 90,
                                     width: 90,
                                   ),
-<<<<<<< HEAD
-                                  Text(
-                                    'change',
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 10, color: Colors.blueGrey),
-                                  )
-                                ],
-                              ),
-=======
                                   placeholder: (context, url) =>
                                   const CircularProgressIndicator(),
                                   errorWidget: (context, url, error) =>
@@ -1137,7 +1034,6 @@ class _Dashboard extends State<Dashboard> {
                                 ),
                                 Text('change', style: GoogleFonts.montserrat(fontSize: getheight(10).floorToDouble(), color: Colors.blueGrey),)
                               ],
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                             ),
                             SizedBox(
                               width: 10.0,
@@ -1208,298 +1104,6 @@ class _Dashboard extends State<Dashboard> {
                                 color: Colors.blueGrey.shade800,
                                 fontWeight: FontWeight.w400),
                           ),
-<<<<<<< HEAD
-                        ),
-                        Divider(
-                          thickness: 1.2,
-                          color: Colors.black,
-                          endIndent: 2,
-                        ),
-                        GestureDetector(
-                          onTap: () async => print(''),
-                          child: Container(
-                              //color: Colors.white,
-                              height: 40.0,
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(left: 5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Birthdate',
-                                    style: GoogleFonts.montserrat(fontSize: 20),
-                                  ),
-                                  Text(
-                                    dob.toString().substring(0, 10),
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 13,
-                                        color: Colors.blueGrey.shade800,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              )),
-                        ),
-                        Divider(
-                          thickness: 1.2,
-                          color: Colors.black,
-                          endIndent: 2,
-                        ),
-                        Container(
-                            //color: Colors.white,
-                            height: 40.0,
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.only(left: 5.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Age',
-                                  style: GoogleFonts.montserrat(fontSize: 20),
-                                ),
-                                Text(
-                                  AgeCalculator.age(dob).years.toString(),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 13,
-                                      color: Colors.blueGrey.shade800,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ],
-                            )),
-                        Divider(
-                          thickness: 1.2,
-                          color: Colors.black,
-                          endIndent: 2,
-                        ),
-                        GestureDetector(
-                          onTap: () => Picker(
-                              height: 50.0,
-                              adapter: PickerDataAdapter<String>(
-                                pickerdata: JsonDecoder().convert(heightlist),
-                                isArray: true,
-                              ),
-                              hideHeader: true,
-                              selecteds: [
-                                height.indexOf(int.parse(curr_height_feet)),
-                                0,
-                                height_scale
-                                    .indexOf(int.parse(curr_height_inches)),
-                                0
-                              ],
-                              selectedTextStyle: TextStyle(color: Colors.blue),
-                              onConfirm: (Picker picker, List value) async {
-                                await _dbpush(
-                                    'height', picker.getSelectedValues()[0]);
-                                await _dbpush('height inches',
-                                    picker.getSelectedValues()[2]);
-                                setState(() {
-                                  curr_height_feet =
-                                      picker.getSelectedValues()[0];
-                                  curr_height_inches =
-                                      picker.getSelectedValues()[2];
-                                });
-                              }).showDialog(context),
-                          child: Container(
-                              //color: Colors.white,
-                              height: 40.0,
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(left: 5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Height',
-                                    style: GoogleFonts.montserrat(fontSize: 20),
-                                  ),
-                                  Text(
-                                    curr_height_feet +
-                                        "'" +
-                                        " " +
-                                        curr_height_inches +
-                                        "''",
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 13,
-                                        color: Colors.blueGrey.shade800,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              )),
-                        ),
-                        Divider(
-                          thickness: 1.2,
-                          color: Colors.black,
-                          endIndent: 2,
-                        ),
-                        GestureDetector(
-                          onTap: () => Picker(
-                              height: 50.0,
-                              adapter: PickerDataAdapter<String>(
-                                pickerdata: JsonDecoder().convert(weightlist),
-                                isArray: true,
-                              ),
-                              hideHeader: true,
-                              selecteds: [
-                                weight.indexOf(int.parse(curr_weight)),
-                                weight_scale.indexOf(curr_weight_scale)
-                              ],
-                              selectedTextStyle: TextStyle(color: Colors.blue),
-                              onConfirm: (Picker picker, List value) async {
-                                await _dbpush(
-                                    'weight', picker.getSelectedValues()[0]);
-                                await _dbpush('weight scale',
-                                    picker.getSelectedValues()[1]);
-                                setState(() {
-                                  curr_weight = picker.getSelectedValues()[0];
-                                  curr_weight_scale =
-                                      picker.getSelectedValues()[1];
-                                });
-                              }).showDialog(context),
-                          child: Container(
-                              //color: Colors.white,
-                              height: 40.0,
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(left: 5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Weight',
-                                    style: GoogleFonts.montserrat(fontSize: 20),
-                                  ),
-                                  Text(
-                                    curr_weight + ' ' + curr_weight_scale,
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 13,
-                                        color: Colors.blueGrey.shade800,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              )),
-                        ),
-                        Divider(
-                          thickness: 1.2,
-                          color: Colors.black,
-                          endIndent: 2,
-                        ),
-                        GestureDetector(
-                          onTap: () => Picker(
-                              height: 50.0,
-                              adapter: PickerDataAdapter<String>(
-                                pickerdata: JsonDecoder().convert(skilllist),
-                                isArray: true,
-                              ),
-                              hideHeader: true,
-                              selecteds: [skill.indexOf(curr_skill)],
-                              selectedTextStyle: TextStyle(color: Colors.blue),
-                              onConfirm: (Picker picker, List value) async {
-                                await _dbpush('skill level',
-                                    picker.getSelectedValues()[0]);
-                                setState(() {
-                                  curr_skill = picker.getSelectedValues()[0];
-                                });
-                                print(value.toString());
-                                print(picker.getSelectedValues());
-                              }).showDialog(context),
-                          child: Container(
-                              height: 40.0,
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(left: 5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Activity Class',
-                                    style: GoogleFonts.montserrat(fontSize: 20),
-                                  ),
-                                  Text(
-                                    curr_skill,
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 13,
-                                        color: Colors.blueGrey.shade800,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              )),
-                        ),
-                        Divider(
-                          thickness: 1.2,
-                          color: Colors.black,
-                          endIndent: 2,
-                        ),
-                        GestureDetector(
-                          onTap: () => Picker(
-                              height: 50,
-                              adapter: PickerDataAdapter<String>(
-                                pickerdata: JsonDecoder().convert(genderlist),
-                                isArray: true,
-                              ),
-                              hideHeader: true,
-                              selecteds: [gender.indexOf(curr_gender)],
-                              selectedTextStyle: TextStyle(color: Colors.blue),
-                              cancel: TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Cancel')),
-                              onConfirm: (Picker picker, List value) async {
-                                await _dbpush(
-                                    'gender', picker.getSelectedValues()[0]);
-                                setState(() {
-                                  curr_gender = picker.getSelectedValues()[0];
-                                });
-                              }).showDialog(context),
-                          child: Container(
-                              //color: Colors.white,
-                              height: 40.0,
-                              width: MediaQuery.of(context).size.width,
-                              padding: EdgeInsets.only(left: 5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Gender',
-                                    style: GoogleFonts.montserrat(fontSize: 20),
-                                  ),
-                                  Text(
-                                    curr_gender,
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 13,
-                                        color: Colors.blueGrey.shade800,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              )),
-                        ),
-                        Divider(
-                          thickness: 1.2,
-                          color: Colors.black,
-                          endIndent: 2,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 5.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SizedBox(
-                                height: 35.0,
-                                width: 100.0,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    print('policy');
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: Container(
-                                      color: Colors.blueGrey,
-                                      child: Center(
-                                        child: Text(
-                                          'Privacy Policy',
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 10,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-=======
                           SizedBox(width: getwidth(10.0),),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -1521,32 +1125,10 @@ class _Dashboard extends State<Dashboard> {
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.symmetric(vertical: 0),
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                                   ),
                                 ),
                               ),
                               SizedBox(
-<<<<<<< HEAD
-                                height: 35.0,
-                                width: 100.0,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    print('policy');
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: Container(
-                                      color: Colors.blueGrey,
-                                      child: Center(
-                                        child: Text(
-                                          'Security Policy',
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 10,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-=======
                                 height: getheight(5.0).floorToDouble(),
                               ),
                               Container(
@@ -1565,16 +1147,10 @@ class _Dashboard extends State<Dashboard> {
                                     hintText: 'Location',
                                     hintStyle: GoogleFonts.montserrat(fontSize: getheight(20.0).floorToDouble()),
                                     contentPadding: EdgeInsets.symmetric(vertical: 0),
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                                   ),
                                 ),
                               ),
                             ],
-<<<<<<< HEAD
-                          ),
-                        ),
-                        Row(
-=======
                           )
                         ],
                       ),
@@ -1836,7 +1412,6 @@ class _Dashboard extends State<Dashboard> {
                       Padding(
                         padding: EdgeInsets.only(bottom: getheight(5.0)),
                         child: Row(
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
@@ -1890,35 +1465,6 @@ class _Dashboard extends State<Dashboard> {
                             ),
                           ],
                         ),
-<<<<<<< HEAD
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15.0),
-                              child: SizedBox(
-                                height: 40.0,
-                                width: 80.0,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    await FirebaseAuth.instance.currentUser
-                                        ?.delete();
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    child: Container(
-                                      color: Colors.red,
-                                      child: Center(
-                                        child: Text(
-                                          'Delete',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20.0),
-                                        ),
-=======
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1985,25 +1531,12 @@ class _Dashboard extends State<Dashboard> {
                                     child: Center(
                                       child: Text(
                                         'Delete Account', style: TextStyle(color: Colors.white, fontSize: getheight(10.0).floorToDouble()),
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-<<<<<<< HEAD
-                            Padding(
-                              padding: const EdgeInsets.only(right: 15.0),
-                              child: FloatingActionButton(
-                                child: Icon(Icons.logout_rounded),
-                                elevation: 2.5,
-                                backgroundColor: const Color(0xFF0CC9C6),
-                                onPressed: () {
-                                  _signOut();
-                                },
-                              ),
-=======
                           ),
                           Padding(
                             padding: EdgeInsets.only(right: getwidth(15.0)),
@@ -2014,7 +1547,6 @@ class _Dashboard extends State<Dashboard> {
                               onPressed: () {
                                 _signOut();
                               },
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                             ),
                           ],
                         ),
@@ -2057,18 +1589,7 @@ class _Dashboard extends State<Dashboard> {
   }
 
   Future<void> _signOut() async {
-<<<<<<< HEAD
-    print(FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']
-        ['providerData'][0]['providerId']);
-    if (FirebaseAuth
-            .instance
-            .pluginConstants['APP_CURRENT_USER']['providerData'][0]
-                ['providerId']
-            .toString() ==
-        'google.com') {
-=======
     if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'google.com') {
->>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
     } else if (FirebaseAuth

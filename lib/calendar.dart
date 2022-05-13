@@ -7,8 +7,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/exercise-editor.dart';
 import 'package:flutter_app/workout.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/exercise-editor.dart';
-import 'package:flutter_app/workout.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -149,9 +147,10 @@ class CalendarState extends State<Calendar> {
       _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
 
       Navigator.push<Widget>(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => AppointmentEditor()));
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => AppointmentEditor()),
+      );
     });
   }
 
@@ -187,7 +186,7 @@ class CalendarState extends State<Calendar> {
         _startTime =
             TimeOfDay(hour: _startDate.hour, minute: _startDate.minute);
         _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
-        Navigator.push(
+        Navigator.push<Widget>(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) =>
@@ -199,17 +198,6 @@ class CalendarState extends State<Calendar> {
 
   List<Appointment> getAppointmentDetails() {
     final List<Appointment> AppointmentCollection = <Appointment>[];
-    eventNameCollection = <String>[];
-    eventNameCollection.add('General Appointment');
-    eventNameCollection.add('Plan Execution');
-    eventNameCollection.add('Project Plan');
-    eventNameCollection.add('Consulting');
-    eventNameCollection.add('Support');
-    eventNameCollection.add('Development Appointment');
-    eventNameCollection.add('Scrum');
-    eventNameCollection.add('Project Completion');
-    eventNameCollection.add('Release updates');
-    eventNameCollection.add('Performance Check');
 
     _colorCollection = <Color>[];
     _colorCollection.add(const Color(0xFF0F8644));
@@ -242,6 +230,11 @@ class CalendarState extends State<Calendar> {
     _timeZoneCollection.add('US Eastern Standard Time');
     _timeZoneCollection.add('US Mountain Standard Time');
 
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final querySnap = FirebaseDatabase.instance
+        .ref('calendars/' + auth.currentUser!.uid + "/")
+        .get()
+        .then((value) => print(value.value));
     final DateTime today = DateTime.now();
     final Random random = Random();
     for (int month = -1; month < 2; month++) {
@@ -264,7 +257,6 @@ class CalendarState extends State<Calendar> {
         }
       }
     }
-
     return AppointmentCollection;
   }
 }
