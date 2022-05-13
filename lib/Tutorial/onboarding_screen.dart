@@ -35,10 +35,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
     double width = SizeConfig.screenW!;
     double height = SizeConfig.screenH!;
     double blockH = SizeConfig.blockH!;
     double blockV = SizeConfig.blockV!;
+    double getheight(double val){
+      return (val/771)*devheight;
+    }
+    double getwidth(double val){
+      return (val/360.0)*devwidth;
+    }
 
     return Scaffold(
       backgroundColor: colors[_currentPage],
@@ -131,7 +139,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   )
                       : Padding(
-                    padding: const EdgeInsets.all(30),
+                    padding: EdgeInsets.all(getheight(30.0).floorToDouble()),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
