@@ -596,7 +596,7 @@ class Info extends State<Additional_Info_Screen> {
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: "Name",
-                                  hintStyle: TextStyle(color: Colors.grey[400]),
+                                  hintStyle: TextStyle(color: Colors.grey.shade400),
                                 ),
                               ),
                             ),
