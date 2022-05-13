@@ -43,7 +43,7 @@ class _WorkoutListState extends State<WorkoutList>
       await ref
           .child('workouts')
           .child(auth.currentUser!.uid.toString())
-          .orderByValue()
+          .child("Test ID 2")
           .get()
           .then((value) => print(value.value));
     }
