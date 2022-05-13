@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -758,6 +759,8 @@ class _Dashboard extends State<Dashboard> {
   var height_scale = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
   Widget build(BuildContext context) {
+    final devheight = MediaQuery.of(context).size.height;
+    final devwidth = MediaQuery.of(context).size.width;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final ref = FirebaseDatabase.instance.ref();
 
@@ -780,7 +783,6 @@ class _Dashboard extends State<Dashboard> {
       if (snapshot.exists) {
         return snapshot.value.toString();
       } else {
-        print('No data available.');
         return "";
       }
     }
@@ -799,7 +801,14 @@ class _Dashboard extends State<Dashboard> {
     dbInfo(path: 'gender').then((String result) {
       curr_gender = result;
     });
+<<<<<<< HEAD
     dbInfo(path: 'skill level').then((String result) {
+=======
+    dbInfo(path: 'dob').then((String result){
+      dob = DateTime.parse(result);
+    });
+    dbInfo(path: 'skill level').then((String result){
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
       curr_skill = result;
     });
     dbInfo(path: 'location').then((String result) {
@@ -834,10 +843,13 @@ class _Dashboard extends State<Dashboard> {
           });
           setState(() {});
         } on FirebaseException catch (error) {
-          print(error);
         }
+<<<<<<< HEAD
       } catch (err) {
         print(err);
+=======
+      } catch (err){
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
       }
     }
 
@@ -876,11 +888,18 @@ class _Dashboard extends State<Dashboard> {
     networkImage().then((String result) {
       profile_image_url = result;
     });
+    double getheight(double val){
+      return (val/771)*devheight;
+    }
+    double getwidth(double val){
+      return (val/360.0)*devwidth;
+    }
 
     Widget _getWidget() {
       if (_page.toString() == '0') {
         return ListView(
           children: <Widget>[
+<<<<<<< HEAD
             FadeAnimation(
               0.3,
               SizedBox(
@@ -903,6 +922,22 @@ class _Dashboard extends State<Dashboard> {
                     width: 10.0,
                   ),
                   itemBuilder: (context, index) => GestureDetector(
+=======
+             FadeAnimation(0.3, SizedBox(
+              height: getheight(50.0),
+              child: Center(
+                child: Text("Today's Workouts", style: GoogleFonts.montserrat(fontSize: 30)),
+              ),
+            ),
+            ),
+            FadeAnimation(0.3, SizedBox(height: getheight(75), child: ListView.separated(
+              padding: EdgeInsets.only(left: getwidth(15.0), right: getwidth(15.0)),
+              scrollDirection: Axis.horizontal,
+              itemCount: 6,
+              separatorBuilder: (context, _) => SizedBox(width: getwidth(10.0)),
+              itemBuilder: (context, index) =>
+                  GestureDetector(
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                     onTap: () {
                       Toast.show("Starting Workout ${index + 1}", context,
                           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
@@ -910,9 +945,17 @@ class _Dashboard extends State<Dashboard> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
+<<<<<<< HEAD
                         width: 200.0,
                         height: 75.0,
                         decoration: const BoxDecoration(color: Colors.white),
+=======
+                        width: getheight(200.0),
+                        height: getwidth(75.0),
+                        decoration: const BoxDecoration(
+                            color: Colors.white
+                        ),
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                         child: Center(
                             child: Padding(
                                 padding: const EdgeInsets.all(10.0),
@@ -929,7 +972,15 @@ class _Dashboard extends State<Dashboard> {
                       ),
                     ),
                   ),
+<<<<<<< HEAD
                 ),
+=======
+            ),),),
+            FadeAnimation(0.3, SizedBox(
+              height: getheight(50.0),
+              child: Center(
+                child: Text("Run Summary", style: GoogleFonts.montserrat(fontSize: 30)),
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
               ),
             ),
             FadeAnimation(
@@ -942,6 +993,7 @@ class _Dashboard extends State<Dashboard> {
                 ),
               ),
             ),
+<<<<<<< HEAD
             FadeAnimation(
                 0.3,
                 Container(
@@ -950,6 +1002,15 @@ class _Dashboard extends State<Dashboard> {
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: RunSummary()))),
+=======
+
+            FadeAnimation(0.3, Container(
+              padding: EdgeInsets.only(left: getwidth(10.0), right: getwidth(10.0)),
+              height: getheight(300.0),
+                child:  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: RunSummary()))),
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
           ],
         );
       } else if (_page.toString() == '1') {
@@ -959,6 +1020,7 @@ class _Dashboard extends State<Dashboard> {
       } else {
         return StatefulBuilder(
           builder: (_context, _setState) {
+<<<<<<< HEAD
             _pickDateDialog() {
               showDatePicker(
                       context: context,
@@ -995,6 +1057,26 @@ class _Dashboard extends State<Dashboard> {
                           child: Center(
                             child: Text("Profile",
                                 style: GoogleFonts.montserrat(fontSize: 30)),
+=======
+            return ListView(
+              physics: NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                FadeAnimation(0.3, SizedBox(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: getheight(16.0)),
+                    child: Column(children: <Widget>[
+                      SizedBox(
+                        height: getheight(30.0),
+                        child: Center(
+                          child: Text("Profile", style: GoogleFonts.montserrat(fontSize: getheight(30))),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            width: getwidth(20.0),
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                           ),
                         ),
                         Row(
@@ -1033,6 +1115,7 @@ class _Dashboard extends State<Dashboard> {
                                     height: 90,
                                     width: 90,
                                   ),
+<<<<<<< HEAD
                                   Text(
                                     'change',
                                     style: GoogleFonts.montserrat(
@@ -1040,6 +1123,21 @@ class _Dashboard extends State<Dashboard> {
                                   )
                                 ],
                               ),
+=======
+                                  placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                  const CircleAvatar(
+                                    backgroundImage: AssetImage(
+                                        'assets/images/user_placeholder.png'),
+                                  ),
+                                  useOldImageOnUrlChange: true,
+                                  height: getwidth(90).floorToDouble(),
+                                  width: getwidth(90).floorToDouble(),
+                                ),
+                                Text('change', style: GoogleFonts.montserrat(fontSize: getheight(10).floorToDouble(), color: Colors.blueGrey),)
+                              ],
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                             ),
                             SizedBox(
                               width: 10.0,
@@ -1110,6 +1208,7 @@ class _Dashboard extends State<Dashboard> {
                                 color: Colors.blueGrey.shade800,
                                 fontWeight: FontWeight.w400),
                           ),
+<<<<<<< HEAD
                         ),
                         Divider(
                           thickness: 1.2,
@@ -1400,10 +1499,34 @@ class _Dashboard extends State<Dashboard> {
                                         ),
                                       ),
                                     ),
+=======
+                          SizedBox(width: getwidth(10.0),),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: getheight(30.0).floorToDouble(),
+                                width: getwidth(230.0),
+                                child: TextFormField(
+                                  onChanged: (text) async {
+                                    if (text == ''){
+                                      text = 'Null';
+                                    }
+                                    await _dbpush('name', text);
+                                  },
+                                  textAlign: TextAlign.left,
+                                  initialValue: _name,
+                                  keyboardType: TextInputType.emailAddress,
+                                  style: GoogleFonts.montserrat(fontSize: getheight(20.0).floorToDouble()),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 0),
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                                   ),
                                 ),
                               ),
                               SizedBox(
+<<<<<<< HEAD
                                 height: 35.0,
                                 width: 100.0,
                                 child: GestureDetector(
@@ -1423,21 +1546,311 @@ class _Dashboard extends State<Dashboard> {
                                         ),
                                       ),
                                     ),
+=======
+                                height: getheight(5.0).floorToDouble(),
+                              ),
+                              Container(
+                                height: getheight(30.0).floorToDouble(),
+                                width: getwidth(230.0),
+                                child: TextFormField(
+                                  onChanged: (text) async {
+                                    await _dbpush('location', text);
+                                  },
+                                  textAlign: TextAlign.left,
+                                  initialValue: _location,
+                                  keyboardType: TextInputType.emailAddress,
+                                  style: GoogleFonts.montserrat(fontSize: getheight(20.0).floorToDouble()),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    hintText: 'Location',
+                                    hintStyle: GoogleFonts.montserrat(fontSize: getheight(20.0).floorToDouble()),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 0),
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                                   ),
                                 ),
                               ),
                             ],
+<<<<<<< HEAD
                           ),
                         ),
                         Row(
+=======
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: getheight(10.0).floorToDouble(),
+                      ),
+                      Container(
+                        height: getheight(20.0).floorToDouble(),
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.only(left: getwidth(5.0)),
+                        child: Text(
+                          'Personal Information',
+                          style: GoogleFonts.montserrat(fontSize: getheight(20).floorToDouble(),color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      Divider(
+                        height: getheight(16.0).floorToDouble(),
+                        thickness: getheight(1.2),
+                        color: Colors.black,
+                        endIndent: getwidth(2.0),
+                      ),
+                      GestureDetector(
+                        onTap: () => showDatePicker(
+                            context: context,
+                            initialDate: dob,
+                            //which date will display when user open the picker
+                            firstDate: DateTime(1950),
+                            //what will be the previous supported year in picker
+                            lastDate: DateTime
+                                .now()) //what will be the up to supported date in picker
+                            .then((pickedDate) {
+                          //then usually do the future job
+                          if (pickedDate == null) {
+                            //if user tap cancel then this function will stop
+                            return;
+                          }
+                          setState(() async {
+                            await _dbpush('dob', pickedDate.toString());
+                            dob = pickedDate;
+                          });
+                        }),
+                        child: Container(
+                          //color: Colors.white,
+                          height: getheight(40.0).floorToDouble(),
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Birthdate',
+                              style: GoogleFonts.montserrat(fontSize: getheight(20).floorToDouble()),
+                                ),
+                                Text(
+                                  dob.month.toString()+'-'+dob.day.toString()+'-'+dob.year.toString(),
+                                  style: GoogleFonts.montserrat(fontSize: getheight(13).floorToDouble(),color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Divider(
+                        height: getheight(16.0).floorToDouble(),
+                        thickness: getheight(1.2),
+                        color: Colors.black,
+                        endIndent: getwidth(2.0),
+                      ),
+                      Container(
+                        //color: Colors.white,
+                          height: getheight(40.0).floorToDouble(),
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.only(left: getwidth(5.0)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Age',
+                                style: GoogleFonts.montserrat(fontSize: getheight(20).floorToDouble()),
+                              ),
+                              Text(
+                                AgeCalculator.age(dob).years.toString(),
+                                style: GoogleFonts.montserrat(fontSize: getheight(13).floorToDouble(),color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          )),
+                      Divider(
+                        height: getheight(16.0).floorToDouble(),
+                        thickness: getheight(1.2),
+                        color: Colors.black,
+                        endIndent: getwidth(2.0),
+                      ),
+                      GestureDetector(
+                        onTap: () => Picker(
+                            height: getheight(60.0),
+                            adapter: PickerDataAdapter<String>(
+                              pickerdata: JsonDecoder().convert(heightlist),
+                              isArray: true,),
+                            hideHeader: true,
+                            selecteds: [height.indexOf(int.parse(curr_height_feet)),0,height_scale.indexOf(int.parse(curr_height_inches)),0],
+                            selectedTextStyle: TextStyle(color: Colors.blue),
+                            onConfirm: (Picker picker, List value) async {
+                              await _dbpush('height', picker.getSelectedValues()[0]);
+                              await _dbpush('height inches', picker.getSelectedValues()[2]);
+                              setState(() {
+                                curr_height_feet = picker.getSelectedValues()[0];
+                                curr_height_inches = picker.getSelectedValues()[2];
+                              });
+                            }).showDialog(context),
+                        child: Container(
+                          //color: Colors.white,
+                            height: getheight(40.0).floorToDouble(),
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Height',
+                                  style: GoogleFonts.montserrat(fontSize: getheight(20).floorToDouble()),
+                                ),
+                                Text(
+                                  curr_height_feet+"'"+" "+curr_height_inches+"''",
+                                  style: GoogleFonts.montserrat(fontSize: getheight(13).floorToDouble(),color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Divider(
+                        height: getheight(16.0).floorToDouble(),
+                        thickness: getheight(1.2),
+                        color: Colors.black,
+                        endIndent: getwidth(2.0),
+                      ),
+                      GestureDetector(
+                        onTap: () => Picker(
+                            height: getheight(50.0),
+                            adapter: PickerDataAdapter<String>(
+                              pickerdata: JsonDecoder().convert(weightlist),
+                              isArray: true,),
+                            hideHeader: true,
+                            selecteds: [weight.indexOf(int.parse(curr_weight)),weight_scale.indexOf(curr_weight_scale)],
+                            selectedTextStyle: TextStyle(color: Colors.blue),
+                            onConfirm: (Picker picker, List value) async {
+                              await _dbpush('weight', picker.getSelectedValues()[0]);
+                              await _dbpush('weight scale', picker.getSelectedValues()[1]);
+                              setState(() {
+                                curr_weight = picker.getSelectedValues()[0];
+                                curr_weight_scale = picker.getSelectedValues()[1];
+                              });
+                            }).showDialog(context),
+                        child: Container(
+                          //color: Colors.white,
+                            height: getheight(40.0).floorToDouble(),
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Weight',
+                                  style: GoogleFonts.montserrat(fontSize: getheight(20).floorToDouble()),
+                                ),
+                                Text(
+                                  curr_weight+' '+curr_weight_scale,
+                                  style: GoogleFonts.montserrat(fontSize: getheight(13).floorToDouble(),color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Divider(
+                        height: getheight(16.0).floorToDouble(),
+                        thickness: getheight(1.2),
+                        color: Colors.black,
+                        endIndent: getwidth(2.0),
+                      ),
+                      GestureDetector(
+                        onTap: () => Picker(
+                          height: getheight(50.0),
+                            adapter: PickerDataAdapter<String>(
+                              pickerdata: JsonDecoder().convert(skilllist),
+                              isArray: true,),
+                            hideHeader: true,
+                            selecteds: [skill.indexOf(curr_skill)],
+                            selectedTextStyle: TextStyle(color: Colors.blue),
+                            onConfirm: (Picker picker, List value) async {
+                              await _dbpush('skill level', picker.getSelectedValues()[0]);
+                              setState(() {
+                                curr_skill = picker.getSelectedValues()[0];
+                              });
+                            }).showDialog(context),
+                        child: Container(
+                            height: getheight(40.0).floorToDouble(),
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Activity Class',
+                                  style: GoogleFonts.montserrat(fontSize: getheight(20).floorToDouble()),
+                                ),
+                                Text(
+                                  curr_skill,
+                                  style: GoogleFonts.montserrat(fontSize: getheight(13).floorToDouble(),color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Divider(
+                        height: getheight(16.0).floorToDouble(),
+                        thickness: getheight(1.2),
+                        color: Colors.black,
+                        endIndent: getwidth(2.0),
+                      ),
+                      GestureDetector(
+                        onTap: () =>  Picker(
+                          height: getheight(50.0),
+                            adapter: PickerDataAdapter<String>(
+                            pickerdata: JsonDecoder().convert(genderlist),
+                            isArray: true,),
+                            hideHeader: true,
+                            selecteds: [gender.indexOf(curr_gender)],
+                            selectedTextStyle: TextStyle(color: Colors.blue),
+                            cancel: TextButton(
+                            onPressed: () {
+                            Navigator.pop(context);
+                            },
+                                child: Text('Cancel')),
+                                onConfirm: (Picker picker, List value) async {
+                                  await _dbpush('gender', picker.getSelectedValues()[0]);
+                              setState(() {
+                                curr_gender = picker.getSelectedValues()[0];
+                              });
+                            }).showDialog(context),
+                        child: Container(
+                          //color: Colors.white,
+                            height: getheight(40.0).floorToDouble(),
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.only(left: getwidth(5.0)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Gender',
+                                  style: GoogleFonts.montserrat(fontSize: getheight(20).floorToDouble()),
+                                ),
+                                Text(
+                                  curr_gender,
+                                  style: GoogleFonts.montserrat(fontSize: getheight(13).floorToDouble(),color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Divider(
+                        height: getheight(16.0).floorToDouble(),
+                        thickness: getheight(1.2),
+                        color: Colors.black,
+                        endIndent: getwidth(2.0),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: getheight(5.0)),
+                        child: Row(
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
-                              height: 35.0,
-                              width: 100.0,
+                              height: getheight(35.0).floorToDouble(),
+                              width: getwidth(100.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                  print('policy');
+                                  Navigator.pushReplacement<void, void>(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          Additional_Info_Screen(),
+                                    ),
+                                  );
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -1455,11 +1868,10 @@ class _Dashboard extends State<Dashboard> {
                               ),
                             ),
                             SizedBox(
-                              height: 35.0,
-                              width: 100.0,
+                              height: getheight(35.0).floorToDouble(),
+                              width: getwidth(100.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                  print('policy');
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -1478,6 +1890,7 @@ class _Dashboard extends State<Dashboard> {
                             ),
                           ],
                         ),
+<<<<<<< HEAD
                         SizedBox(
                           height: 15.0,
                         ),
@@ -1505,12 +1918,81 @@ class _Dashboard extends State<Dashboard> {
                                               color: Colors.white,
                                               fontSize: 20.0),
                                         ),
+=======
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            height: getheight(35.0).floorToDouble(),
+                            width: getwidth(100.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Container(
+                                  color: Colors.blueGrey,
+                                  child: Center(
+                                    child: Text(
+                                      'Legal', style: GoogleFonts.montserrat(fontSize: 10,color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: getheight(35.0).floorToDouble(),
+                            width: getwidth(100.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Container(
+                                  color: Colors.blueGrey,
+                                  child: Center(
+                                    child: Text(
+                                      'Terms & Conditions', style: GoogleFonts.montserrat(fontSize: 10,color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: getheight(30.0).floorToDouble(),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: getwidth(15.0)),
+                            child: SizedBox(
+                              height: getheight(30.0).floorToDouble(),
+                              width: getwidth(80.0),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await FirebaseAuth.instance.currentUser?.delete();
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Container(
+                                    color: Colors.red,
+                                    child: Center(
+                                      child: Text(
+                                        'Delete Account', style: TextStyle(color: Colors.white, fontSize: getheight(10.0).floorToDouble()),
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+<<<<<<< HEAD
                             Padding(
                               padding: const EdgeInsets.only(right: 15.0),
                               child: FloatingActionButton(
@@ -1521,6 +2003,18 @@ class _Dashboard extends State<Dashboard> {
                                   _signOut();
                                 },
                               ),
+=======
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: getwidth(15.0)),
+                            child: FloatingActionButton(
+                              child: Icon(Icons.logout_rounded),
+                              elevation: 2.5,
+                              backgroundColor: const Color(0xFF0CC9C6),
+                              onPressed: () {
+                                _signOut();
+                              },
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
                             ),
                           ],
                         ),
@@ -1540,12 +2034,12 @@ class _Dashboard extends State<Dashboard> {
         bottomNavigationBar: CurvedNavigationBar(
           key: _bottomNavigationKey,
           index: 0,
-          height: 60.0,
-          items: const <Widget>[
-            Icon(Icons.home_rounded, size: 30),
-            Icon(Icons.calendar_view_day_rounded, size: 30),
-            Icon(Icons.menu_open_rounded, size: 30),
-            Icon(Icons.perm_identity, size: 30),
+          height: getheight(60.0),
+          items: <Widget>[
+            Icon(Icons.home_rounded, size: getwidth(30.0)),
+            Icon(Icons.calendar_view_day_rounded, size: getwidth(30.0)),
+            Icon(Icons.menu_open_rounded, size: getwidth(30.0)),
+            Icon(Icons.perm_identity, size: getwidth(30.0)),
           ],
           color: Colors.white,
           buttonBackgroundColor: Colors.white,
@@ -1563,6 +2057,7 @@ class _Dashboard extends State<Dashboard> {
   }
 
   Future<void> _signOut() async {
+<<<<<<< HEAD
     print(FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']
         ['providerData'][0]['providerId']);
     if (FirebaseAuth
@@ -1571,6 +2066,9 @@ class _Dashboard extends State<Dashboard> {
                 ['providerId']
             .toString() ==
         'google.com') {
+=======
+    if (FirebaseAuth.instance.pluginConstants['APP_CURRENT_USER']['providerData'][0]['providerId'].toString() == 'google.com') {
+>>>>>>> bc3cbd1569108180841187b6e29488ef9b63f08f
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
     } else if (FirebaseAuth

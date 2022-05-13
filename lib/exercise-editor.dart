@@ -1,4 +1,12 @@
 //Written by Micah Lessnick
+
+//------------------------------------------------------------------------------
+// This page is responsible for displaying exercises in a workout a user
+// has already created. It is reached from the calendar, where a workout name
+// is passed as a key for database ref. This page allows users to add and
+// delete exercises in the workout but not change the workout name. Changes are
+// pushed to the database when the user navigates back to the calendar.
+//------------------------------------------------------------------------------
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -278,13 +286,10 @@ class _ExerciseEditorState extends State<ExerciseEditor>
         elevation: 0.0,
         title: Container(
           height: 40.0,
-          decoration: BoxDecoration(
-            color: Colors.white70,
-            borderRadius: BorderRadius.circular(32),
-          ),
           child: Center(
-            child: Text(widget.name),
-          ),
+              child: Text(
+            widget.name,
+          )),
         ),
       ),
       body: SafeArea(
@@ -366,6 +371,7 @@ class _ExerciseEditorState extends State<ExerciseEditor>
                 });
               }),
           Padding(
+            //button for sending entire workout to database
             padding: const EdgeInsets.only(
                 top: 585.0, bottom: 0.0, left: 10.0, right: 0.0),
             child: FloatingActionButton(
@@ -398,6 +404,7 @@ class _ExerciseEditorState extends State<ExerciseEditor>
             ),
           ),
           Padding(
+            //button for adding a new exercise
             padding: EdgeInsets.only(
                 top: 585.0,
                 bottom: 0.0,

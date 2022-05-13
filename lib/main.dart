@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/exercise-editor.dart';
 import 'homepage.dart';
 
 void main() async {
@@ -12,11 +13,9 @@ void main() async {
   ));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(
-        MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: HomePage(),
-        )
-    );
+    runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    ));
   });
 }
