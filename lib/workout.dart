@@ -269,6 +269,7 @@ class _ExerciseListState extends State<ExerciseList>
     TextEditingController workoutname = TextEditingController();
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         elevation: 0.0,
         title: Container(
@@ -381,6 +382,7 @@ class _ExerciseListState extends State<ExerciseList>
             padding: const EdgeInsets.only(
                 top: 585.0, bottom: 0.0, left: 10.0, right: 0.0),
             child: FloatingActionButton(
+              heroTag: "addExerciseToDB",
               child: const Icon(
                 Icons.upgrade_rounded,
                 size: 30.0,
@@ -416,6 +418,7 @@ class _ExerciseListState extends State<ExerciseList>
             child: RotationTransition(
               turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
               child: FloatingActionButton(
+                heroTag: "addExerciseToList",
                 child: const Icon(Icons.add),
                 backgroundColor: const Color(0xFF0CC9C6),
                 onPressed: () async {
