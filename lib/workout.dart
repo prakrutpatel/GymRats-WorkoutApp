@@ -1,4 +1,11 @@
 //Written by Micah Lessnick
+
+//------------------------------------------------------------------------------
+// This page is responsible for creating a new workout that can be pushed to
+// the database. The bottom-right button allows users to add individual
+// exercises
+//------------------------------------------------------------------------------
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -268,12 +275,14 @@ class _ExerciseListState extends State<ExerciseList>
   Widget build(BuildContext context) {
     final devheight = MediaQuery.of(context).size.height;
     final devwidth = MediaQuery.of(context).size.width;
-    double getheight(double val){
-      return (val/770.6)*devheight;
+    double getheight(double val) {
+      return (val / 770.6) * devheight;
     }
-    double getwidth(double val){
-      return (val/360.0)*devwidth;
+
+    double getwidth(double val) {
+      return (val / 360.0) * devwidth;
     }
+
     TextEditingController workoutname = TextEditingController();
     return Scaffold(
       appBar: AppBar(
@@ -388,7 +397,10 @@ class _ExerciseListState extends State<ExerciseList>
               }),
           Padding(
             padding: EdgeInsets.only(
-                top: getheight(585.0), bottom: 0.0, left: getwidth(10.0), right: 0.0),
+                top: getheight(585.0),
+                bottom: 0.0,
+                left: getwidth(10.0),
+                right: 0.0),
             child: FloatingActionButton(
               heroTag: "addExerciseToDB",
               child: Icon(

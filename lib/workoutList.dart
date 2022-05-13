@@ -35,6 +35,9 @@ class _WorkoutListState extends State<WorkoutList>
   }
 
   List<Workout> bottom = <Workout>[];
+  List<String> removalList = <String>[];
+  //list of workout names to be removed from db
+  var dbWorkout;
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -45,7 +48,7 @@ class _WorkoutListState extends State<WorkoutList>
           .child(auth.currentUser!.uid.toString())
           .child("Test ID 2")
           .get()
-          .then((value) => print(value.value));
+          .then((value) => dbWorkout);
     }
 
     dbInfo();
@@ -61,6 +64,8 @@ class _WorkoutListState extends State<WorkoutList>
                     key: ValueKey<int>(bottom[index].uid),
                     onDismissed: (direction) {
                       setState(() {
+                        //adds the name (key) of removed workout to separate list
+                        removalList.add(item.name);
                         bottom.removeAt(bottom.indexOf(item));
                       });
                       Toast.show(item.name + ' dismissed', context,
@@ -102,9 +107,11 @@ class _WorkoutListState extends State<WorkoutList>
                 });
               }),
           Padding(
+            //button to update db refs
             padding: const EdgeInsets.only(
                 top: 585.0, bottom: 0.0, left: 10.0, right: 0.0),
             child: FloatingActionButton(
+              heroTag: "updateDB",
               child: const Icon(
                 Icons.upgrade_rounded,
                 size: 30.0,
@@ -113,7 +120,7 @@ class _WorkoutListState extends State<WorkoutList>
               backgroundColor: const Color(0xFF0CC9C6),
               onPressed: () {
                 final FirebaseAuth auth = FirebaseAuth.instance;
-                for (var element in bottom) {
+                for (var element in removalList) {
                   /*DatabaseReference ref = FirebaseDatabase.instance.ref(
                       "workouts/" +
                           auth.currentUser!.uid +
@@ -127,12 +134,15 @@ class _WorkoutListState extends State<WorkoutList>
                     "duration": element.durDisp,
                     "max weight": element.comp3,
                   });*/
+
+                  //set element to null ref in db
                   break;
                 }
               },
             ),
           ),
           Padding(
+            //button to add an exercise to workout list, sends user to workout page
             padding: EdgeInsets.only(
                 top: 585.0,
                 bottom: 0.0,
@@ -141,6 +151,7 @@ class _WorkoutListState extends State<WorkoutList>
             child: RotationTransition(
               turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
               child: FloatingActionButton(
+                heroTag: "addWorkout",
                 child: const Icon(Icons.add),
                 backgroundColor: const Color(0xFF0CC9C6),
                 onPressed: () async {

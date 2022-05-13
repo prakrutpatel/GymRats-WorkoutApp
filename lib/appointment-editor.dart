@@ -317,14 +317,14 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      final List<Meeting> meetings = <Meeting>[];
+                      final List<Appointment> Appointments = <Appointment>[];
                       if (_selectedAppointment != null) {
                         _events.appointments!.removeAt(_events.appointments!
                             .indexOf(_selectedAppointment));
                         _events.notifyListeners(CalendarDataSourceAction.remove,
-                            <Meeting>[]..add(_selectedAppointment!));
+                            <Appointment>[]..add(_selectedAppointment!));
                       }
-                      meetings.add(Meeting(
+                      Appointments.add(Appointment(
                         from: _startDate,
                         to: _endDate,
                         background: _colorCollection[_selectedColorIndex],
@@ -339,10 +339,38 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                         eventName: _subject == '' ? '(No title)' : _subject,
                       ));
 
-                      _events.appointments!.add(meetings[0]);
+                      final FirebaseAuth auth = FirebaseAuth.instance;
+                      final _calKey = FirebaseDatabase.instance
+                          .ref('calendars/' + auth.currentUser!.uid + "/")
+                          .push()
+                          .key;
+                      final _calID = FirebaseDatabase.instance.ref().child(
+                          'calendars/' +
+                              auth.currentUser!.uid.toString() +
+                              "/" +
+                              _calKey.toString() +
+                              "/");
+                      _calID.set({
+                        "id": _calKey.toString(),
+                        "from": _startDate.toString(),
+                        "to": _endDate.toString(),
+                        "background":
+                            _colorCollection[_selectedColorIndex].toString(),
+                        "startTimeZone": _selectedTimeZoneIndex == 0
+                            ? ''
+                            : _timeZoneCollection[_selectedTimeZoneIndex],
+                        "endTimeZone": _selectedTimeZoneIndex == 0
+                            ? ''
+                            : _timeZoneCollection[_selectedTimeZoneIndex],
+                        "description": _notes,
+                        "isAllDay": _isAllDay,
+                        "eventName": _subject == '' ? '(No title)' : _subject,
+                      });
+
+                      _events.appointments!.add(Appointments[0]);
 
                       _events.notifyListeners(
-                          CalendarDataSourceAction.add, meetings);
+                          CalendarDataSourceAction.add, Appointments);
                       _selectedAppointment = null;
 
                       Navigator.pop(context);
@@ -364,7 +392,7 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                         _events.appointments!.removeAt(_events.appointments!
                             .indexOf(_selectedAppointment));
                         _events.notifyListeners(CalendarDataSourceAction.remove,
-                            <Meeting>[]..add(_selectedAppointment!));
+                            <Appointment>[]..add(_selectedAppointment!));
                         _selectedAppointment = null;
                         Navigator.pop(context);
                       }
