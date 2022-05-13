@@ -341,10 +341,7 @@ class AppointmentEditorState extends State<AppointmentEditor> {
 
                       final FirebaseAuth auth = FirebaseAuth.instance;
                       final _calKey = FirebaseDatabase.instance
-                          .ref()
-                          .child('calendars/' +
-                              auth.currentUser!.uid.toString() +
-                              "/")
+                          .ref('calendars/' + auth.currentUser!.uid + "/")
                           .push()
                           .key;
                       final _calID = FirebaseDatabase.instance.ref().child(
@@ -366,7 +363,7 @@ class AppointmentEditorState extends State<AppointmentEditor> {
                             ? ''
                             : _timeZoneCollection[_selectedTimeZoneIndex],
                         "description": _notes,
-                        "isAllDay": _isAllDay.toString(),
+                        "isAllDay": _isAllDay,
                         "eventName": _subject == '' ? '(No title)' : _subject,
                       });
 
