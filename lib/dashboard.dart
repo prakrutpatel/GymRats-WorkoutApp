@@ -482,6 +482,9 @@ class _Dashboard extends State<Dashboard>{
     dbInfo(path: 'gender').then((String result){
       curr_gender = result;
     });
+    dbInfo(path: 'dob').then((String result){
+      dob = DateTime.parse(result);
+    });
     dbInfo(path: 'skill level').then((String result){
       curr_skill = result;
     });
@@ -775,7 +778,25 @@ class _Dashboard extends State<Dashboard>{
                         endIndent: 2,
                       ),
                       GestureDetector(
-                        onTap: () async => print(''),
+                        onTap: () => showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            //which date will display when user open the picker
+                            firstDate: DateTime(1950),
+                            //what will be the previous supported year in picker
+                            lastDate: DateTime
+                                .now()) //what will be the up to supported date in picker
+                            .then((pickedDate) {
+                          //then usually do the future job
+                          if (pickedDate == null) {
+                            //if user tap cancel then this function will stop
+                            return;
+                          }
+                          setState(() async {
+                            await _dbpush('dob', pickedDate.toString());
+                            dob = pickedDate;
+                          });
+                        }),
                         child: Container(
                           //color: Colors.white,
                           height: 40.0,
@@ -789,7 +810,7 @@ class _Dashboard extends State<Dashboard>{
                               style: GoogleFonts.montserrat(fontSize: 20),
                                 ),
                                 Text(
-                                  dob.toString().substring(0,10),
+                                  dob.month.toString()+'-'+dob.day.toString()+'-'+dob.year.toString(),
                                   style: GoogleFonts.montserrat(fontSize: 13,color: Colors.blueGrey.shade800,fontWeight: FontWeight.w400),
                                 ),
                               ],

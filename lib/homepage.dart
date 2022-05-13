@@ -265,19 +265,6 @@ class HomePage extends StatelessWidget {
                                 ),
                               )
                           ),
-                          GestureDetector(
-                              onTap: () {
-                              },
-                              child: Container(
-                                height: 50.0,
-                                width: 50.0,
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage('assets/images/twitter.png')
-                                    )
-                                ),
-                              )
-                          ),
                         ],
                       ),
                     ),
