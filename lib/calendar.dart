@@ -1,6 +1,11 @@
+// Written by Mark Yamane
 library event_calendar;
 
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_app/exercise-editor.dart';
+import 'package:flutter_app/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -25,7 +30,7 @@ int _selectedColorIndex = 0; // default color
 int _selectedTimeZoneIndex = 0; // default timezone
 List<String> _timeZoneCollection = <String>[]; // available time zones
 late DataSource _events; // workouts displayed on calendar
-Meeting? _selectedAppointment;
+Appointment? _selectedAppointment;
 DateTime _selectedDate = DateTime(
     DateTime.now().year, DateTime.now().month, DateTime.now().day, 0, 0, 0);
 late DateTime _startDate;
@@ -41,12 +46,12 @@ class CalendarState extends State<Calendar> {
 
   CalendarView _calendarView = CalendarView.month;
   late List<String> eventNameCollection;
-  late List<Meeting> appointments;
+  late List<Appointment> appointments;
 
   @override
   void initState() {
     _calendarView = CalendarView.month;
-    appointments = getMeetingDetails();
+    appointments = getAppointmentDetails();
     _events = DataSource(appointments);
     _selectedAppointment = null;
     _selectedColorIndex = 0;
@@ -62,6 +67,7 @@ class CalendarState extends State<Calendar> {
         backgroundColor: const Color.fromRGBO(186, 221, 245, 1.0),
         resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color(0xFF0CC9C6),
           onPressed: () {
             addNewWorkout();
           },
@@ -90,6 +96,7 @@ class CalendarState extends State<Calendar> {
             DateTime.now().day, 0, 0, 0),
         initialSelectedDate: DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 0, 0, 0),
+        todayHighlightColor: const Color(0xFF0CC9C6),
         allowedViews: <CalendarView>[
           CalendarView.month,
           CalendarView.schedule,
@@ -138,6 +145,7 @@ class CalendarState extends State<Calendar> {
 
       _startTime = TimeOfDay(hour: _startDate.hour, minute: _startDate.minute);
       _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
+
       Navigator.push<Widget>(
         context,
         MaterialPageRoute(
@@ -161,41 +169,42 @@ class CalendarState extends State<Calendar> {
       _subject = '';
       _notes = '';
       if (details.appointments != null && details.appointments!.length == 1) {
-        final Meeting meetingDetails = details.appointments![0];
-        _startDate = meetingDetails.from;
-        _endDate = meetingDetails.to;
-        _isAllDay = meetingDetails.isAllDay;
+        final Appointment AppointmentDetails = details.appointments![0];
+        _startDate = AppointmentDetails.from;
+        _endDate = AppointmentDetails.to;
+        _isAllDay = AppointmentDetails.isAllDay;
         _selectedColorIndex =
-            _colorCollection.indexOf(meetingDetails.background);
-        _selectedTimeZoneIndex = meetingDetails.startTimeZone == ''
+            _colorCollection.indexOf(AppointmentDetails.background);
+        _selectedTimeZoneIndex = AppointmentDetails.startTimeZone == ''
             ? 0
-            : _timeZoneCollection.indexOf(meetingDetails.startTimeZone);
-        _subject = meetingDetails.eventName == '(No title)'
+            : _timeZoneCollection.indexOf(AppointmentDetails.startTimeZone);
+        _subject = AppointmentDetails.eventName == '(No title)'
             ? ''
-            : meetingDetails.eventName;
-        _notes = meetingDetails.description;
-        _selectedAppointment = meetingDetails;
+            : AppointmentDetails.eventName;
+        _notes = AppointmentDetails.description;
+        _selectedAppointment = AppointmentDetails;
         _startTime =
             TimeOfDay(hour: _startDate.hour, minute: _startDate.minute);
         _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
         Navigator.push<Widget>(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => AppointmentEditor()),
+              builder: (BuildContext context) =>
+                  ExerciseEditor(name: _subject)),
         );
       }
     });
   }
 
-  List<Meeting> getMeetingDetails() {
-    final List<Meeting> meetingCollection = <Meeting>[];
+  List<Appointment> getAppointmentDetails() {
+    final List<Appointment> AppointmentCollection = <Appointment>[];
     eventNameCollection = <String>[];
-    eventNameCollection.add('General Meeting');
+    eventNameCollection.add('General Appointment');
     eventNameCollection.add('Plan Execution');
     eventNameCollection.add('Project Plan');
     eventNameCollection.add('Consulting');
     eventNameCollection.add('Support');
-    eventNameCollection.add('Development Meeting');
+    eventNameCollection.add('Development Appointment');
     eventNameCollection.add('Scrum');
     eventNameCollection.add('Project Completion');
     eventNameCollection.add('Release updates');
@@ -237,7 +246,7 @@ class CalendarState extends State<Calendar> {
     for (int month = -1; month < 2; month++) {
       for (int day = -5; day < 5; day++) {
         for (int hour = 9; hour < 18; hour += 5) {
-          meetingCollection.add(Meeting(
+          AppointmentCollection.add(Appointment(
             from: today
                 .add(Duration(days: (month * 30) + day))
                 .add(Duration(hours: hour)),
@@ -255,12 +264,12 @@ class CalendarState extends State<Calendar> {
       }
     }
 
-    return meetingCollection;
+    return AppointmentCollection;
   }
 }
 
 class DataSource extends CalendarDataSource {
-  DataSource(List<Meeting> source) {
+  DataSource(List<Appointment> source) {
     appointments = source;
   }
 
@@ -289,8 +298,8 @@ class DataSource extends CalendarDataSource {
   DateTime getEndTime(int index) => appointments![index].to;
 }
 
-class Meeting {
-  Meeting(
+class Appointment {
+  Appointment(
       {required this.from,
       required this.to,
       this.background = Colors.green,
