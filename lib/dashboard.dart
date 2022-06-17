@@ -61,6 +61,7 @@ class _Dashboard extends State<Dashboard>{
         "'"
     ],
     [
+        0,
         1,
         2,
         3,
@@ -482,28 +483,50 @@ class _Dashboard extends State<Dashboard>{
       }
     });
     dbInfo(path: 'gender').then((String result){
-      curr_gender = result;
+      if (result != ''){
+        curr_gender = result;
+      }
+
     });
     dbInfo(path: 'dob').then((String result){
-      dob = DateTime.parse(result);
+      if (result != '') {
+        dob = DateTime.parse(result);
+      }
     });
     dbInfo(path: 'skill level').then((String result){
-      curr_skill = result;
+      if (result != ''){
+        curr_skill = result;
+      }
+
     });
     dbInfo(path: 'location').then((String result){
-      _location = result;
+      if (result != ''){
+        _location = result;
+      }
+
     });
     dbInfo(path: 'weight').then((String result){
-      curr_weight = result;
+      if (result != ''){
+        curr_weight = result;
+      }
+
     });
     dbInfo(path: 'weight scale').then((String result){
-      curr_weight_scale = result;
+      if (result != ''){
+        curr_weight_scale = result;
+      }
+
     });
     dbInfo(path: 'height').then((String result){
-      curr_height_feet = result;
+      if (result != ''){
+        curr_height_feet = result;
+      }
+
     });
     dbInfo(path: 'height inches').then((String result){
-      curr_height_inches = result;
+      if (result != ''){
+        curr_height_inches = result;
+      }
     });
 
     final picker = ImagePicker();
@@ -779,8 +802,11 @@ class _Dashboard extends State<Dashboard>{
                             return;
                           }
                           setState(() async {
-                            await _dbpush('dob', pickedDate.toString());
                             dob = pickedDate;
+                            await _dbpush('dob', pickedDate.toString());
+                          });
+                          setState(() {
+
                           });
                         }),
                         child: Container(

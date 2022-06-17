@@ -426,70 +426,60 @@ class Info extends State<Additional_Info_Screen> {
     }
   }
 
-  void initState() {
-    dbInfo(path: 'name').then((String result){
-      _fullname.text = result;
-      defaultname = result;
-      setState(() {
-
-      });
-    });
-    dbInfo(path: 'gender').then((String result){
-      _gender.text = result;
-      if (result != ''){
-        defaultgender = result;
-      }
-      setState(() {
-
-      });
-    });
-    dbInfo(path: 'dob').then((String result){
-      _dob.text = result;
-      defaultdob = DateTime.parse(result).month.toString()+'-'+DateTime.parse(result).day.toString()+'-'+DateTime.parse(result).year.toString();
-      setState(() {
-
-      });
-    });
-    dbInfo(path: 'skill level').then((String result){
-      _skill_level.text = result;
-      if (result != ''){
-        defaultskill = result;
-      }
-      setState(() {
-
-      });
-    });
-    dbInfo(path: 'weight').then((String result){
-      _weight.text = result;
-      setState(() {
-      });
-    });
-    dbInfo(path: 'weight scale').then((String result){
-      _weight_scale.text = result;
-      setState(() {
-
-      });
-    });
-    dbInfo(path: 'height').then((String result){
-      _height.text = result;
-      setState(() {
-
-      });
-    });
-    dbInfo(path: 'height inches').then((String result){
-      _height_scale.text = result;
-      setState(() {
-
-      });
-    });
-
-  }
 
 
 
 
 
   Widget build(BuildContext context) {
+    dbInfo(path: 'name').then((String result){
+      if (result != ''){
+        _fullname.text = result;
+        defaultname = result;
+      }
+    });
+    dbInfo(path: 'gender').then((String result){
+      if (result != ''){
+        _gender.text = result;
+        defaultgender = result;
+      }
+    });
+    dbInfo(path: 'dob').then((String result){
+      if (result != ''){
+        _dob.text = result;
+        defaultdob = DateTime.parse(result).month.toString()+'-'+DateTime.parse(result).day.toString()+'-'+DateTime.parse(result).year.toString();
+      }
+    });
+    dbInfo(path: 'skill level').then((String result){
+      if (result != ''){
+        _skill_level.text = result;
+        defaultskill = result;
+      }
+    });
+    dbInfo(path: 'weight').then((String result){
+      if (result != '') {
+        _weight.text = result;
+      }
+    });
+    dbInfo(path: 'weight scale').then((String result){
+      if (result != '') {
+        _weight_scale.text = result;
+      }
+    });
+    dbInfo(path: 'height').then((String result){
+      if (result != ''){
+        _height.text = result;
+      }
+
+    });
+    dbInfo(path: 'height inches').then((String result){
+      if (result != ''){
+        _height_scale.text = result;
+      }
+
+    });
+    setState(() {
+    });
     if (_weight.text != "" && _weight_scale.text != ""){
       defaultweight = _weight.text+' '+_weight_scale.text;
     }
@@ -497,12 +487,8 @@ class Info extends State<Additional_Info_Screen> {
       defaultheight = _height.text+"'"+" "+_height_scale.text+"''";
     }
     final devheight = MediaQuery.of(context).size.height;
-    final devwidth = MediaQuery.of(context).size.width;
     double getheight(double val){
       return (val/770.6)*devheight;
-    }
-    double getwidth(double val){
-      return (val/360.0)*devwidth;
     }
 
     Future<void> _dbpush() async {
@@ -524,11 +510,6 @@ class Info extends State<Additional_Info_Screen> {
         ),
       );
     }
-
-
-
-
-
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -587,6 +568,7 @@ class Info extends State<Additional_Info_Screen> {
                               padding: EdgeInsets.only(left: 5.0, top: 10.0),
                               child: TextFormField(
                                 controller: _fullname,
+                                style: TextStyle(color: Colors.grey.shade400),
                                 keyboardType: TextInputType.emailAddress,
                                 autovalidateMode: AutovalidateMode
                                     .onUserInteraction,
@@ -595,7 +577,7 @@ class Info extends State<Additional_Info_Screen> {
                                 ]),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Name",
+                                  hintText: defaultname,
                                   hintStyle: TextStyle(color: Colors.grey.shade400),
                                 ),
                               ),
