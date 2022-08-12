@@ -19,7 +19,7 @@ Gym Rats is a workout app made with Flutter and was a part of my capstone projec
 
 ## Screenshots
 
-<img src="https://www.prakrut.dev/Home.61a5a1f2.png" width="49%">
-<img src="https://www.prakrut.dev/Meetings.3c59ced9.png" width="49%">
-<img src="https://www.prakrut.dev/Score.abb6f451.png" width="49%">
-<img src="https://www.prakrut.dev/People.e12ab21f.png" width="49%">
+<img src="https://www.prakrut.dev/Home.61a5a1f2.png" width="45%">
+<img src="https://www.prakrut.dev/Meetings.3c59ced9.png" width="45%">
+<img src="https://www.prakrut.dev/Score.abb6f451.png" width="45%">
+<img src="https://www.prakrut.dev/People.e12ab21f.png" width="45%">
